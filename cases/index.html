@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Studies — Aurelius Dynamic</title>
+<meta name="description" content="Engineering writeups from a small studio building browser-native systems: the Helix plasma simulation, the IKOS knowledge-graph runtime, and the TSL Shader Lab — architecture, findings, and measured results.">
+<link rel="canonical" href="https://aureliusdynamic.com/cases/">
+<meta name="theme-color" content="#06080C">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Aurelius Dynamic">
+<meta property="og:title" content="Case Studies — Aurelius Dynamic">
+<meta property="og:description" content="Helix, IKOS, and the Shader Lab: what was built, how it works, what it taught.">
+<meta property="og:url" content="https://aureliusdynamic.com/cases/">
+<meta property="og:image" content="https://aureliusdynamic.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../pages.css">
+</head>
+<body>
+
+<header class="hd">
+  <div class="mark"><a href="/"><span class="n">AURELIUS</span><br><span class="s">DYNAMIC</span></a></div>
+  <nav>
+    <a href="/philosophy/">Philosophy</a>
+    <a href="/capabilities/">Capabilities</a>
+    <a href="/cases/" aria-current="page">Case Studies</a>
+    <a href="/roadmap/">Roadmap</a>
+  </nav>
+</header>
+
+<main>
+  <div class="kicker"><span class="dot"></span><span class="t">Dossier · Case Studies</span><span class="rule"></span></div>
+  <h1>Three systems, examined honestly.</h1>
+  <p class="lede">Aurelius is a small engineering studio creating browser-native graphics, simulation, visualization, and experimental computing systems using WebGPU and modern web technologies. These are engineering writeups of three of those systems — each one open to run while you read. Every project carries a status label so you know exactly where it sits:</p>
+  <div class="stats"><span><b>Production Demo</b> — deployed, measured, stable</span><span><b>Active Prototype</b> — working, still evolving</span><span><b>Research Experiment</b> — investigating a question</span></div>
+
+  <hr>
+
+  <span class="num" id="helix">CASE 01 · RESEARCH EXPERIMENT</span>
+  <h2>Helix — browser-native plasma simulation</h2>
+  <p class="sub">interactive charged-particle simulation · <a href="/helix/">run it at /helix/ →</a></p>
+
+  <h3>Overview</h3>
+  <p>Helix is Aurelius' primary browser-native simulation project. It explores how modern browser technologies can deliver interactive scientific computing through a standard web browser: it combines charged-particle simulation, real-time 3D visualization, and live diagnostics in a single system that requires no installation or specialized software.</p>
+  <p>It is labeled a research experiment deliberately. Helix exists to investigate a specific physical question, and its value is measured by whether that investigation is honest — not by how impressive the visuals are.</p>
+
+  <h3>The question under test</h3>
+  <p>An RF antenna launches a helical wave; the reactor's magnetic field lines twist with their own pitch. The <strong>match number M</strong> compares the two helices, and the working hypothesis is that power coupling peaks when they align (M ≈ 1). What makes the simulator interesting as an instrument is that it refuses to assume its own conclusion: it ships three coupling models —</p>
+  <ul>
+    <li><strong>KERNEL</strong> — the M ≈ 1 resonance is baked in as a hand-tuned prior;</li>
+    <li><strong>EMERGENT</strong> — coupling is derived from field-geometry alignment, so the peak must emerge from the physics or fail to;</li>
+    <li><strong>WAVE</strong> — coupling follows a helicon eigenmode model.</li>
+  </ul>
+  <p>Sweeping M under each model and comparing the responses is the core experiment, and the app's plotting tools are built around exactly that comparison. The project is accompanied by a working paper defining four falsifiable predictions; the simulator's diagnostic instruments mirror those predictions one-for-one.</p>
+
+  <h3>Architecture</h3>
+  <p>Helix is a static, no-build single-page app. The physics core advances roughly <strong>18,000 macro-electrons</strong> — each standing in for a large electron population — through an analytic magnetic field:</p>
+  <pre><code>UI (React component — SIMULATE / DIAGNOSTICS / PLOTS / GUIDE)
+        ↓ step(dt) · setParam()
+Physics engine — Boris pusher · Monte-Carlo collisions
+        ↓ 64×64×128 density grid · diagnostic series
+3D view (three.js) · canvas plotting · dusty-plasma module</code></pre>
+  <ul>
+    <li><strong>Boris integrator</strong> — a standard, well-established pusher for charged-particle motion, chosen for its long-run stability: naive integrators visibly spiral particles into non-physical orbits, and in a live view there is nowhere to hide that.</li>
+    <li><strong>Monte-Carlo collisions</strong> with neutral gas turn clean single-particle orbits into believable bulk behavior — diffusion, thermalization, ionization.</li>
+    <li><strong>Six synthetic diagnostics</strong> — virtual Langmuir probes, a turbulence proxy with spectral analysis, an 8-probe B-dot array that recovers the azimuthal mode via DFT, a synthetic imaging camera, axial-structure readouts, and a dust panel with pair-correlation statistics — all computed from the same particle state the physics integrates.</li>
+    <li><strong>A dusty-plasma module</strong> — charged grains under ion drag and Yukawa pair forces, exhibiting a gas → liquid → crystal transition as the coupling parameter rises.</li>
+    <li><strong>Self-hosted everything</strong> — all runtime dependencies are version-pinned and served from the repo, so the instrument runs fully offline.</li>
+  </ul>
+  <p>Alongside the browser app there is a separate headless research simulator — SI units, measured argon cross sections, absorbing walls — used for the quantitative studies (confinement time versus field-line pitch), with a physics self-test suite and seeded, reproducible runs.</p>
+
+  <h3>Demonstrated today</h3>
+  <ul>
+    <li>Browser-native charged-particle simulation at interactive rates</li>
+    <li>Boris integration and Monte-Carlo collision modeling</li>
+    <li>Live 3D visualization coupled directly to simulation state</li>
+    <li>Six synthetic diagnostic instruments with CSV export</li>
+    <li>Interactive parameter sweeps across three coupling models</li>
+    <li>Reproducible headless studies with a self-test suite</li>
+  </ul>
+
+  <h3>Future development</h3>
+  <ul>
+    <li>Additional particle species</li>
+    <li>Field visualization refinements</li>
+    <li>Larger-scale simulations</li>
+    <li>Alternative numerical methods</li>
+  </ul>
+
+  <h3>Honest limitations</h3>
+  <p>Helix is a reduced, normalized-unit model: analytic fields, macro-particles, a coarse density grid. It is designed around established numerical techniques commonly used for charged-particle simulation, and it is built to be trusted for <em>trends and comparisons between settings</em>, not absolute values. That caveat is printed in the project's own documentation, and we consider stating it part of the engineering.</p>
+
+  <h3>Lessons learned</h3>
+  <ul>
+    <li><strong>Choose numerics for their failure modes.</strong> The Boris scheme earns its place by failing loudly and physically when misconfigured — the most useful property an integrator can have in a live instrument.</li>
+    <li><strong>Shipping the EMERGENT model alongside the KERNEL prior</strong> made it possible to test whether the predicted resonance actually emerged from the simulation rather than being imposed by the model.</li>
+    <li><strong>A URL lowers the barrier to experimentation</strong> more than any packaging improvement we could have made.</li>
+  </ul>
+
+  <hr>
+
+  <span class="num" id="ikos">CASE 02 · ACTIVE PROTOTYPE</span>
+  <h2>IKOS — Iterative Knowledge OS</h2>
+  <p class="sub">knowledge-graph runtime · <a href="/ikos/">run it at /ikos/ →</a></p>
+
+  <p>IKOS is a different kind of problem from Helix — not numerics, but knowledge representation — so this writeup is organized around the design questions the project actually had to answer.</p>
+
+  <h3>Why one state rendered four ways?</h3>
+  <p>Knowledge tools usually force a choice: linear documents that read well but hide structure, or graph tools that expose structure but read terribly. IKOS's premise is that this is a rendering problem, not a data problem. Concepts are typed nodes, relationships are labeled edges, chapters are paths through the graph — and everything the user sees is a <em>projection</em> of that one structure. The four renderers exist because each answers a question the others can't: the <strong>Book</strong> answers "what does this mean in order?", the <strong>Graph</strong> answers "how is this connected?", the <strong>Terminal</strong> answers "how do I change it fast?", and the <strong>Orbit</strong> answers "how big is what I know, and where are its centers of gravity?"</p>
+  <p>The Book is the strongest test of the premise: chapter prose is <em>composed live from the graph</em> — each concept's passage is followed by paragraphs woven from its actual edges, and practice notes quote the user's current mastery back to them. Chapters form automatically as the graph grows. If the projection idea were wrong, the Book is where it would read as nonsense.</p>
+
+  <h3>How does synchronization across projections work?</h3>
+  <p>It doesn't — and that is the design. All state (nodes, edges, positions, chapters, books, notes, per-node mastery, installed modules) lives in a single state object, persisted locally. Every renderer reads the same fields of that object; every action writes back to it and triggers a re-render of whatever view is open. There is no synchronization layer, no event bus reconciling copies, no cache to invalidate — because nothing is ever duplicated. The architecture cost of four views is therefore close to the cost of four <em>render functions</em>, which is what made a solo-buildable four-view app feasible at all.</p>
+
+  <h3>Why offline-first, and why a PWA?</h3>
+  <p>A knowledge tool that dies with the network teaches its user not to trust it with anything important. IKOS is an installable PWA: a service worker keeps the app shell and 3D modules cached, navigations are network-first so new deploys land when online, and the knowledge state itself lives in local storage — the user's graph never depends on a server existing. The install-from-browser path matters for the same reason the URL matters for Helix: distribution is part of the design, not an afterthought.</p>
+
+  <h3>Why WebGPU for the Orbit view?</h3>
+  <p>The Orbit renders every concept as a spinning wireframe planet on typed orbital shells — with per-connection moons, rings on mastered nodes, comet streaks, and a camera that flies <em>into</em> a planet on click. That is hundreds of animated 3D objects with custom materials and real depth, which is out of reach for SVG and painful at interactive rates on 2D canvas. It runs on <strong>WebGPU with TSL node materials by default, with fallback to classic WebGL</strong> (the engine in use is shown in-app and can be toggled). It is also the shared-DNA point with the rest of the studio's work: the same TSL material approach used on the Aurelius landing page and Shader Lab drives the Orbit's planets.</p>
+
+  <h3>What's deliberately conservative</h3>
+  <p>IKOS treats trust as a first-class design constraint, which is unusual for a prototype: AI-suggested nodes are quarantined as <em>pending</em> until explicitly approved, experimental modules are gated behind a mode that can only be changed from the terminal, and a single <code>killswitch</code> command forces safe mode, rejects pending AI content, and disarms module rules. The interesting lesson: those guardrails made it <em>easier</em> to experiment with AI-generated graph content, not harder, because mistakes were cheap to contain.</p>
+
+  <h3>Future development</h3>
+  <p>IKOS is an active prototype, and its roadmap is exploratory: richer semantic layout in the Orbit, deeper terminal-as-query-language work, and convergence experiments with the studio's other systems. Directions, not commitments.</p>
+
+  <hr>
+
+  <span class="num" id="shaderlab">CASE 03 · PRODUCTION DEMO</span>
+  <h2>The Shader Lab</h2>
+  <p class="sub">live TSL material gallery · <a href="/#lab">run it in section 05 →</a></p>
+
+  <h3>Why TSL</h3>
+  <p>The browser GPU world is mid-transition: WebGPU (shaders in WGSL) is where capable browsers are; WebGL2 (shaders in GLSL) is the reality everywhere else. Maintaining parallel shader codebases across that split is a tax that compounds with every material. <strong>TSL — Three.js Shading Language — resolves the split at the authoring layer:</strong> materials are written once as JavaScript node graphs, and the compiler emits WGSL or GLSL per backend. The Shader Lab is our public verification that this holds for non-trivial materials — every material in it runs on both backends from a single source, and the widget's header reports which backend you're on.</p>
+  <p>TSL's second advantage is composability: a fresnel term, a noise field, a color ramp are JavaScript values, so materials share subexpressions the way code shares functions. The Lab's four materials draw on one shared basis — view vector, fresnel, a global <code>FLUX</code> uniform driven by the on-page slider.</p>
+
+  <h3>Material architecture</h3>
+  <p>Four materials chosen to cover four distinct shading regimes:</p>
+  <ul>
+    <li><strong>HOLOGRAM</strong> — additive transparency: fresnel shell, world-space scanlines, temporal flicker. The regime of depth-write discipline and blend-order reasoning.</li>
+    <li><strong>SHIELD</strong> — pattern-driven emission: a Worley-noise cell lattice with radial pulse waves. The procedural-pattern regime.</li>
+    <li><strong>LIQUID METAL</strong> — geometry participation: fbm vertex displacement through <code>positionNode</code> with a dark chrome ramp. The regime where vertex and fragment stages must agree.</li>
+    <li><strong>DISSOLVE</strong> — threshold logic: noise-versus-threshold cutout with an ember edge. The regime of hard alpha and edge fields.</li>
+  </ul>
+  <p>Each material's actual TSL source is displayed beside the running result — parameter control and visible source as proof the graphs are live, not recordings.</p>
+
+  <h3>Cross-backend findings</h3>
+  <p>Published because they cost real debugging time and are documented almost nowhere:</p>
+  <ul>
+    <li><strong>Storage-buffer attributes pad to vec4 on WebGPU.</strong> An <code>instancedArray('vec3')</code> read back as an attribute is vec4-shaped on the WebGPU backend; constructing <code>vec4(attr, 1)</code> compiles on WebGL2 and throws on WebGPU. Take <code>.xyz</code> first, always.</li>
+    <li><strong>Sprite billboard space bypasses <code>positionView</code>.</strong> In sprite materials, <code>positionView</code> evaluates uselessly (view-z ≈ 0); per-instance depth requires <code>modelViewMatrix.mul(vec4(instancePos,1)).z</code> explicitly.</li>
+    <li><strong>Reversed <code>smoothstep</code> edges are undefined behavior.</strong> Some GLSL drivers tolerate <code>smoothstep(hi, lo, x)</code>; treat edge order as a hard rule and invert with <code>1 − smoothstep(lo, hi, x)</code>.</li>
+    <li><strong>Power-ramp color math has a validity domain.</strong> A classic fire ramp <code>(b, b², b⁴)</code> inverts to blue-white the moment <code>b &gt; 1</code> — clamp at the ramp, not at the symptom.</li>
+    <li><strong>The host page is part of the runtime.</strong> Component frameworks re-render; a module can execute twice and its DOM can be absorbed mid-flight. Every live widget on the Aurelius landing page is a window-level singleton with a reattach-and-purge loop.</li>
+  </ul>
+
+  <h3>Measured performance</h3>
+  <p>Numbers from the Shader Lab benchmark runs — headless Chrome at 1600×900 on an NVIDIA GeForce GTX 1060; the widget publishes its own live frame time, so your hardware reports its own truth:</p>
+  <div class="stats"><span>WebGPU · <b>16.7 ms</b> steady across all four materials</span><span>WebGL2 · <b>16–36 ms</b> depending on material</span><span><b>12.8k</b> triangles · pixel ratio capped at 1.5</span></div>
+  <p>The spread on the WebGL2 path is the honest story: the additive transparency materials hold 60 fps, while the displacement-plus-noise materials drop to the high-20s on the same rig — the cost profile you'd predict from the extra per-vertex noise evaluations. The widget renders only while on screen and shows its frame time continuously, which is the standard we think any performance claim on the web should meet: measured where you can see it.</p>
+
+  <h3>Future development</h3>
+  <p>New materials will land in the Lab first as the shared basis grows toward a reusable TSL library — source visible, frame time attached, both backends verified before anything ships.</p>
+
+  <div class="next">
+    <a href="/capabilities/">Capabilities →</a>
+    <a href="/roadmap/">Roadmap →</a>
+    <a href="/#contact">Start a conversation →</a>
+  </div>
+</main>
+
+<footer class="ft">
+  <span>© MMXXVI Aurelius Dynamic</span>
+  <a href="mailto:build@aureliusdynamic.com">build@aureliusdynamic.com</a>
+  <a href="/">← aureliusdynamic.com</a>
+</footer>
+
+</body>
+</html>

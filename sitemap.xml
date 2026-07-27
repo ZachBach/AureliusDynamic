@@ -6,6 +6,26 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://aureliusdynamic.com/philosophy/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aureliusdynamic.com/capabilities/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aureliusdynamic.com/cases/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aureliusdynamic.com/roadmap/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://aureliusdynamic.com/helix/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

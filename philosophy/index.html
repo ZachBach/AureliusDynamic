@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research &amp; Engineering Philosophy — Aurelius Dynamic</title>
+<meta name="description" content="How Aurelius works: WebGPU-first thinking, real-time systems as a discipline, procedural generation, simulation and visualization, AI-assisted engineering under validation, and performance culture.">
+<link rel="canonical" href="https://aureliusdynamic.com/philosophy/">
+<meta name="theme-color" content="#06080C">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Aurelius Dynamic">
+<meta property="og:title" content="Research &amp; Engineering Philosophy — Aurelius Dynamic">
+<meta property="og:description" content="Six commitments behind every Aurelius system, from GPU-first architecture to performance culture.">
+<meta property="og:url" content="https://aureliusdynamic.com/philosophy/">
+<meta property="og:image" content="https://aureliusdynamic.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../pages.css">
+</head>
+<body>
+
+<header class="hd">
+  <div class="mark"><a href="/"><span class="n">AURELIUS</span><br><span class="s">DYNAMIC</span></a></div>
+  <nav>
+    <a href="/philosophy/" aria-current="page">Philosophy</a>
+    <a href="/capabilities/">Capabilities</a>
+    <a href="/cases/">Case Studies</a>
+    <a href="/roadmap/">Roadmap</a>
+  </nav>
+</header>
+
+<main>
+  <div class="kicker"><span class="dot"></span><span class="t">Dossier · Research &amp; Engineering Philosophy</span><span class="rule"></span></div>
+  <h1>Six commitments, enforced by running code.</h1>
+  <p class="lede">Aurelius is a small engineering studio creating browser-native graphics, simulation, visualization, and experimental computing systems using WebGPU and modern web technologies. Philosophy pages are usually where companies store their adjectives; this one is different in a verifiable way — every principle below is load-bearing in a system you can open right now: the particle field on the front page, the plasma simulator at <a href="/helix/">/helix/</a>, the knowledge runtime at <a href="/ikos/">/ikos/</a>, the live Shader Lab in section 05. Where a principle produced a number, the number is quoted.</p>
+
+  <span class="num">01</span>
+  <h2>WebGPU-first thinking</h2>
+  <p class="sub">architecture assumes parallelism</p>
+  <p>Most web graphics is WebGL with better marketing: a rasterization API from 2011 asked politely to do 2025's work. WebGPU is a different animal — genuine compute shaders, storage buffers, explicit bind groups, modern GPU semantics in every major browser. <strong>Aurelius designs for WebGPU first and treats everything else as a compatibility target</strong>, which is the reverse of the industry's default and the source of most of our performance headroom.</p>
+  <p>Designing GPU-first changes the shape of systems, not just their speed. The hero simulation on this site is a concrete example: particle positions and velocities live in GPU storage buffers and are integrated by a compute pass every frame — spring forces, turbulence, pointer repulsion, and event impulses all execute per-particle on hardware built for exactly that. The CPU's job shrinks to choreography: advancing a timeline, updating a dozen uniforms. That division is why the same page that renders <strong>480,000 live particles on WebGPU</strong> degrades gracefully to 100,000 on the WebGL2 fallback and 20,000 on phones — the architecture flexes, because the expensive part was designed to scale with the backend rather than fight it.</p>
+  <p>WebGPU-first also means we treat the browser as a deployment target for <em>compute</em>, not just pictures. The most important consequence of WebGPU is not prettier websites; it is that modern GPU compute now ships behind a URL with nothing to install. The studio's bet is that this distribution change is worth being early to — and this site is how we hold ourselves to it.</p>
+
+  <span class="num">02</span>
+  <h2>Real-time systems as a discipline</h2>
+  <p class="sub">16 milliseconds is a forcing function</p>
+  <p>A frame budget is the most honest manager an engineering team will ever have. At 60 frames per second you have about 16.7 milliseconds to simulate, cull, submit, and render — and the deadline arrives whether you are ready or not. <strong>We build under that deadline on purpose, even when the problem doesn't strictly demand it</strong>, because the constraint forces the disciplines that batch systems let you postpone forever: profiling before optimizing, budgeting before building, measuring instead of assuming.</p>
+  <p>Real-time is also a correctness regime. In an offline pipeline, a numerical instability is a bad log line discovered next week; in a live integrator it is a visible explosion in the first ten seconds. The Boris pusher inside the Helix plasma simulator was chosen over naive integration precisely because real-time exposure makes energy drift impossible to hide — the orbit either stays physical in front of you or it doesn't. We consider that pressure a feature and design our validation loops around it.</p>
+  <p>Practically, the discipline shows up as rules: every animated system on this site renders <em>only while visible</em> (IntersectionObserver-gated loops), device pixel ratios are capped per surface, per-sprite luminance is normalized against particle count so density changes never blow out the frame, and every effect carries a kill switch that removes it cleanly on any failure. Real-time systems that degrade gracefully are designed that way from the first commit — it cannot be retrofitted.</p>
+
+  <span class="num">03</span>
+  <h2>Procedural generation</h2>
+  <p class="sub">mathematics as the asset pipeline</p>
+  <p>Every visual on the Aurelius front page — the twin-strand helix, the sun's granulated photosphere and its flux-rope coronal ejections, the continents and storm cells of the rendered Earth, the nebula backdrop, the aurora curtains — is generated from mathematics at runtime. There is no texture download, no baked animation, no asset CDN. Hash functions, fractal Brownian motion, Worley cells, and trigonometric fields, composed in shaders, replace what would conventionally be gigabytes of authored content.</p>
+  <p>We hold this position for engineering reasons, not aesthetic ones. <strong>Procedural content is resolution-independent</strong> — the same sun renders correctly on a phone and a 4K display. <strong>It is parametric</strong> — when a design review says "the storms should be denser," that is a constant, not a re-authoring cycle. <strong>It is tiny</strong> — this site ships an entire animated solar system in less code than a single hero video would cost in bandwidth. And <strong>it composes with live data</strong>: because the Earth's storm layer is a mathematical field, swapping its driver from noise to a real-time weather API was a one-texture change. That last property is the strategic one. Procedural systems are the only content systems that can be driven by data that didn't exist when you built them.</p>
+
+  <span class="num">04</span>
+  <h2>Simulation and visualization</h2>
+  <p class="sub">if you can't see it, you can't trust it</p>
+  <p>Aurelius treats simulation and visualization as one discipline with two ends, and refuses to build either alone. A simulation without a live view is unauditable — errors hide in aggregate statistics that no one thinks to plot. A visualization without a real model underneath is decoration — and decorated dashboards are how organizations lie to themselves politely.</p>
+  <p>The systems we ship keep the loop closed. In Helix, synthetic diagnostics read out of the same particle state the physics writes, so what you see <em>is</em> the simulation, not a summary prepared for you. In IKOS, the book view, graph view, terminal, and orbital view are four projections of one state — edit in any of them and the others are already correct, because there is nothing to synchronize. That is the standard everywhere we build: <strong>one source of truth, projected live, with the rendering close enough to the model that discrepancies are visible instead of archived.</strong></p>
+  <p>We also believe visual validation is real validation. A trained eye watching a live system catches classes of error that unit tests structurally cannot — asymmetries, drifts, oscillations, discontinuities at boundaries. Our verification practice includes automated headless capture of running systems precisely because "the test passed" and "the system behaves correctly over sixty seconds" are different claims.</p>
+
+  <span class="num">05</span>
+  <h2>AI-assisted engineering</h2>
+  <p class="sub">leverage under adversarial validation</p>
+  <p>Aurelius uses frontier AI systems aggressively and trusts them exactly as far as the validation gauntlet they pass. The method — the same three engines described on the front page — is designed so that AI acceleration and engineering rigor reinforce rather than trade off:</p>
+  <ul>
+    <li><strong>Research proposes.</strong> AI compresses the survey phase from weeks to hours: prior art, applicable numerics, candidate architectures, the failure modes other people already found.</li>
+    <li><strong>Cross-validation attacks.</strong> Every claim from the research phase — human or machine — is treated as hostile until it survives an independent check. Generated code is read, tested, profiled, and pushed until it breaks. The point is not distrust of AI specifically; it is that <em>fluency is not evidence</em>, whoever produces it.</li>
+    <li><strong>Execution ships.</strong> What survives goes into production with instrumentation, so reality can continue the cross-examination indefinitely.</li>
+  </ul>
+  <p>The honest observation from working this way: AI multiplies the throughput of an engineer who already knows what correct looks like, and multiplies the confusion of one who does not. That is why maximal AI leverage here is always paired with experienced judgment — the machine drafts, a principal decides. We would rather be transparent about this than perform either purity ("no AI touched this") or inevitability ("the AI did it all"). Both postures are marketing; the gauntlet is engineering.</p>
+
+  <span class="num">06</span>
+  <h2>Performance culture</h2>
+  <p class="sub">measured, budgeted, published</p>
+  <p>Performance is not an optimization pass at the end; it is a design input at the beginning, with numbers attached. Every surface on this site was built against an explicit budget: particle ceilings per backend (500k WebGPU / 100k WebGL2 / 20k mobile), DPR caps per canvas, additive-blend luminance normalized by <code>√(N₀/N)</code> so brightness stays constant as density scales, lazy initialization for anything below the fold, and render loops that idle to near-zero cost when off-screen. The Shader Lab publishes its own frame time in the corner of the widget — not because visitors demand it, but because <strong>a studio that publishes performance claims should be uncomfortable rendering anything unmeasured</strong>.</p>
+  <p>The culture has teeth in process terms: we profile before we optimize, we optimize the measured bottleneck rather than the interesting one, and we keep the fallback paths honest by testing them explicitly — including forcing the WebGL2 path in verification runs even on machines with working WebGPU, because untested fallbacks are fiction. And when a piece of work ships, its performance envelope is documented with it: what it costs, where it breaks, and what the next order of magnitude would require.</p>
+
+  <div class="next">
+    <a href="/capabilities/">Next · Technical Capabilities →</a>
+    <a href="/cases/">Case Studies →</a>
+    <a href="/#method">See the method run live →</a>
+  </div>
+</main>
+
+<footer class="ft">
+  <span>© MMXXVI Aurelius Dynamic</span>
+  <a href="mailto:build@aureliusdynamic.com">build@aureliusdynamic.com</a>
+  <a href="/">← aureliusdynamic.com</a>
+</footer>
+
+</body>
+</html>

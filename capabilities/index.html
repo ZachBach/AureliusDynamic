@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technical Capabilities — Aurelius Dynamic</title>
+<meta name="description" content="What Aurelius demonstrably does today, what is active R&amp;D, and what is future direction — WebGPU rendering, TSL shader development, interactive visualization, and browser-native simulation, each mapped to a running system.">
+<link rel="canonical" href="https://aureliusdynamic.com/capabilities/">
+<meta name="theme-color" content="#06080C">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Aurelius Dynamic">
+<meta property="og:title" content="Technical Capabilities — Aurelius Dynamic">
+<meta property="og:description" content="Proven Today · Active R&amp;D · Future Programs — every claim mapped to a running artifact.">
+<meta property="og:url" content="https://aureliusdynamic.com/capabilities/">
+<meta property="og:image" content="https://aureliusdynamic.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../pages.css">
+</head>
+<body>
+
+<header class="hd">
+  <div class="mark"><a href="/"><span class="n">AURELIUS</span><br><span class="s">DYNAMIC</span></a></div>
+  <nav>
+    <a href="/philosophy/">Philosophy</a>
+    <a href="/capabilities/" aria-current="page">Capabilities</a>
+    <a href="/cases/">Case Studies</a>
+    <a href="/roadmap/">Roadmap</a>
+  </nav>
+</header>
+
+<main>
+  <div class="kicker"><span class="dot"></span><span class="t">Dossier · Technical Capabilities</span><span class="rule"></span></div>
+  <h1>What we build — sorted by what's real.</h1>
+  <p class="lede">Aurelius is a small engineering studio creating browser-native graphics, simulation, visualization, and experimental computing systems using WebGPU and modern web technologies. Every capability on this page falls into one of three categories, so you can instantly separate what is demonstrated from what is direction:</p>
+  <div class="stats"><span><b>Proven Today</b> — running now, artifact linked</span><span><b>Active R&amp;D</b> — working prototypes, still evolving</span><span><b>Future Programs</b> — direction, not an offering</span></div>
+
+  <hr>
+
+  <span class="num">PROVEN TODAY · 01</span>
+  <h2>WebGPU rendering</h2>
+  <p class="sub">status · proven today — running on this domain</p>
+  <p>We build browser-native rendering systems on the modern GPU stack, with WebGPU as the primary target and a tested WebGL2 fallback. Capabilities in production use:</p>
+  <ul>
+    <li>Compute-driven particle systems with per-frame GPU integration</li>
+    <li>Large-scale instanced rendering with additive-blend luminance control</li>
+    <li>Visibility-aware scheduling — every scene renders only while on screen</li>
+    <li>Multi-canvas pages where scenes initialize lazily and coexist within one frame budget</li>
+    <li>Procedural environments (nebula, aurora, solar dynamics) generated entirely in shaders</li>
+    <li>Per-tier degradation with explicit ceilings and brightness normalization</li>
+  </ul>
+  <p>Current deployments, with measurement context:</p>
+  <div class="stats"><span><b>480,000</b> particles on the landing-page WebGPU renderer</span><span><b>100,000</b> on its WebGL2 fallback path</span><span><b>20,000</b> on the mobile tier</span><span>60 fps on the GTX 1060 test rig</span></div>
+  <p>The fallback numbers are tested, not theoretical — verification runs force WebGPU off to exercise the WebGL2 path deliberately. <em>Why it matters:</em> most organizations still treat browser graphics as presentation. We treat the browser as a GPU computing platform, and the front page is the standing demonstration.</p>
+
+  <span class="num">PROVEN TODAY · 02</span>
+  <h2>TSL shader development</h2>
+  <p class="sub">status · proven today — live in the <a href="/#lab">Shader Lab</a></p>
+  <p>We develop custom materials and visual effects in TSL — Three.js Shading Language — where a single node graph compiles to WGSL on WebGPU and GLSL on WebGL2. Working practice includes:</p>
+  <ul>
+    <li>Cross-backend material development from one source</li>
+    <li>Procedural noise-driven materials (fractal, Worley)</li>
+    <li>Vertex displacement through the node pipeline</li>
+    <li>Data-texture sampling by computed coordinates</li>
+    <li>Interactive shader parameters bound to live uniforms</li>
+  </ul>
+  <p>The running material set spans holographic surfaces, energy shields, liquid metal, dissolve systems, and the landing page's solar, atmospheric, and aurora effects. The <a href="/#lab">Shader Lab</a> shows four of these live with their TSL source beside them, and the <a href="/cases/#shaderlab">case study</a> publishes the cross-backend findings — the seams we hit in production and how to route around them. <em>Why it matters:</em> one material architecture, both GPU eras of the web, no parallel codebase.</p>
+
+  <span class="num">PROVEN TODAY · 03</span>
+  <h2>Interactive visualization</h2>
+  <p class="sub">status · proven today — live data on the landing page</p>
+  <p>We turn live data into interactive GPU-rendered systems. The reference deployment runs on the front page: the rendered Earth's storm layer samples <strong>Open-Meteo's live global weather feed</strong> — real storm systems flash at their true latitude and longitude on the spinning globe, refreshed every fifteen minutes, with a procedural fallback so the scene never depends on the network and a HUD tag that discloses when the live feed is active. It is a small pipeline with every stage of a serious one: ingestion, transformation to GPU-friendly form, shader-side sampling, graceful degradation, visible provenance.</p>
+  <p>The IKOS Orbit view applies the same discipline to a different data shape — an entire knowledge graph rendered as a navigable 3D space (<a href="/cases/#ikos">case study</a>). The emphasis in both: not displaying data, but making a system understandable through direct interaction.</p>
+
+  <span class="num">PROVEN TODAY · 04</span>
+  <h2>Interactive experiences</h2>
+  <p class="sub">status · proven today — every example is on this domain</p>
+  <p>We build interfaces designed to be explored rather than observed: the landing page's working command console (type <code>help</code>), the three-engine scenario demo, the Shader Lab's draggable geometry and live FLUX parameter, and a hero field that responds to your pointer. All of it is lazy-initialized, reduced-motion-aware, and hardened against the realities of production DOM — framework re-renders, resize storms, tab suspension.</p>
+  <p>We consider interaction a verification tool: a system a visitor can poke, drag, and fail to break earns a kind of trust no copy can. That standard — inspectable, testable, challengeable — is what we mean by an interactive experience.</p>
+
+  <hr>
+
+  <span class="num">ACTIVE R&amp;D · 05</span>
+  <h2>Scientific simulation</h2>
+  <p class="sub">status · active research &amp; development — <a href="/helix/">Helix</a> is the testbed</p>
+  <p>We are developing browser-native simulation systems — numerical models with live diagnostics, delivered through a URL. Helix, the primary testbed, currently demonstrates charged-particle dynamics under a Boris integrator with Monte-Carlo collisions, live 3D visualization, and six synthetic diagnostic instruments; the full writeup, including its honest limitations, is in the <a href="/cases/#helix">case study</a>.</p>
+  <p>Current research focus:</p>
+  <ul>
+    <li>Numerical stability under real-time constraints</li>
+    <li>Computational efficiency at interactive rates</li>
+    <li>Live parameter inspection and diagnostic design</li>
+    <li>Reproducible, seeded studies alongside the interactive app</li>
+  </ul>
+  <p>This is labeled R&amp;D rather than a service because that is what it is: a working system built to investigate a question, evolving as the investigation does. The architecture is intentionally general-purpose and can support future exploration of additional simulation domains.</p>
+
+  <span class="num">ACTIVE R&amp;D · 06</span>
+  <h2>Health &amp; engineering visualization</h2>
+  <p class="sub">status · active research &amp; development — internal prototypes</p>
+  <p>We are exploring approaches for visualizing complex technical and biomedical information — health data, biological structure, engineering diagnostics — under one constraint: faithful representation outranks visual spectacle. A rendering error in these domains is not a cosmetic bug, so the work leans on the studio's validation habits: explicit units and scales, rendering choices documented against the data they encode, and review that treats the visualization itself as a claim requiring evidence.</p>
+  <p>This section is honest about its status: the prototypes here are internal and there is nothing public to link yet — which under this page's own rules is exactly why it sits in Active R&amp;D and not above the fold.</p>
+
+  <hr>
+
+  <span class="num">FUTURE PROGRAM · 07</span>
+  <h2>Digital twins</h2>
+  <p class="sub">status · future program — direction, not an offering</p>
+  <p>The long-term aim: browser-native representations of real physical systems that combine live telemetry, simulation, diagnostics, historical data, and predictive analysis in one inspectable view. We deliberately reserve the term "digital twin" for systems actually driven by their physical counterpart's data — which is precisely why this is a future program and not a listed capability. Helix demonstrates the simulation and diagnostics layers; the telemetry-driven mirror is the unbuilt part.</p>
+  <p>Potential settings we are studying — hypothetically, not as delivered work — include manufacturing lines, energy systems, infrastructure, and research environments.</p>
+
+  <span class="num">FUTURE PROGRAM · 08</span>
+  <h2>AI-assisted simulation</h2>
+  <p class="sub">status · future program — direction, not an offering</p>
+  <p>We are exploring workflows where AI assists simulation rather than replacing it: parameter-space exploration, scenario generation, analysis of simulation output, and human-guided optimization. The design intent is augmented decision-making, not autonomous decision-making — the same discipline the studio already applies to AI-assisted engineering, where machine-generated work passes through validation before it counts.</p>
+
+  <div class="next">
+    <a href="/cases/">Case Studies →</a>
+    <a href="/roadmap/">Roadmap →</a>
+    <a href="/#contact">Start a conversation →</a>
+  </div>
+</main>
+
+<footer class="ft">
+  <span>© MMXXVI Aurelius Dynamic</span>
+  <a href="mailto:build@aureliusdynamic.com">build@aureliusdynamic.com</a>
+  <a href="/">← aureliusdynamic.com</a>
+</footer>
+
+</body>
+</html>

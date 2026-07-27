@@ -1,10 +1,10 @@
 <div align="center">
 
-# Aurelius Dynamic Solutions
+# Aurelius Dynamic
 
 **Code shaping the world — one line at a time.**
 
-The official landing site for Aurelius Dynamic Solutions LLC — a single, self-contained web experience with zero runtime dependencies.
+The official landing site for Aurelius Dynamic LLC — a single, self-contained web experience with zero runtime dependencies.
 
 [aureliusdynamic.com](https://aureliusdynamic.com) · [Contact](mailto:build@aureliusdynamic.com)
 
@@ -14,7 +14,7 @@ The official landing site for Aurelius Dynamic Solutions LLC — a single, self-
 
 ## Overview
 
-This repository contains the production source for the Aurelius Dynamic Solutions marketing site, plus the two Lab applications deployed on the same domain. The landing experience — markup, styling, scripts, fonts, and the WebGPU engine — is delivered from a single [`index.html`](index.html) file. There is no build step and no external runtime footprint.
+This repository contains the production source for the Aurelius Dynamic site, plus the two Lab applications deployed on the same domain. The landing experience — markup, styling, scripts, fonts, and the WebGPU engine — is delivered from a single [`index.html`](index.html) file. There is no build step and no external runtime footprint.
 
 ## Highlights
 
@@ -30,7 +30,7 @@ Two working research instruments are deployed on this domain and featured in the
 
 | App | Path | What it is |
 | --- | --- | --- |
-| **Electromagnetic Helix Reactor** | [`/helix/`](helix/) | A browser-native digital twin of a helical-antenna plasma reactor — ~18k macro-electrons under a Boris integrator, Monte-Carlo collisions, live 3D diagnostics, and a dusty-plasma module. Fully self-hosted (React, Babel, and Three.js are vendored in [`helix/vendor/`](helix/vendor/)). |
+| **Electromagnetic Helix Reactor** | [`/helix/`](helix/) | Browser-native plasma simulation built around charged-particle dynamics, GPU acceleration, and interactive diagnostics — ~18k macro-electrons under a Boris integrator, Monte-Carlo collisions, live 3D diagnostics, and a dusty-plasma module. Fully self-hosted (React, Babel, and Three.js are vendored in [`helix/vendor/`](helix/vendor/)). |
 | **IKOS — Iterative Knowledge OS** | [`/ikos/`](ikos/) | A knowledge-graph runtime rendered four ways — Book, Graph, Terminal, and Orbit — from one living state. Ships as a self-contained bundle with an offline-first service worker; the optional 3D Orbit view loads Three.js modules from a CDN at runtime. |
 
 Both apps are copies of their source repositories' built output, adjusted only for subdirectory serving (relative service-worker and manifest paths for IKOS).
@@ -41,8 +41,8 @@ The site is fully static and requires no tooling.
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-org>/AureliusDynamicSolutions.git
-cd AureliusDynamicSolutions
+git clone https://github.com/ZachBach/AureliusDynamic.git
+cd AureliusDynamic
 ```
 
 Open `index.html` in any modern browser — that is the entire stack. For a local server that mirrors production paths, you may optionally run:
@@ -70,7 +70,7 @@ Actively maintained. Certain content — including team profiles and console/dem
 
 Released under the [MIT License](LICENSE).
 
-Copyright © 2026 Aurelius Dynamic Solutions LLC. The **Aurelius** name, wordmark, and hexagon mark are used for identification and demonstration; no trademark rights are granted.
+Copyright © 2026 Aurelius Dynamic LLC. The **Aurelius** name, wordmark, and hexagon mark are used for identification and demonstration; no trademark rights are granted.
 
 ---
 

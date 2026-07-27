@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Roadmap — Aurelius Dynamic</title>
+<meta name="description" content="The public Aurelius roadmap: expanded TSL material systems and compute-backed effects near-term; terrain, volumetrics, and fluid simulation mid-term; digital twins, scientific visualization, and GPU-native platforms long-term.">
+<link rel="canonical" href="https://aureliusdynamic.com/roadmap/">
+<meta name="theme-color" content="#06080C">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Aurelius Dynamic">
+<meta property="og:title" content="The Roadmap — Aurelius Dynamic">
+<meta property="og:description" content="Sequenced to compound: near-term, mid-term, and long-term — with reasoning attached.">
+<meta property="og:url" content="https://aureliusdynamic.com/roadmap/">
+<meta property="og:image" content="https://aureliusdynamic.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../pages.css">
+</head>
+<body>
+
+<header class="hd">
+  <div class="mark"><a href="/"><span class="n">AURELIUS</span><br><span class="s">DYNAMIC</span></a></div>
+  <nav>
+    <a href="/philosophy/">Philosophy</a>
+    <a href="/capabilities/">Capabilities</a>
+    <a href="/cases/">Case Studies</a>
+    <a href="/roadmap/" aria-current="page">Roadmap</a>
+  </nav>
+</header>
+
+<main>
+  <div class="kicker"><span class="dot"></span><span class="t">Dossier · The Roadmap</span><span class="rule"></span></div>
+  <h1>Sequenced to compound.</h1>
+  <p class="lede">Aurelius is a small engineering studio, and this is its working sequence — a promise about direction, not dates. Everything below is ordered so each phase makes the next one cheaper: materials feed effects, effects feed simulation, simulation feeds the long-term programs. This is a living document — items move as evidence arrives, and the Lab is where you can watch them land.</p>
+
+  <div class="callout">
+    <div class="t">Reading this honestly</div>
+    <p>This page uses the same taxonomy as <a href="/capabilities/">capabilities</a>, seen from the other side. <strong>Near-term</strong> items have running precursors today — they extend the <em>Proven Today</em> tier. <strong>Mid-term</strong> items have known techniques and unbuilt implementations — candidates for the <em>Active R&amp;D</em> tier. <strong>Long-term</strong> items are the <em>Future Programs</em>, stated plainly so you can hold us to them.</p>
+  </div>
+
+  <span class="num">HORIZON 01</span>
+  <h2>Near-term — deepening the foundation</h2>
+  <p class="sub">running precursors exist today</p>
+  <h3>Expanded material systems</h3>
+  <p>The Shader Lab's four materials share an ad-hoc basis: fresnel, noise fields, a global uniform. The near-term work is promoting that basis into a proper <strong>TSL material library</strong> — a composable node collection (noise family, ramp tools, fresnel/rim kit, pattern generators) with every entry verified on both WGSL and GLSL backends and documented with its cost. The Lab is the public test bench: new materials appear there first, source visible, frame time attached.</p>
+  <h3>Compute-backed effects</h3>
+  <p>Today the hero's compute pass drives one particle field; the pattern generalizes. Next: effects whose state lives entirely on the GPU — trail systems, flow-field advection, reaction-diffusion surfaces — exposed as reusable passes rather than one-off scenes. The measure of success is that a new compute-driven scene costs an afternoon, not a sprint.</p>
+  <h3>More lab demos</h3>
+  <p>The Lab section grows from the two deployed apps toward a shelf of running instruments: a GPU particle sandbox (the hero's simulation, handed to the visitor with the parameters exposed) and a shader playground descended from the current Lab widget are the immediate candidates. Every addition follows the house rule — live, measured, one link.</p>
+
+  <span class="num">HORIZON 02</span>
+  <h2>Mid-term — earning new physics</h2>
+  <p class="sub">known techniques, unbuilt implementations</p>
+  <h3>Procedural terrain generation</h3>
+  <p>GPU-generated landscapes — noise-derived heightfields with erosion passes run as compute — first as a Lab demo: terrain is the canonical test of procedural discipline at scale, and erosion simulation is a natural first step toward more serious field solvers.</p>
+  <h3>Volumetric rendering</h3>
+  <p>Raymarched participating media — clouds, plasma glow, medical-style volume data — built on WebGPU compute. Volumetrics matter beyond the spectacle: scientific and medical datasets are volumes, and a browser-native volume renderer is the piece of infrastructure that makes them shareable.</p>
+  <h3>Fluid simulation</h3>
+  <p>Real-time Navier-Stokes on the GPU — grid-based first, particle methods after — surfaced as a Lab instrument you can stir with a pointer. Fluids are the honest benchmark of a compute framework: if the abstraction survives a pressure solve, it will survive most things we ask of it.</p>
+
+  <span class="num">HORIZON 03</span>
+  <h2>Long-term — the platform horizon</h2>
+  <p class="sub">direction, stated plainly</p>
+  <h3>Digital twins</h3>
+  <p>Helix demonstrates the simulation and diagnostics layers; the unbuilt part is the telemetry-driven mirror — a live view of a real, instrumented physical system. We reserve the word "twin" for systems that earn it, which is why this sits on the far horizon here and under Future Programs on the capabilities page. The long-term work is turning that ambition into a repeatable stack: ingestion, modeling, diagnostics, rendering.</p>
+  <h3>Scientific visualization as a product surface</h3>
+  <p>Moving from bespoke visualizations toward durable tools others can adopt — with explicit provenance, stated fidelity limits, and the performance culture already visible on this site.</p>
+  <h3>AI-assisted simulation tooling</h3>
+  <p>Systems where AI proposes parameter spaces and hypotheses, GPU compute sweeps them at interactive rates, and humans steer with judgment — the three-engine method, mechanized. Augmented science, not autonomous science; the validation gauntlet stays load-bearing.</p>
+  <h3>GPU-native platforms</h3>
+  <p>The end state: products whose entire architecture — data model, computation, interface — assumes massive parallelism from the first line. Not applications with a fast canvas bolted on, but software that could not have existed before the browser became a GPU runtime.</p>
+
+  <hr>
+
+  <p>The front page's <a href="/#roadmap">Trajectory section</a> shows where we are on this sequence right now. If your problem lives on one of these horizons, <a href="/#contact">bring it to us</a> — working on real problems is how roadmap items become real, and everything already built along the way comes with them.</p>
+
+  <div class="next">
+    <a href="/cases/">Case Studies →</a>
+    <a href="/capabilities/">Capabilities →</a>
+    <a href="/#contact">Start a conversation →</a>
+  </div>
+</main>
+
+<footer class="ft">
+  <span>© MMXXVI Aurelius Dynamic</span>
+  <a href="mailto:build@aureliusdynamic.com">build@aureliusdynamic.com</a>
+  <a href="/">← aureliusdynamic.com</a>
+</footer>
+
+</body>
+</html>
