@@ -22,6 +22,10 @@ deploy/
 # not part of the Aurelius site deploy
 echoGalaxy/
 
+# Redesign prototype (parallax homepage) — local working copy, kept out of the
+# published root site
+prototype/
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db
