@@ -578,7 +578,13 @@
     let reattach = 0;
 
     async function frame() {
-      const el = (performance.now() - t0) / 1000;
+      const rt = (performance.now() - t0) / 1000;
+      // pinned-scroll hero: scroll progress through #hero drives the choreography
+      // clock, after a brief time-based assembly on load (rt capped at 8s).
+      const secH = document.getElementById('hero');
+      const spanH = secH ? secH.offsetHeight - window.innerHeight : 0;
+      const sp = spanH > 0 ? Math.min(1, Math.max(0, (window.scrollY || 0) / spanH)) : 0;
+      const el = Math.max(Math.min(rt, 8), sp * 62);
       const k = Math.min(1, el / 2.4);
       uIntro.value = k * k * (3 - 2 * k);
 
@@ -596,9 +602,7 @@
 
       // scroll progress through the hero: dim the field and dolly the camera
       // back while the text stage slides over the pinned banner
-      const sec = document.getElementById('hero');
-      const span = sec ? sec.offsetHeight - window.innerHeight : 0;
-      const sp = span > 0 ? Math.min(1, Math.max(0, (window.scrollY || 0) / span)) : 0;
+      // (scroll progress `sp` is computed at the top of frame)
 
       // tunnel move: after the banner has had its moment the helix axis eases
       // toward the camera and the camera rides into the bore — the strands'
@@ -613,8 +617,8 @@
       uDyson.value = dy0 * dy0 * (3 - 2 * dy0);
       // axial view stacks additive light; dim extra mid-transit so punching
       // through the dissolving stream doesn't white out the frame
-      uDim.value = (1 - sp * 0.62) * (1 - tun * 0.28) * (1 - Math.sin(fly * Math.PI) * 0.5);
-      camera.position.z = 38 + sp * 8 - tun * 21 - fly * 42;
+      uDim.value = (1 - tun * 0.28) * (1 - Math.sin(fly * Math.PI) * 0.5);
+      camera.position.z = 38 - tun * 21 - fly * 42;
       camera.fov = 42 + tun * 16 - fly * 8;
       camera.updateProjectionMatrix();
 
@@ -658,6 +662,7 @@
 
     renderer.setAnimationLoop(frame);
     canvas.style.opacity = '1';
+    const fxWrap = document.getElementById('hero'); if (fxWrap) fxWrap.classList.add('fx');
     label.textContent = 'RENDER // ' + (isWebGPU ? 'WEBGPU · TSL' : 'WEBGL2 · TSL');
     hero.appendChild(label);
   } catch (err) {

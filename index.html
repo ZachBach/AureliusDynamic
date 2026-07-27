@@ -14,7 +14,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;overflow-x:clip}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
   .kick{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--faint)}
@@ -45,7 +45,9 @@
   .reveal.in{opacity:1;transform:none}
 
   /* hero */
-  .hero{position:relative;height:100vh;min-height:640px;display:flex;align-items:center;overflow:hidden;padding:0;
+  .hero-wrap{position:relative;height:100vh}
+  .hero-wrap.fx{height:440vh}       /* the hero module adds .fx once it initialises */
+  .hero{position:sticky;top:0;height:100vh;min-height:640px;display:flex;align-items:center;overflow:hidden;padding:0;
     background:radial-gradient(120% 100% at 50% 32%,#12182a 0%,#0a0d13 64%)}
   .scene{position:absolute;inset:0;z-index:0}
   .hero .wrap,.band .wrap{position:relative;z-index:2}
@@ -128,6 +130,7 @@
 </nav>
 
 <!-- ===== HERO ===== -->
+<section class="hero-wrap" id="hero">
 <header class="hero" id="top" data-fxhost>
   <div class="wrap">
     <div class="kick reveal">Aurelius Dynamic Solutions</div>
@@ -137,6 +140,7 @@
   </div>
   <div class="scrollcue">Scroll</div>
 </header>
+</section>
 
 <!-- ===== POSITIONING ===== -->
 <section id="about">
