@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tsl-lib bench</title>
+<link rel="icon" href="data:,">
+<style>
+  html, body { margin: 0; height: 100%; background: #05070C; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  #hud { position: fixed; top: 10px; left: 12px; font: 11px/1.6 'Consolas', monospace;
+         color: #9AA7BC; letter-spacing: .12em; text-transform: uppercase;
+         user-select: none; pointer-events: none; }
+  #hud b { color: #F4C95D; font-weight: normal; }
+  #err { position: fixed; bottom: 10px; left: 12px; right: 12px; font: 11px/1.5 monospace;
+         color: #FF7A1A; white-space: pre-wrap; }
+</style>
+<script>
+  // Forced-WebGL2 must happen before the module runs: headless Chrome supplies
+  // WebGPU via Dawn even with --disable-features=WebGPU, so the only reliable
+  // switch is deleting the adapter.
+  window.__bench = { ready: false, error: null, backend: null, frameMs: null,
+                     tslKeys: null, revision: null };
+  if (new URLSearchParams(location.search).get('backend') === 'webgl2') {
+    Object.defineProperty(navigator, 'gpu', { get: () => undefined });
+  }
+  window.addEventListener('error', (e) => { window.__bench.error = String(e.message || e.error); });
+  window.addEventListener('unhandledrejection', (e) => { window.__bench.error = String(e.reason); });
+</script>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div id="hud">tsl-lib bench // <b id="hud-node">—</b> · <span id="hud-backend">init</span> · <span id="hud-ms">-- ms</span></div>
+<div id="err"></div>
+<script type="module">
+  import * as THREE from './vendor/three.webgpu.min.js';
+  import { nodes } from './nodes.mjs';
+
+  const q = new URLSearchParams(location.search);
+  const nodeName = q.get('node') || Object.keys(nodes)[0];
+  const geoName = q.get('geo') || 'knot';
+  const B = window.__bench;
+
+  try {
+    const def = nodes[nodeName];
+    if (!def) throw new Error('unknown node "' + nodeName + '" — have: ' + Object.keys(nodes).join(', '));
+    document.getElementById('hud-node').textContent = nodeName;
+
+    const renderer = new THREE.WebGPURenderer({ canvas: document.getElementById('cv'), antialias: true });
+    renderer.setClearColor(0x05070C, 1);
+    await renderer.init();
+    const backend = renderer.backend && renderer.backend.isWebGPUBackend ? 'webgpu' : 'webgl2';
+    document.getElementById('hud-backend').textContent = backend;
+
+    const scene = new THREE.Scene();
+    const cam = new THREE.PerspectiveCamera(40, 1, 0.1, 30);
+    cam.position.set(0, 0, 3.4);
+    const geo = geoName === 'quad' ? new THREE.PlaneGeometry(2.6, 2.6)
+              : geoName === 'sphere' ? new THREE.SphereGeometry(1.1, 96, 64)
+              : new THREE.TorusKnotGeometry(1, 0.36, 200, 32);
+    const mat = new THREE.MeshBasicNodeMaterial();
+    def.apply(THREE.TSL, mat);
+    const mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+
+    const size = () => {
+      renderer.setPixelRatio(1);
+      renderer.setSize(innerWidth, innerHeight, false);
+      cam.aspect = innerWidth / innerHeight;
+      cam.updateProjectionMatrix();
+    };
+    size();
+    addEventListener('resize', size);
+
+    let last = performance.now(), ema = 16.7, tick = 0;
+    renderer.setAnimationLoop(() => {
+      const now = performance.now();
+      ema += (now - last - ema) * 0.05;
+      last = now;
+      if (geoName !== 'quad') { mesh.rotation.y += 0.004; mesh.rotation.x += 0.0011; }
+      if ((tick++ & 31) === 0) document.getElementById('hud-ms').textContent = ema.toFixed(1) + ' ms';
+      B.frameMs = ema;
+      renderer.render(scene, cam);
+    });
+
+    B.backend = backend;
+    B.revision = THREE.REVISION;
+    B.tslKeys = Object.keys(THREE.TSL).sort();
+    B.ready = true;
+  } catch (err) {
+    B.error = String(err && err.message || err);
+    document.getElementById('err').textContent = B.error;
+    throw err;
+  }
+</script>
+</body>
+</html>

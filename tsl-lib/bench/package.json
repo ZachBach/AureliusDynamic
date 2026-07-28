@@ -1,0 +1,9 @@
+{
+  "name": "tsl-lib-bench",
+  "private": true,
+  "type": "module",
+  "description": "Dual-backend verification bench for tsl-lib. Run: node run.mjs",
+  "dependencies": {
+    "puppeteer-core": "^25.3.0"
+  }
+}

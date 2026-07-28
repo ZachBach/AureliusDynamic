@@ -21,13 +21,13 @@ A node/material is **done** only when all five hold:
 ## 1 · Phase 0 — Decisions & scaffolding
 
 - [x] **DECIDED (2026-07-27):** library home = `tsl-lib/` in this repo — shares the exact pinned three build, keeps screenshot-parity testing and Lab integration cheap, avoids version skew. Revisit a sibling-repo split only after the API stabilizes.
-- [ ] **DECISION:** module format — ES modules importing TSL from the extracted `three.webgpu.min.js`. Audit + pin the import surface (hero currently imports 27 TSL symbols; library must not assume exports the embedded build lacks).
-- [ ] Scaffold tree: `src/noise/`, `src/ramp/`, `src/fresnel/`, `src/pattern/`, `src/util/`, `src/materials/`, `bench/`, `docs/`, `tools/`.
-- [ ] **Commit the extract/repack toolchain into `tools/`** (`extract.py`, `pack.py`, template-edit helpers). They currently live only in session scratchpads — a standing fragility; end it.
-- [ ] Dev harness `bench/index.html`: standalone page importing the extracted three build; renders any node on a fullscreen quad + the torus knot; node selected via query param; no bundler.
-- [ ] Runner scripts `bench/run.mjs`: static-serve + puppeteer, with the forced-WebGL2 trick (`page.evaluateOnNewDocument` deleting `navigator.gpu` — Dawn supplies WebGPU in headless Chrome even with `--disable-features=WebGPU`).
-- [ ] Record the three.js pin (r178; manifest uuids `7c31e1a2-…4f10` core / `b58f0e77-…ab34` webgpu). Policy: library tracks the embedded build; upgrading three is its own backlog item and re-verifies every node.
-- [ ] `docs/CONVENTIONS.md`: Fn signatures (options-object params), **nodes never own uniforms — callers inject them**; **nodes never bake `time` — accept a clock node** (the Lab's flux-scaled `t = time.mul(uFlux.mul(1.8).add(0.25))` must keep working); color-space policy; naming.
+- [x] **DECIDED (2026-07-27):** module format — ES modules; nodes are factories taking the TSL namespace as first argument (`(TSL, opts) => node`), so the library never imports three itself. Import surface audited at runtime → `docs/tsl-exports.json` (r178, 556 symbols, 22 `mx_*` — includes worley float/vec2/vec3, so F2/F2−F1 may be native; verify in Phase 2).
+- [x] Scaffold tree: `src/{noise{,/adapters},ramp,fresnel,pattern,util,materials}/`, `bench/`, `docs/`, `tools/` + `tsl-lib/.gitignore` (build/, bench/vendor/, node_modules, shots, chrome profiles).
+- [x] **Toolchain in `tools/`** (2026-07-27): `extract.py` (template → `build/template.html`; `--assets` decodes the three builds into `bench/vendor/` identifying them by content; `--check` proves the encode/decode round-trip byte-identical — verified against the live bundle), `pack.py` (`--dry`, self-checks re-decode before writing). `tools/README.md` documents the contract.
+- [x] Dev harness `bench/index.html` (2026-07-27): `?node=&backend=&geo=knot|quad|sphere`; forced-WebGL2 by deleting `navigator.gpu` before the module runs; `window.__bench` protocol for the runner; `data:,` favicon so the console-error gate stays clean.
+- [x] Runner `bench/run.mjs` (2026-07-27): serves `tsl-lib/`, puppeteer matrix {webgpu, webgl2} × nodes, screenshots to `bench/shots/`, hard-fails on console errors and backend mismatch, regenerates `docs/tsl-exports.json`. **First full matrix (3 demo nodes × 2 backends): all PASS, screenshots visually verified.**
+- [x] three.js pin recorded in `docs/CONVENTIONS.md` (r178; manifest uuids `7c31e1a2-…4f10` core / `b58f0e77-…ab34` webgpu; vendor files always regenerated from the bundle, never committed; upgrades are deliberate backlog items that re-verify every node).
+- [x] `docs/CONVENTIONS.md` (2026-07-27): factory signature, options-object params, no owned uniforms, no baked `time` (clock node injected — flux-scaled clocks pass through), mx_* isolation to adapters, derived `source()`, in-node constraint clamps (fire-ramp 0.95), palette-only colors, doc-block template, registry schema.
 
 ## 2 · Phase 1 — Mine the existing code (inventory before writing anything new)
 
