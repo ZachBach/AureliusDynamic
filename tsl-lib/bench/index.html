@@ -20,7 +20,7 @@
   // WebGPU via Dawn even with --disable-features=WebGPU, so the only reliable
   // switch is deleting the adapter.
   window.__bench = { ready: false, error: null, backend: null, frameMs: null,
-                     tslKeys: null, revision: null };
+                     impl: null, tslKeys: null, revision: null };
   if (new URLSearchParams(location.search).get('backend') === 'webgl2') {
     Object.defineProperty(navigator, 'gpu', { get: () => undefined });
   }
@@ -38,13 +38,26 @@
 
   const q = new URLSearchParams(location.search);
   const nodeName = q.get('node') || Object.keys(nodes)[0];
-  const geoName = q.get('geo') || 'knot';
+  const sweep = q.get('sweep') === '1';
+  // freeze=<seconds>: replace the injected clock with a constant so every
+  // frame is identical — the basis of cross-backend parity comparison. Also
+  // stops the idle spin and hides the HUD (its backend text would otherwise
+  // differ between the two parity shots).
+  const freeze = q.get('freeze') !== null ? parseFloat(q.get('freeze')) : null;
   const B = window.__bench;
 
+  const def = nodes[nodeName];
+  const geoName = q.get('geo') || (sweep || freeze !== null ? (def && def.parityGeo) || 'quad' : 'knot');
+  if (freeze !== null || q.get('hud') === '0') document.getElementById('hud').style.display = 'none';
+
+  const makeGeo = (name, size = 1) =>
+    name === 'quad' ? new THREE.PlaneGeometry(2.6 * size, 2.6 * size)
+    : name === 'sphere' ? new THREE.SphereGeometry(1.1 * size, 96, 64)
+    : new THREE.TorusKnotGeometry(size, 0.36 * size, 200, 32);
+
   try {
-    const def = nodes[nodeName];
     if (!def) throw new Error('unknown node "' + nodeName + '" — have: ' + Object.keys(nodes).join(', '));
-    document.getElementById('hud-node').textContent = nodeName;
+    document.getElementById('hud-node').textContent = nodeName + (sweep ? ' · sweep' : '');
 
     const renderer = new THREE.WebGPURenderer({ canvas: document.getElementById('cv'), antialias: true });
     renderer.setClearColor(0x05070C, 1);
@@ -55,13 +68,31 @@
     const scene = new THREE.Scene();
     const cam = new THREE.PerspectiveCamera(40, 1, 0.1, 30);
     cam.position.set(0, 0, 3.4);
-    const geo = geoName === 'quad' ? new THREE.PlaneGeometry(2.6, 2.6)
-              : geoName === 'sphere' ? new THREE.SphereGeometry(1.1, 96, 64)
-              : new THREE.TorusKnotGeometry(1, 0.36, 200, 32);
-    const mat = new THREE.MeshBasicNodeMaterial();
-    def.apply(THREE.TSL, mat);
-    const mesh = new THREE.Mesh(geo, mat);
-    scene.add(mesh);
+
+    const clock = freeze !== null ? THREE.TSL.float(freeze) : THREE.TSL.time;
+    const meshes = [];
+    let impl = null;
+
+    if (sweep && def.sweep && def.sweep.length) {
+      // grid of param variants; visible stage at z=0 is ~2.47 world units tall
+      const n = def.sweep.length;
+      const cols = Math.ceil(Math.sqrt(n)), rows = Math.ceil(n / cols);
+      const cell = 2.3 / Math.max(cols, rows);
+      def.sweep.forEach((params, i) => {
+        const mat = new THREE.MeshBasicNodeMaterial();
+        impl = def.apply(THREE.TSL, mat, { clock, ...params }) || impl;
+        const m = new THREE.Mesh(makeGeo(geoName, cell / 2.6), mat);
+        m.position.set(
+          ((i % cols) - (cols - 1) / 2) * cell,
+          (Math.floor(i / cols) - (rows - 1) / 2) * -cell, 0);
+        scene.add(m); meshes.push(m);
+      });
+    } else {
+      const mat = new THREE.MeshBasicNodeMaterial();
+      impl = def.apply(THREE.TSL, mat, { clock });
+      const m = new THREE.Mesh(makeGeo(geoName), mat);
+      scene.add(m); meshes.push(m);
+    }
 
     const size = () => {
       renderer.setPixelRatio(1);
@@ -77,13 +108,15 @@
       const now = performance.now();
       ema += (now - last - ema) * 0.05;
       last = now;
-      if (geoName !== 'quad') { mesh.rotation.y += 0.004; mesh.rotation.x += 0.0011; }
+      if (freeze === null && geoName !== 'quad')
+        for (const m of meshes) { m.rotation.y += 0.004; m.rotation.x += 0.0011; }
       if ((tick++ & 31) === 0) document.getElementById('hud-ms').textContent = ema.toFixed(1) + ' ms';
       B.frameMs = ema;
       renderer.render(scene, cam);
     });
 
     B.backend = backend;
+    B.impl = impl && impl.impl;
     B.revision = THREE.REVISION;
     B.tslKeys = Object.keys(THREE.TSL).sort();
     B.ready = true;

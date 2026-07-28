@@ -31,18 +31,18 @@ A node/material is **done** only when all five hold:
 
 ## 2 · Phase 1 — Mine the existing code (inventory before writing anything new)
 
-Promote, don't rewrite. Every primitive below already ships in the hero module / Lab today:
+Promote, don't rewrite. **COMPLETE 2026-07-27 — deliverable: [docs/INVENTORY.md](docs/INVENTORY.md)** (full-module read + census: 22 hash sites / 18 salts, 11 mx_fbm calls, 46 color() calls / 4 natural palettes, 5 trig-lattice fields, 4 fresnel variants, 3 sphere-point copies).
 
-- [ ] Shared fresnel term `fres = 1 − |eye·normalWorld|` (Lab shared const; variants in Terra atmosphere shell + sun limb darkening).
-- [ ] `uFlux`-scaled clock idiom.
-- [ ] `cellsOf()` — worley with fbm-abs fallback (`mx_worley_noise_float` feature-detect). The fallback pattern itself is a library concern: mx_ nodes are not guaranteed present.
-- [ ] `mx_fractal_noise_float` call census: Lab `wob`/`swirl`/dissolve-`n`, nebula `f1`/`f2`, aurora `ridge`/`ray`/`ridge2`, sun `n1`/`n2` (octaves 3–5, lacunarity 2.0, gain 0.5–0.55).
-- [ ] `hash(instanceIndex.add(SALT))` multi-channel idiom (~20 magic salts: 91, 517, 1234, 7777, 31337, 2468, …).
-- [ ] Patterns in the four materials: scanlines (sin on `posW.y`), radial pulse (sin on `length()`), horizon band (sin on `normal.y` sheared by a swirl field), dissolve threshold + ember edge, flicker.
-- [ ] Fire ramp `vec3(b, b², b⁴)` with the **b ≤ 0.95 clamp** — above 0.95 the channel ordering inverts and plasma turns blue-white. Codify the clamp inside the node.
-- [ ] Brand palette hexes repeated as literals across materials: cyan `57D4FF`, blue `2B6CF6`, ice `EAF7FF`, gold `F4C95D`, ember `FF7A1A`, void `0A0E14`, silver `98A8BE`, slate `1E2836`, mist `9AA7BC` → single `util/palette.js`.
-- [ ] Terra storm-map lat/lon direction→uv sampling → `util/latlon.js` candidate.
-- [ ] Deliverable: `docs/INVENTORY.md` — each primitive → where it lives today → target library module.
+- [x] Shared fresnel term — 4 variants found (Lab abs, sun-body front-only, atmo pow 3.5 + day factor, earth cheap z-rim) → one `fresnel()` with a `facing` option.
+- [x] `uFlux`-scaled clock idiom + per-instance rate clocks (`time.mul(hash·range + base)`).
+- [x] `cellsOf()` worley fallback.
+- [x] `mx_fractal_noise_float` census — 11 sites, lacunarity always 2.0, octaves 3–5, gain 0.5–0.55.
+- [x] Hash-salt census — 22 sites, 18 distinct salts; **constraint found: channel pairs are shared across compute + render passes (1234/7777, 2468 in three places), so `hashChannels` must be deterministic per seed everywhere**.
+- [x] Lab patterns + more found in the wider hero: corona streaks, aurora curtain falloff, lightning flash + waxing envelope, vignette, sprite disc/diamond.
+- [x] Fire ramp with load-bearing 0.95 clamp.
+- [x] Palette census — **bigger than brand**: brand (9) + solar (8) + terra (8) + nebula groups; `palette.js` exports all four.
+- [x] Terra lat/lon sampling → `latlonUv(dir)`.
+- [x] **Census discoveries not in the original backlog**: trig-lattice noise (5 shipped fields — granulation, continents, clouds, storm cells, turbulence — cost class ①, cheaper than fbm and proven on-screen) → `trigLattice()`/`trigFlow()`; sphere-point-from-hashes idiom (3 verbatim copies) → `spherePoint()`; day/night terminator → `terminator()`; luminance auto-scale JS helper; opacity-gate convention (`uIntro`/`uDim`/`uDyson`) — library materials take an `opacityGate` option. Compute-pass dynamics (spring/damping, pointer repulsion, CME capture) logged as deferred — not material nodes.
 
 ## 3 · Phase 2 — Core node collection
 
@@ -94,17 +94,15 @@ Promote, don't rewrite. Every primitive below already ships in the hero module /
 
 ## 4 · Phase 3 — Dual-backend verification harness — `bench/`
 
-- [ ] Node test page: fullscreen-quad render of one node with a parameter-sweep grid; one URL per node.
-- [ ] Puppeteer matrix runner: {webgpu, webgl2} × node list → screenshots.
-- [ ] Parity compare: pixel-diff/SSIM per node with tolerances; hard fail on NaN/black.
-- [ ] Console-error gate: zero tolerance (Open-Meteo 429 noise is landing-page-only and must not appear in bench).
-- [ ] `docs/BACKEND-NOTES.md` divergence ledger, seeded with the known ones:
-  - `instancedArray('vec3').toAttribute()` is vec4-padded on WebGPU — take `.xyz` before building a `vec4` (WebGL2 tolerates the bug, so WebGPU must be tested specifically).
-  - `positionView` evaluates to view-z≈0 inside SpriteNodeMaterial's billboard path — use `modelViewMatrix.mul(vec4(pos,1)).z`.
-  - `mx_worley_noise_float` availability varies — always feature-detect.
-  - Headless Chrome supplies WebGPU via Dawn regardless of flags — forced-WebGL2 requires deleting `navigator.gpu`.
-- [ ] Mobile-tier check: DPR 2, small viewport; flag nodes too heavy for the 20k mobile tier.
-- [ ] `bench/verify-all.mjs` — one command, writes statuses into the registry.
+**COMPLETE 2026-07-27.** First full gate run: 3 demo nodes, parity 0% / 0% / 0.003%, all impl native/native, negative test (cross-node diff) correctly fails at 56.6%.
+
+- [x] Node test page with parameter-sweep grid: `?node=X&sweep=1&freeze=<t>` renders the node's `sweep` param sets as a frozen grid. **Determinism comes from the conventions**: nodes take an injected clock, so parity mode substitutes `float(t)` for `time` — every frame identical.
+- [x] Puppeteer matrix runner (Phase 0 `run.mjs` for quick smoke; `verify-all.mjs` is the gate).
+- [x] Parity compare — `bench/compare.mjs`: pixelmatch diff + validity checks (blank/constant-frame detection catches NaN/dead shaders), per-node `parityTolerance`, diff heat maps to `shots/parity-*-diff.png`.
+- [x] Console-error gate: zero tolerance, enforced per capture in `verify-all.mjs` (and the bench page suppresses the favicon request that would otherwise trip it).
+- [x] `docs/BACKEND-NOTES.md` seeded with the four known divergences **plus one newly confirmed**: silhouette AA differs between backends (flat quads diff at 0%, curved edges accumulate — hence `parityGeo`/`parityTolerance` per node). Watch list: hash u32-vs-float determinism, negative-base `pow`, derivative nodes.
+- [x] Mobile-tier check: 390×844 @ DPR 2 pass in verify-all, `mobileOverBudget` flag at 20 ms — **advisory** (desktop GPU measures fill-rate scaling, not real phone perf).
+- [x] `bench/verify-all.mjs` — one command: parity + live smoke + mobile per node, merges into `docs/REGISTRY.json` (status, impl per backend, parity metrics, wall-ms; gpuMs/costClass reserved for Phase 4), exit 1 on any failure.
 
 ## 5 · Phase 4 — Cost measurement & documentation
 

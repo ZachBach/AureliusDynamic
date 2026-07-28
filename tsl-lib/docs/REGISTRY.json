@@ -1,0 +1,83 @@
+{
+  "bench/fbm-mx": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-28"
+  },
+  "bench/worley-mx": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 22.4,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-28"
+  },
+  "bench/fresnel": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.003,
+      "tolerance": {
+        "maxDiffPct": 1,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-28"
+  }
+}
