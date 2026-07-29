@@ -1,5 +1,59 @@
 {
-  "bench/fbm-mx": {
+  "noise/fbm": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.8
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "noise/fbm@fallback": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "fallback",
+      "webgl2": "fallback"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.6,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "noise/valueNoise": {
     "status": "verified",
     "impl": {
       "webgpu": "native",
@@ -24,9 +78,9 @@
     },
     "mobileOverBudget": false,
     "three": "r178",
-    "verified": "2026-07-28"
+    "verified": "2026-07-29"
   },
-  "bench/worley-mx": {
+  "noise/worleyF1": {
     "status": "verified",
     "impl": {
       "webgpu": "native",
@@ -43,7 +97,7 @@
     "cost": {
       "gpuMs": null,
       "wallMs": {
-        "webgpu": 22.4,
+        "webgpu": 22.2,
         "webgl2": 16.7
       },
       "mobileWallMs": 16.7,
@@ -51,9 +105,90 @@
     },
     "mobileOverBudget": false,
     "three": "r178",
-    "verified": "2026-07-28"
+    "verified": "2026-07-29"
   },
-  "bench/fresnel": {
+  "noise/worleyF1F2": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 39.8,
+        "webgl2": 17.4
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "noise/worleyF1F2@fallback": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "fallback",
+      "webgl2": "fallback"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "noise/trigLattice": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "fresnel/fresnel": {
     "status": "verified",
     "impl": {
       "webgpu": "native",
@@ -78,6 +213,222 @@
     },
     "mobileOverBudget": false,
     "three": "r178",
-    "verified": "2026-07-28"
+    "verified": "2026-07-29"
+  },
+  "ramp/fireRamp": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "pattern/scanlines": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "pattern/radialPulse": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "pattern/dissolve": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 18.8
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "pattern/flicker": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.6,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "pattern/vignette": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "pattern/spriteDisc": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "util/latlonUv": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 1,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": null,
+      "wallMs": {
+        "webgpu": 16.7,
+        "webgl2": 16.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": null
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
   }
 }

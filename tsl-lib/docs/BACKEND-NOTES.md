@@ -41,8 +41,12 @@ Format: symptom → cause → rule.
 
 ## Watch list (unconfirmed, check when relevant)
 
-- Precision of `hash()` / integer ops across WGSL u32 vs GLSL float paths —
-  matters for `hashChannels` determinism guarantees; verify in Phase 2.
+- ~~Precision of `hash()` across WGSL vs GLSL~~ **CONFIRMED SAFE 2026-07-27**:
+  the pure-TSL value-noise and 27-cell worley fallbacks (dense hash-driven
+  lattices) parity at 0% diff across backends. Related shader gotcha found the
+  same day (not a backend divergence): dot-product lattice hashes correlate
+  symmetrically around zero — always offset lattice coords positive before
+  hashing (see notes in `src/noise/worley.js` / `valueNoise.js`).
 - `pow()` of negative bases (undefined in GLSL, defined-ish in WGSL) — audit
   any `x.pow(k)` where x can go negative.
 - Derivative-based nodes (`fwidth`, AA helpers like `mx_aastep`) may differ

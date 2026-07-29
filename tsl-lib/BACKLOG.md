@@ -50,47 +50,52 @@ Promote, don't rewrite. **COMPLETE 2026-07-27 — deliverable: [docs/INVENTORY.m
 
 **Architecture rule (de-risks the `mx_*` dependence — the biggest technical risk in the plan):** library interfaces are defined first (`fbm`, `worleyF1`, `gradientNoise`, `valueNoise`); MaterialX implementations live behind adapters in `src/noise/adapters/mx.js` and **nothing outside the adapters touches `mx_*` directly**; every interface has a guaranteed pure-TSL fallback implementation. The registry records, per node per backend, `impl: native | fallback` plus parity status. A future three.js update dropping mx_ nodes then degrades gracefully instead of silently removing half the library.
 
-- [ ] Interface signatures for `fbm` / `worleyF1` / `gradientNoise` / `valueNoise` — land before any implementation.
-- [ ] `src/noise/adapters/mx.js` — MaterialX adapters (`mx_fractal_noise_float`, `mx_noise_float`, `mx_worley_noise_float`), each feature-detected.
-- [ ] Pure-TSL fallback impls for every interface.
-- [ ] `hashChannels(seed, n)` — deterministic multi-channel hash; kills the magic-salt idiom. Document cross-backend determinism caveats.
-- [ ] Value noise 2D/3D.
-- [ ] Gradient (perlin-style) 3D — mx adapter + own fallback, parity-compared.
-- [ ] `fbm(p, {octaves, lacunarity, gain, base})` — generic over base noise; the mx adapter becomes one instantiation.
+**Wave 1 SHIPPED 2026-07-27** — 16 modules under `src/`, 16 bench entries, all through the gate (parity 0% everywhere but fresnel-sphere 0.003%; both fallback paths parity-verified too). Finds: **`mx_worley_noise_vec2` = (F1, F2) CONFIRMED visually — F2−F1 cell walls are native**; dot-product lattice hashes correlate around zero (fixed with positive offset in valueNoise + worley, caught by eyeballing the bench shots); `hash()` cross-backend parity confirmed safe (BACKEND-NOTES watch list updated).
+
+- [x] Interface signatures — `(TSL, p, opts)` domain-positional refinement recorded in CONVENTIONS §API-1.
+- [x] `src/noise/adapters/mx.js` — fractal/gradient/worley-float/worley-vec2/cell adapters, all feature-detected; only file touching `mx_*`.
+- [x] Pure-TSL fallbacks: valueNoise-based fbm; 27-neighborhood worley F1/F2 (functional two-minima tracking). Both bench-forced and parity-gated (`noise/fbm@fallback`, `noise/worleyF1F2@fallback`).
+- [x] `hashChannels(seed, n)` — `CHANNEL_STRIDE = 7919`, frozen; determinism contract documented (cross-pass identity). Exercised via the hash-lattice fallbacks.
+- [ ] Value noise 2D (3D shipped: `noise/valueNoise`).
+- [ ] Gradient (perlin-style) 3D public node (`mxGradientNoise` adapter exists; fallback + bench entry pending).
+- [x] `fbm(p, {octaves, lacunarity, gain, base})` — mx-native + fallback, matching mx's unnormalized amplitude sum.
 - [ ] Ridged fbm (the aurora `ridge` shape, generalized).
-- [ ] Worley F1 — promote `cellsOf` behind the adapter + fallback; F2 / F2−F1 if the build exposes them, else registry marks them fallback-only.
+- [x] Worley F1 + F1F2 — `noise/worleyF1`, `noise/worleyF1F2`; F2−F1 native-confirmed.
+- [x] `trigLattice` / `trigFlow` — the census-discovered cost-class-① tier (`noise/trigLattice` verified; terra ocean/land preset in the bench).
 - [ ] `warp(p, noiseFn, amp)` domain-warp helper.
 - [ ] Turbulence (|fbm|) variant.
 - [ ] Curl noise (future particle/flow work; the hero will want it).
 
 ### Ramp tools — `src/ramp/`
 - [ ] `ramp(stops[])` N-stop gradient.
-- [ ] `fireRamp(b)` — the clamped b/b²/b⁴ blackbody ramp.
+- [x] `fireRamp(b)` — `ramp/fireRamp` verified; 0.95 clamp inside the node, sweep confirms no inversion at gain 3.4.
 - [ ] Cosine palette (IQ: `a + b·cos(2π(c·t+d))`).
 - [ ] Posterize / quantize.
-- [ ] `remap(x, inLo, inHi, outLo, outHi)` + smoothstep-chain helper.
+- [x] `remap(x, inLo, inHi, outLo, outHi)` (`ramp/remap.js`; exercised in the fire bench entry). Smoothstep-chain helper pending.
 
 ### Fresnel / rim kit — `src/fresnel/`
-- [ ] `fresnel({power, bias})` — parameterized; today's ad-hoc `.pow(3/5/6)` uses become arguments.
+- [x] `fresnel({power, bias, facing})` — all four shipped variants unified (`abs` / `front` / `z`); `fresnel/fresnel` verified on sphere.
 - [ ] Rim light (colored, direction-biased).
 - [ ] Fake-chrome horizon band (LIQUID METAL's `band`, generalized: axis, frequency, shear field).
 - [ ] Atmosphere shell (Terra limb ring: additive fresnel lit from a light-direction uniform).
 - [ ] Thin-film iridescence approx (stretch).
 
 ### Pattern generators — `src/pattern/`
-- [ ] `scanlines(axisPos, freq, speed, sharpness)`.
-- [ ] `radialPulse(p, freq, speed)`.
+- [x] `scanlines(axisPos, {freq, speed, sharpness, clock})` — verified.
+- [x] `radialPulse(p, {freq, speed, clock})` — verified.
 - [ ] Grid + hex-grid lines.
 - [ ] Stripes / checker.
 - [ ] SDF minis: circle, box, line + smooth union/subtract (HUD-style materials).
-- [ ] `dissolve(n, threshold, edgeWidth)` → `{alive, edge}` — DISSOLVE generalized.
-- [ ] `flicker(t, freq, depth)`.
+- [x] `dissolve(n, threshold, {edgeWidth})` → `{alive, edge}` — verified with animated threshold.
+- [x] `flicker` + `flash` (spiky sibling with waxing envelope — the Terra lightning pair) — verified.
+- [x] `vignette` + `spriteDisc`/`spriteDiamond` (census additions) — verified.
 - [ ] Truchet tiles (stretch).
 
 ### Utilities — `src/util/`
-- [ ] `palette.js` — brand colors as `color()` nodes, single source.
-- [ ] `latlon.js` — direction↔uv helpers.
-- [ ] Uniform-bundle conventions (e.g. `makeFlux()` returning the uniform + scaled clock).
+- [x] `palette.js` — all four census groups (brand/solar/terra/nebula) as `color()` nodes + raw `HEX` export; bench visualizations consume it (zero hex literals in entries).
+- [x] `latlonUv(dir)` — verified on sphere (`util/latlonUv`).
+- [x] `makeFlux()` + `spherePoint()` — implemented with doc blocks; bench-visual entries pending (exercised implicitly).
+- [ ] `spinY`, `luminanceScale` (JS helper) — pending.
 
 ## 4 · Phase 3 — Dual-backend verification harness — `bench/`
 

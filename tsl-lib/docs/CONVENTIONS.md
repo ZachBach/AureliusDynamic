@@ -37,7 +37,10 @@ document; the Definition of Done lives in [../BACKLOG.md](../BACKLOG.md) §0.
 
 ## API rules
 
-1. **Options objects, not positional params.** Every tunable has a default;
+1. **Options objects, not positional params — with one refinement (Phase 2):
+   the domain input is positional.** Nodes that sample a field take
+   `(TSL, p, opts)` — position is data, not a tunable. Nodes with no domain
+   input (fresnel, makeFlux) take `(TSL, opts)`. Every tunable has a default;
    a node called with no options must render something sensible.
 2. **Nodes never own uniforms.** Callers create uniforms and pass them in as
    option values. The library exports helpers (e.g. `makeFlux(TSL)`) that

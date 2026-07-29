@@ -115,7 +115,7 @@ for (const name of nodeNames) {
   const ok = R.fails.length === 0;
   if (!ok) failed++;
 
-  registry['bench/' + name] = {
+  registry[nodes[name].id || 'bench/' + name] = {
     status: ok ? 'verified' : 'failed',
     impl: R.impl,
     parity: parity.error ? { pass: false, error: parity.error }
