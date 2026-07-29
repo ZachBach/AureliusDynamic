@@ -48,6 +48,12 @@ import * as matMarble from '../src/materials/marble.js';
 import * as matAuroraSilk from '../src/materials/auroraSilk.js';
 import * as matNebulaGlass from '../src/materials/nebulaGlass.js';
 import * as matToonCel from '../src/materials/toonCel.js';
+import * as matBrushed from '../src/materials/brushedMetal.js';
+import * as matStarfield from '../src/materials/starfield.js';
+import * as matPlasma from '../src/materials/plasmaArcs.js';
+import { thinFilm, source as thinFilmSource } from '../src/fresnel/thinFilm.js';
+import { truchet, source as truchetSource } from '../src/pattern/truchet.js';
+import { curl, source as curlSource } from '../src/noise/curl.js';
 
 // material modules share the bench entry contract directly
 const materialEntry = (id, mod, tolerance = 1.5) => ({
@@ -528,6 +534,45 @@ export const nodes = {
   'mat-aurorasilk': materialEntry('materials/auroraSilk', matAuroraSilk),
   'mat-nebulaglass': materialEntry('materials/nebulaGlass', matNebulaGlass),
   'mat-tooncel': materialEntry('materials/toonCel', matToonCel),
+  'mat-brushed': materialEntry('materials/brushedMetal', matBrushed),
+  'mat-starfield': materialEntry('materials/starfield', matStarfield),
+  'mat-plasma': materialEntry('materials/plasmaArcs', matPlasma),
+
+  'fresnel-thinfilm': {
+    id: 'fresnel/thinFilm',
+    parityGeo: 'sphere',
+    parityTolerance: { maxDiffPct: 1.0 },
+    sweep: [{ cycles: 1.4 }, { cycles: 2.2 }, { cycles: 3.5 }],
+    apply(TSL, mat, { cycles = 2.2 } = {}) {
+      const { brand } = palette(TSL);
+      mat.colorNode = brand.void.mul(0.5).add(thinFilm(TSL, { cycles }));
+      return { impl: 'native' };
+    },
+    source: thinFilmSource,
+  },
+
+  'pattern-truchet': {
+    id: 'pattern/truchet',
+    sweep: [{ cells: 4 }, { cells: 6 }, { cells: 9 }],
+    apply(TSL, mat, { cells = 6 } = {}) {
+      const { brand } = palette(TSL);
+      const arcs = truchet(TSL, TSL.uv().sub(0.5), { cells });
+      mat.colorNode = brand.cyan.mul(arcs).add(brand.blue.mul(0.1));
+      return { impl: 'native' };
+    },
+    source: truchetSource,
+  },
+
+  'noise-curl': {
+    id: 'noise/curl',
+    sweep: [{ octaves: 2 }, { octaves: 3 }],
+    apply(TSL, mat, { clock, octaves = 3 } = {}) {
+      const flow = curl(TSL, TSL.positionLocal.mul(1.5).add(TSL.vec3(0, 0, clock.mul(0.05))), { octaves });
+      mat.colorNode = flow.mul(0.5).add(0.5);
+      return { impl: 'native' };
+    },
+    source: curlSource,
+  },
 
   'util-latlon': {
     id: 'util/latlonUv',

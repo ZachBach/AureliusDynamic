@@ -22,17 +22,20 @@ export const apply = (TSL, mat, { clock } = {}) => {
   mat.depthWrite = false;
   mat.side = 2;
   const fres = fresnel(TSL);
-  const w = worleyF1(TSL, TSL.positionLocal.mul(3.2).add(TSL.vec3(0, clock.mul(0.5), 0)));
+  // fallback impl by choice: measures ~40% faster than mx native on the
+  // baseline (registry: 3.58 vs 5.92 ms/pass) with identical cell character
+  const w = worleyF1(TSL, TSL.positionLocal.mul(3.2).add(TSL.vec3(0, clock.mul(0.5), 0)), { impl: 'fallback' });
   const lattice = TSL.smoothstep(0.45, 0.92, w);
   const pulse = radialPulse(TSL, TSL.positionLocal, { freq: 9, speed: 5, sharpness: 2, clock });
   mat.colorNode = brand.blue.mul(lattice.mul(1.5))
     .add(brand.cyan.mul(fres.mul(1.2)))
     .add(brand.ice.mul(pulse.mul(lattice).mul(0.6)));
   mat.opacityNode = lattice.mul(0.5).add(fres.mul(0.55)).add(pulse.mul(0.12));
-  return { impl: 'native' };
+  return { impl: 'fallback' };
 };
 
-export const source = () => `const w = worleyF1(posL.mul(3.2));
+export const source = () => `const w = worleyF1(posL.mul(3.2),
+  { impl: 'fallback' }); // faster than mx here
 const lattice = smoothstep(.45, .92, w);
 const pulse = radialPulse(posL,
   { freq: 9, clock: t });

@@ -1164,29 +1164,29 @@
   "materials/shield": {
     "status": "verified",
     "impl": {
-      "webgpu": "native",
-      "webgl2": "native"
+      "webgpu": "fallback",
+      "webgl2": "fallback"
     },
     "parity": {
       "pass": true,
-      "diffPct": 0.097,
+      "diffPct": 0.073,
       "tolerance": {
         "maxDiffPct": 1.5,
         "pixelThreshold": 0.1
       }
     },
     "cost": {
-      "gpuMs": 25.352,
-      "gpuP95": 25.94,
+      "gpuMs": 16.818,
+      "gpuP95": 18.415,
       "wallMs": {
         "webgpu": 0.4,
         "webgl2": 0.4
       },
       "wallP95": {
-        "webgpu": 0.6,
-        "webgl2": 0.9
+        "webgpu": 1,
+        "webgl2": 1.8
       },
-      "mobileWallMs": 19.3,
+      "mobileWallMs": 16.7,
       "costClass": 5,
       "basis": "gpu"
     },
@@ -1521,6 +1521,204 @@
       "basis": "gpu"
     },
     "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "materials/brushedMetal": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.014,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 5.234,
+      "gpuP95": 5.507,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.8,
+        "webgl2": 1.6
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 4,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "materials/starfield": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 5.05,
+      "gpuP95": 5.287,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.8,
+        "webgl2": 1.3
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 4,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "materials/plasmaArcs": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.017,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 16.381,
+      "gpuP95": 19.635,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.8,
+        "webgl2": 1
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 5,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "fresnel/thinFilm": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 1,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 0.796,
+      "gpuP95": 1.01,
+      "wallMs": {
+        "webgpu": 1.7,
+        "webgl2": 2.5
+      },
+      "wallP95": {
+        "webgpu": 4.2,
+        "webgl2": 4.3
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 2,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "pattern/truchet": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 0.505,
+      "gpuP95": 0.627,
+      "wallMs": {
+        "webgpu": 0.5,
+        "webgl2": 2.3
+      },
+      "wallP95": {
+        "webgpu": 2.7,
+        "webgl2": 4.1
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 2,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "noise/curl": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 27.924,
+      "gpuP95": 28.925,
+      "wallMs": {
+        "webgpu": 0.3,
+        "webgl2": 0.3
+      },
+      "wallP95": {
+        "webgpu": 0.7,
+        "webgl2": 0.6
+      },
+      "mobileWallMs": 36.5,
+      "costClass": 5,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": true,
     "three": "r178",
     "verified": "2026-07-29"
   }

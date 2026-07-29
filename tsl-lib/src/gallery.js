@@ -30,6 +30,9 @@ import { hexGrid, source as gridSource } from './pattern/grid.js';
 import { sdCircle, sdBox, opSmoothUnion, sdFill, sdOutline, source as sdfSource } from './pattern/sdf.js';
 import { streaks, source as streaksSource } from './pattern/streaks.js';
 import { curtain, source as curtainSource } from './pattern/curtain.js';
+import { thinFilm, source as thinFilmSource } from './fresnel/thinFilm.js';
+import { truchet, source as truchetSource } from './pattern/truchet.js';
+import { curl, source as curlSource } from './noise/curl.js';
 
 export const GALLERY = [
   { id: 'noise/fbm', name: 'FBM', family: 'NOISE',
@@ -188,6 +191,22 @@ export const GALLERY = [
       mat.colorNode = brand.cyan.mul(glow.mul(1.15)).add(brand.blue.mul(glow.mul(0.5)))
         .add(brand.gold.mul(edge.mul(0.9)));
     } },
+  { id: 'noise/curl', name: 'CURL', family: 'NOISE',
+    apply(TSL, mat, { clock } = {}) {
+      const flow = curl(TSL, TSL.positionLocal.mul(1.5).add(TSL.vec3(0, 0, clock.mul(0.05))));
+      mat.colorNode = flow.mul(0.5).add(0.5);
+    } },
+  { id: 'fresnel/thinFilm', name: 'THIN FILM', family: 'FRESNEL',
+    apply(TSL, mat) {
+      const { brand } = palette(TSL);
+      mat.colorNode = brand.void.mul(0.5).add(thinFilm(TSL, { cycles: 2.2 }));
+    } },
+  { id: 'pattern/truchet', name: 'TRUCHET', family: 'PATTERN',
+    apply(TSL, mat) {
+      const { brand } = palette(TSL);
+      mat.colorNode = brand.cyan.mul(truchet(TSL, TSL.positionLocal.xy, { cells: 5 }))
+        .add(brand.blue.mul(0.1));
+    } },
 ];
 
 // build-time only — stripped from the inline bundle (tools/build-lab.mjs)
@@ -205,4 +224,6 @@ export const GALLERY_SOURCES = {
   'pattern/dissolve': dissolveSource(), 'pattern/hexGrid': gridSource(),
   'pattern/sdf': sdfSource(), 'pattern/streaks': streaksSource(),
   'pattern/curtain': curtainSource(),
+  'noise/curl': curlSource(), 'fresnel/thinFilm': thinFilmSource(),
+  'pattern/truchet': truchetSource(),
 };

@@ -145,7 +145,11 @@ Promote, don't rewrite. **COMPLETE 2026-07-27 — deliverable: [docs/INVENTORY.m
 - [x] **AURORA SILK** ⑤ 45.7 ms — two curtain layers over uv space; the Lab's most expensive material and honestly badged as such (optimization candidate: fewer curtain octaves).
 - [x] **NEBULA GLASS** ⑤ 18.0 ms — the backdrop's dual-fbm recipe in a fresnel shell.
 - [x] **TOON CEL** ③ 1.41 ms — 3-step posterized lambert, ink outline, biased rim.
-- [ ] Stretch: brushed-metal anisotropy, starfield, plasma arcs.
+- [x] **Stretch wave COMPLETE 2026-07-29** — Lab at 15 materials + 26 gallery nodes, registry 52 entries:
+  - **SHIELD optimization cashed in**: fallback-worley swap, 25.35 → 16.82 ms (−34%), badge auto-updated.
+  - **BRUSHED METAL** ④ 5.23 (anisotropic-stretched fbm grooves + sheared horizonBand + thinFilm sheen), **STARFIELD** ④ 5.05 (hash-cell stars, rare golds, twinkle over nebula wisp), **PLASMA ARCS** ⑤ 16.38 (ridged-fbm filaments + surge flashes).
+  - New nodes: `fresnel/thinFilm` ② 0.80 (fresnel→cosinePalette iridescence), `pattern/truchet` ② 0.51, `noise/curl` ⑤ 27.92 (12-fbm central-difference curl — honestly the library's most expensive node).
+  - Remaining stretch: none. The backlog's build-out is done; future items are new ideas, not debts.
 
 ## 8 · Later / stretch
 

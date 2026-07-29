@@ -30,6 +30,7 @@ const LIB_FILES = [
   'pattern/grid.js', 'pattern/curtain.js',
   'noise/gradientNoise.js', 'noise/ridgedFbm.js', 'noise/turbulence.js', 'noise/trigLattice.js',
   'ramp/cosinePalette.js', 'fresnel/terminator.js', 'pattern/sdf.js', 'pattern/streaks.js',
+  'fresnel/thinFilm.js', 'pattern/truchet.js', 'noise/curl.js',
   'gallery.js', // last — its visualizers reference everything above
 ];
 const MATERIALS = [
@@ -45,6 +46,9 @@ const MATERIALS = [
   { file: 'materials/auroraSilk.js', fn: '__mat_aurorasilk', id: 'materials/auroraSilk' },
   { file: 'materials/nebulaGlass.js', fn: '__mat_nebulaglass', id: 'materials/nebulaGlass' },
   { file: 'materials/toonCel.js', fn: '__mat_tooncel', id: 'materials/toonCel' },
+  { file: 'materials/brushedMetal.js', fn: '__mat_brushed', id: 'materials/brushedMetal' },
+  { file: 'materials/starfield.js', fn: '__mat_starfield', id: 'materials/starfield' },
+  { file: 'materials/plasmaArcs.js', fn: '__mat_plasma', id: 'materials/plasmaArcs' },
 ];
 
 const strip = (relPath, renameApply = null) => {

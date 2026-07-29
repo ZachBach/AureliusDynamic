@@ -14,18 +14,21 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | `fresnel/horizonBand` | ④ | 3.06 (3.24) | 0.3/0.6 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `fresnel/rimLight` | ② | 0.77 (0.91) | 0.4/1.9 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `fresnel/terminator` | ② | 0.76 (0.88) | 0.5/1.6 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
+| `fresnel/thinFilm` | ② | 0.80 (1.01) | 1.7/2.5 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 
 - `fresnel/atmosphereShell` — additive fresnel limb ring lit from a light direction, *(src/fresnel/atmosphereShell.js)*
 - `fresnel/fresnel` — view-angle rim term, unifying the four shipped variants *(src/fresnel/fresnel.js)*
 - `fresnel/horizonBand` — fake-chrome horizon reflections: sine bands across a normal *(src/fresnel/horizonBand.js)*
 - `fresnel/rimLight` — colored silhouette light, optionally biased toward a *(src/fresnel/rimLight.js)*
 - `fresnel/terminator` — day/night shading terms from a surface direction and a light *(src/fresnel/terminator.js)*
+- `fresnel/thinFilm` — soap-bubble/oil-slick iridescence approximation: the fresnel *(src/fresnel/thinFilm.js)*
 
 ## materials
 
 | Node | Class | gpuMs (p95) | wall wgpu/wgl2 | Impl wgsl/glsl | Parity | Mobile | Verified |
 |---|---|---|---|---|---|---|---|
 | `materials/auroraSilk` | ⑤ | 45.73 (47.36) | 0.4/1.2 | native/native | ✓ 0.001% | 34.3 ms ⚠ | 2026-07-29 |
+| `materials/brushedMetal` | ④ | 5.23 (5.51) | 0.4/0.4 | native/native | ✓ 0.014% | 16.7 ms | 2026-07-29 |
 | `materials/dissolve` | ⑤ | 13.64 (14.44) | 0.4/0.4 | native/native | ✓ 0.001% | 16.7 ms | 2026-07-29 |
 | `materials/forceField` | ③ | 1.83 (2.68) | 0.5/3.8 | native/native | ✓ 0.027% | 16.7 ms | 2026-07-29 |
 | `materials/glitch` | ④ | 5.07 (5.81) | 0.4/1.7 | native/native | ✓ 0.005% | 16.7 ms | 2026-07-29 |
@@ -35,10 +38,13 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | `materials/magma` | ⑤ | 21.01 (24.06) | 0.4/0.7 | native/native | ✓ 0.01% | 16.7 ms | 2026-07-29 |
 | `materials/marble` | ⑤ | 21.00 (24.46) | 0.5/0.9 | native/native | ✓ 0.011% | 16.7 ms | 2026-07-29 |
 | `materials/nebulaGlass` | ⑤ | 18.00 (23.06) | 0.4/1.4 | native/native | ✓ 0.067% | 16.7 ms | 2026-07-29 |
-| `materials/shield` | ⑤ | 25.35 (25.94) | 0.4/0.4 | native/native | ✓ 0.097% | 19.3 ms | 2026-07-29 |
+| `materials/plasmaArcs` | ⑤ | 16.38 (19.64) | 0.4/0.4 | native/native | ✓ 0.017% | 16.7 ms | 2026-07-29 |
+| `materials/shield` | ⑤ | 16.82 (18.41) | 0.4/0.4 | fallback/fallback | ✓ 0.073% | 16.7 ms | 2026-07-29 |
+| `materials/starfield` | ④ | 5.05 (5.29) | 0.4/0.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `materials/toonCel` | ③ | 1.41 (1.76) | 1.4/3.1 | native/native | ✓ 0.008% | 16.7 ms | 2026-07-29 |
 
 - `materials/auroraSilk` — AURORA SILK — the hero's aurora curtain draped over geometry via uv space: *(src/materials/auroraSilk.js)*
+- `materials/brushedMetal` — BRUSHED METAL — anisotropically stretched noise grooves shearing a *(src/materials/brushedMetal.js)*
 - `materials/forceField` — FORCE FIELD — hex lattice + fresnel shell + impact pulse rings. The *(src/materials/forceField.js)*
 - `materials/glitch` — row-hashed uv tears over posterized noise bands, scanlines, and *(src/materials/glitch.js)*
 - `materials/hologram` — fresnel shell + traveling scanlines + flicker. Library rebuild *(src/materials/hologram.js)*
@@ -47,13 +53,16 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 - `materials/magma` — domain-warped fbm through the fire ramp, with a cooling crust and *(src/materials/magma.js)*
 - `materials/marble` — domain-warped fbm veins through an N-stop ramp, with a polish *(src/materials/marble.js)*
 - `materials/nebulaGlass` — NEBULA GLASS — the deep-space backdrop recipe sealed inside a fresnel *(src/materials/nebulaGlass.js)*
+- `materials/plasmaArcs` — PLASMA ARCS — ridged-fbm filaments thresholded into crawling lightning, *(src/materials/plasmaArcs.js)*
 - `materials/shield` — worley cell lattice + fresnel rim + radial pulse. Library rebuild *(src/materials/shield.js)*
+- `materials/starfield` — hash-cell stars (worley machinery pointed at points of light): *(src/materials/starfield.js)*
 - `materials/toonCel` — TOON CEL — posterized lambert bands from a fixed key light, gold-on-slate, *(src/materials/toonCel.js)*
 
 ## noise
 
 | Node | Class | gpuMs (p95) | wall wgpu/wgl2 | Impl wgsl/glsl | Parity | Mobile | Verified |
 |---|---|---|---|---|---|---|---|
+| `noise/curl` | ⑤ | 27.92 (28.93) | 0.3/0.3 | native/native | ✓ 0% | 36.5 ms ⚠ | 2026-07-29 |
 | `noise/fbm` | ④ | 3.43 (3.57) | 0.4/0.5 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `noise/fbm@fallback` | ③ | 1.83 (1.91) | 0.3/0.9 | fallback/fallback | ✓ 0% | 16.6 ms | 2026-07-29 |
 | `noise/gradientNoise` | ③ | 1.12 (1.17) | 0.4/1.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
@@ -67,6 +76,7 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | `noise/worleyF1F2` | ⑤ | 11.17 (11.56) | 0.3/0.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `noise/worleyF1F2@fallback` | ④ | 3.58 (3.63) | 0.3/0.5 | fallback/fallback | ✓ 0% | 16.7 ms | 2026-07-29 |
 
+- `noise/curl` — divergence-free curl noise via central differences over three *(src/noise/curl.js)*
 - `noise/fbm` — fractal Brownian motion over a base noise. Native path is the mx *(src/noise/fbm.js)*
 - `noise/gradientNoise` — 3D perlin-style noise. Native path is the mx adapter *(src/noise/gradientNoise.js)*
 - `noise/ridgedFbm` — fbm with per-octave ridge transform (1−|n|)²: sharp crests *(src/noise/ridgedFbm.js)*
@@ -92,6 +102,7 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | `pattern/spriteDisc` | ② | 0.47 (0.55) | 0.5/1.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `pattern/streaks` | ② | 0.54 (0.60) | 0.9/1.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `pattern/stripes` | ② | 0.46 (0.52) | 0.6/1.6 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
+| `pattern/truchet` | ② | 0.51 (0.63) | 0.5/2.3 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `pattern/vignette` | ② | 0.46 (0.50) | 1.5/1.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 
 - `pattern/curtain` — aurora curtain: an fbm ridgeline the glow hangs from, hard top *(src/pattern/curtain.js)*
@@ -105,6 +116,7 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 - `pattern/spriteDisc` — spriteDisc / spriteDiamond — per-sprite alpha falloffs from sprite uv, *(src/pattern/spriteDisc.js)*
 - `pattern/streaks` — angular lobes around a center: the sun's corona streamers *(src/pattern/streaks.js)*
 - `pattern/stripes` — stripes / checker — the elementary tilings. *(src/pattern/stripes.js)*
+- `pattern/truchet` — quarter-circle arc tiles with hash-flipped orientation: the *(src/pattern/truchet.js)*
 - `pattern/vignette` — radial edge fade over centered uv, as shipped on the nebula *(src/pattern/vignette.js)*
 
 ## ramp
@@ -133,6 +145,7 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 
 Doc'd in source; no registry entry (JS helpers, adapters, or pending bench wiring):
 
+- `src/gallery.js` — gallery — the Lab's node-gallery drawer: curated live visualizers for the
 - `src/materials/dissolveMat.js` — DISSOLVE — noise-threshold cutout with a glowing ember edge. Library
 - `src/noise/adapters/mx.js` — MaterialX adapters — the ONLY file allowed to touch mx_* symbols
 - `src/noise/hashChannels.js` — hashChannels — n independent deterministic hash channels from one seed.
