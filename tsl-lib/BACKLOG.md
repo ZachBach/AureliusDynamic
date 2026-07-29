@@ -57,35 +57,37 @@ Promote, don't rewrite. **COMPLETE 2026-07-27 — deliverable: [docs/INVENTORY.m
 - [x] Pure-TSL fallbacks: valueNoise-based fbm; 27-neighborhood worley F1/F2 (functional two-minima tracking). Both bench-forced and parity-gated (`noise/fbm@fallback`, `noise/worleyF1F2@fallback`).
 - [x] `hashChannels(seed, n)` — `CHANNEL_STRIDE = 7919`, frozen; determinism contract documented (cross-pass identity). Exercised via the hash-lattice fallbacks.
 - [ ] Value noise 2D (3D shipped: `noise/valueNoise`).
-- [ ] Gradient (perlin-style) 3D public node (`mxGradientNoise` adapter exists; fallback + bench entry pending).
+- [x] Gradient (perlin-style) 3D — `noise/gradientNoise`, mx-native + pure-TSL hashed-gradient fallback, both parity-gated (Wave 2).
 - [x] `fbm(p, {octaves, lacunarity, gain, base})` — mx-native + fallback, matching mx's unnormalized amplitude sum.
-- [ ] Ridged fbm (the aurora `ridge` shape, generalized).
+- [x] Ridged fbm — `noise/ridgedFbm` (Wave 2).
 - [x] Worley F1 + F1F2 — `noise/worleyF1`, `noise/worleyF1F2`; F2−F1 native-confirmed.
 - [x] `trigLattice` / `trigFlow` — the census-discovered cost-class-① tier (`noise/trigLattice` verified; terra ocean/land preset in the bench).
-- [ ] `warp(p, noiseFn, amp)` domain-warp helper.
-- [ ] Turbulence (|fbm|) variant.
+- [x] `warp(p, {amp, freq, octaves})` — `noise/warp` (marble verified; honest cost: ~33–39 ms live at 4 fbm evals — expect class ④).
+- [x] Turbulence (|noise| fbm) — `noise/turbulence` (Wave 2).
 - [ ] Curl noise (future particle/flow work; the hero will want it).
 
 ### Ramp tools — `src/ramp/`
-- [ ] `ramp(stops[])` N-stop gradient.
+- [x] `ramp(stops[])` N-stop gradient — `ramp/ramp` (Wave 2).
 - [x] `fireRamp(b)` — `ramp/fireRamp` verified; 0.95 clamp inside the node, sweep confirms no inversion at gain 3.4.
-- [ ] Cosine palette (IQ: `a + b·cos(2π(c·t+d))`).
-- [ ] Posterize / quantize.
+- [x] Cosine palette — `ramp/cosinePalette` with 'aurelius'/'ember' presets (Wave 2).
+- [x] Posterize / quantize — `ramp/posterize` (Wave 2).
 - [x] `remap(x, inLo, inHi, outLo, outHi)` (`ramp/remap.js`; exercised in the fire bench entry). Smoothstep-chain helper pending.
 
 ### Fresnel / rim kit — `src/fresnel/`
 - [x] `fresnel({power, bias, facing})` — all four shipped variants unified (`abs` / `front` / `z`); `fresnel/fresnel` verified on sphere.
-- [ ] Rim light (colored, direction-biased).
-- [ ] Fake-chrome horizon band (LIQUID METAL's `band`, generalized: axis, frequency, shear field).
-- [ ] Atmosphere shell (Terra limb ring: additive fresnel lit from a light-direction uniform).
+- [x] Rim light — `fresnel/rimLight` (colored, direction-biased) (Wave 2).
+- [x] Horizon band — `fresnel/horizonBand` (axis/freq/shear/clock) (Wave 2).
+- [x] Atmosphere shell — `fresnel/atmosphereShell` → `{color, opacity}` (Wave 2).
+- [x] Terminator — `fresnel/terminator` → `{day, shade, night}` (Wave 2; verified with trigLattice continents + night-side city glow).
 - [ ] Thin-film iridescence approx (stretch).
 
 ### Pattern generators — `src/pattern/`
 - [x] `scanlines(axisPos, {freq, speed, sharpness, clock})` — verified.
 - [x] `radialPulse(p, {freq, speed, clock})` — verified.
-- [ ] Grid + hex-grid lines.
-- [ ] Stripes / checker.
-- [ ] SDF minis: circle, box, line + smooth union/subtract (HUD-style materials).
+- [x] Grid + hex-grid — `pattern/grid` (gridLines + hexGrid → `{edge, dist}`; hex-metric orientation bug caught visually and fixed — parity can't see deterministic wrongness) (Wave 2).
+- [x] Stripes / checker — `pattern/stripes` (Wave 2).
+- [x] SDF minis — `pattern/sdf`: sdCircle/sdBox/sdSegment + opSmoothUnion/Subtract + sdFill/sdOutline (Wave 2).
+- [x] Streaks + curtain (census additions) — `pattern/streaks`, `pattern/curtain` → `{glow, edge}` parameterizing both shipped aurora layers (Wave 2).
 - [x] `dissolve(n, threshold, {edgeWidth})` → `{alive, edge}` — verified with animated threshold.
 - [x] `flicker` + `flash` (spiky sibling with waxing envelope — the Terra lightning pair) — verified.
 - [x] `vignette` + `spriteDisc`/`spriteDiamond` (census additions) — verified.
@@ -95,7 +97,7 @@ Promote, don't rewrite. **COMPLETE 2026-07-27 — deliverable: [docs/INVENTORY.m
 - [x] `palette.js` — all four census groups (brand/solar/terra/nebula) as `color()` nodes + raw `HEX` export; bench visualizations consume it (zero hex literals in entries).
 - [x] `latlonUv(dir)` — verified on sphere (`util/latlonUv`).
 - [x] `makeFlux()` + `spherePoint()` — implemented with doc blocks; bench-visual entries pending (exercised implicitly).
-- [ ] `spinY`, `luminanceScale` (JS helper) — pending.
+- [x] `spinY`, `luminanceScale` (JS helper) — shipped Wave 2 (doc'd; trivial, no bench entries).
 
 ## 4 · Phase 3 — Dual-backend verification harness — `bench/`
 

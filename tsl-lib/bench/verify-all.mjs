@@ -27,7 +27,7 @@ const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const FREEZE = 2.5;           // parity clock (seconds)
 const MOBILE_BUDGET_MS = 20;  // advisory threshold
 
-const nodeNames = process.argv[2] ? [process.argv[2]] : Object.keys(nodes);
+const nodeNames = process.argv.length > 2 ? process.argv.slice(2) : Object.keys(nodes);
 mkdirSync(join(BENCH, 'shots'), { recursive: true });
 
 const server = spawn('python', ['-m', 'http.server', String(PORT)], { cwd: LIB, stdio: 'ignore' });

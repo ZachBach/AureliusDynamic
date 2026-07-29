@@ -20,6 +20,22 @@ import { dissolve, source as dissolveSource } from '../src/pattern/dissolve.js';
 import { flicker, flash, source as flickerSource } from '../src/pattern/flicker.js';
 import { vignette, source as vignetteSource } from '../src/pattern/vignette.js';
 import { spriteDisc, spriteDiamond, source as discSource } from '../src/pattern/spriteDisc.js';
+import { gradientNoise, gradientImpl, source as gradientSource } from '../src/noise/gradientNoise.js';
+import { ridgedFbm, source as ridgedSource } from '../src/noise/ridgedFbm.js';
+import { warp, source as warpSource } from '../src/noise/warp.js';
+import { turbulence, source as turbSource } from '../src/noise/turbulence.js';
+import { ramp, source as rampSource } from '../src/ramp/ramp.js';
+import { cosinePalette, source as cosineSource } from '../src/ramp/cosinePalette.js';
+import { posterize, source as posterizeSource } from '../src/ramp/posterize.js';
+import { terminator, source as terminatorSource } from '../src/fresnel/terminator.js';
+import { rimLight, source as rimSource } from '../src/fresnel/rimLight.js';
+import { horizonBand, source as horizonSource } from '../src/fresnel/horizonBand.js';
+import { atmosphereShell, source as atmoSource } from '../src/fresnel/atmosphereShell.js';
+import { gridLines, hexGrid, source as gridSource } from '../src/pattern/grid.js';
+import { stripes, checker, source as stripesSource } from '../src/pattern/stripes.js';
+import { sdCircle, sdBox, opSmoothUnion, sdFill, sdOutline, source as sdfSource } from '../src/pattern/sdf.js';
+import { streaks, source as streaksSource } from '../src/pattern/streaks.js';
+import { curtain, source as curtainSource } from '../src/pattern/curtain.js';
 
 export const nodes = {
   'noise-fbm': {
@@ -221,6 +237,261 @@ export const nodes = {
       return { impl: 'native' };
     },
     source: discSource,
+  },
+
+  'noise-gradient': {
+    id: 'noise/gradientNoise',
+    sweep: [{ scale: 2 }, { scale: 3 }, { scale: 5 }],
+    apply(TSL, mat, { scale = 3 } = {}) {
+      const { brand } = palette(TSL);
+      const n = gradientNoise(TSL, TSL.positionLocal.mul(scale)).mul(0.5).add(0.5);
+      mat.colorNode = brand.silver.mul(n);
+      return { impl: gradientImpl(TSL) };
+    },
+    source: gradientSource,
+  },
+
+  'noise-gradient-fallback': {
+    id: 'noise/gradientNoise@fallback',
+    sweep: [{ scale: 3 }],
+    apply(TSL, mat, { scale = 3 } = {}) {
+      const { brand } = palette(TSL);
+      const n = gradientNoise(TSL, TSL.positionLocal.mul(scale), { impl: 'fallback' }).mul(0.5).add(0.5);
+      mat.colorNode = brand.silver.mul(n);
+      return { impl: 'fallback' };
+    },
+    source: gradientSource,
+  },
+
+  'noise-ridged': {
+    id: 'noise/ridgedFbm',
+    sweep: [{ octaves: 2 }, { octaves: 4 }, { octaves: 5 }],
+    apply(TSL, mat, { clock, octaves = 4 } = {}) {
+      const { brand } = palette(TSL);
+      const p = TSL.positionLocal.mul(2).add(TSL.vec3(0, 0, clock.mul(0.1)));
+      const r = ridgedFbm(TSL, p, { octaves });
+      mat.colorNode = brand.cyan.mul(r.pow(3).mul(1.4)).add(brand.blue.mul(r.mul(0.3)));
+      return { impl: 'native' };
+    },
+    source: ridgedSource,
+  },
+
+  'noise-warp': {
+    id: 'noise/warp',
+    sweep: [{ amp: 0.3 }, { amp: 0.8 }, { amp: 1.4 }],
+    apply(TSL, mat, { clock, amp = 0.8 } = {}) {
+      const { brand } = palette(TSL);
+      const p = TSL.positionLocal.mul(2).add(TSL.vec3(clock.mul(0.08), 0, 0));
+      const veins = fbm(TSL, warp(TSL, p, { amp }), { octaves: 4 }).mul(0.5).add(0.5);
+      mat.colorNode = TSL.mix(brand.slate, brand.ice, veins);
+      return { impl: 'native' };
+    },
+    source: warpSource,
+  },
+
+  'noise-turbulence': {
+    id: 'noise/turbulence',
+    sweep: [{ octaves: 2 }, { octaves: 4 }, { octaves: 6 }],
+    apply(TSL, mat, { clock, octaves = 4 } = {}) {
+      const { brand } = palette(TSL);
+      const p = TSL.positionLocal.mul(2.5).add(TSL.vec3(0, clock.mul(0.12), 0));
+      mat.colorNode = brand.mist.mul(turbulence(TSL, p, { octaves }));
+      return { impl: 'native' };
+    },
+    source: turbSource,
+  },
+
+  'ramp-stops': {
+    id: 'ramp/ramp',
+    sweep: [{ stops: 3 }, { stops: 4 }],
+    apply(TSL, mat, { stops = 4 } = {}) {
+      const { solar, brand } = palette(TSL);
+      const x = TSL.uv().x;
+      const set = stops === 3
+        ? [[0.1, brand.slate], [0.5, solar.mid], [0.9, solar.hot]]
+        : [[0.05, brand.void], [0.35, solar.ember], [0.65, solar.mid], [0.95, solar.hot]];
+      mat.colorNode = ramp(TSL, x, set);
+      return { impl: 'native' };
+    },
+    source: rampSource,
+  },
+
+  'ramp-cosine': {
+    id: 'ramp/cosinePalette',
+    sweep: [{ preset: 'aurelius' }, { preset: 'ember' }, {}],
+    apply(TSL, mat, { clock, preset } = {}) {
+      const n = fbm(TSL, TSL.positionLocal.mul(1.8).add(TSL.vec3(clock.mul(0.1), 0, 0)), { octaves: 3 })
+        .mul(0.3).add(TSL.uv().x);
+      mat.colorNode = cosinePalette(TSL, n, preset ? { preset } : {});
+      return { impl: 'native' };
+    },
+    source: cosineSource,
+  },
+
+  'ramp-posterize': {
+    id: 'ramp/posterize',
+    sweep: [{ steps: 3 }, { steps: 6 }],
+    apply(TSL, mat, { clock, steps = 4 } = {}) {
+      const { brand } = palette(TSL);
+      const n = fbm(TSL, TSL.positionLocal.mul(2).add(TSL.vec3(clock.mul(0.1), 0, 0)), { octaves: 3 })
+        .mul(0.5).add(0.5);
+      mat.colorNode = TSL.mix(brand.slate, brand.gold, posterize(TSL, n, { steps }));
+      return { impl: 'native' };
+    },
+    source: posterizeSource,
+  },
+
+  'fresnel-rim': {
+    id: 'fresnel/rimLight',
+    parityGeo: 'sphere',
+    parityTolerance: { maxDiffPct: 1.0 },
+    sweep: [{ biasAmount: 0 }, { biasAmount: 0.9 }],
+    apply(TSL, mat, { biasAmount = 0.6 } = {}) {
+      const { brand } = palette(TSL);
+      const L = TSL.vec3(0.7, 0.5, 0.5).normalize();
+      mat.colorNode = brand.blue.mul(0.15)
+        .add(rimLight(TSL, { color: brand.ice, power: 3, dir: L, biasAmount }));
+      return { impl: 'native' };
+    },
+    source: rimSource,
+  },
+
+  'fresnel-horizon': {
+    id: 'fresnel/horizonBand',
+    parityGeo: 'sphere',
+    parityTolerance: { maxDiffPct: 1.0 },
+    sweep: [{ freq: 5.5 }, { freq: 9 }],
+    apply(TSL, mat, { clock, freq = 5.5 } = {}) {
+      const { brand } = palette(TSL);
+      const swirl = fbm(TSL, TSL.positionWorld.mul(1.4), { octaves: 3 });
+      const band = horizonBand(TSL, { freq, shear: swirl, clock });
+      mat.colorNode = TSL.mix(brand.void, brand.silver, band.mul(0.7))
+        .add(rimLight(TSL, { color: brand.ice, power: 6 }).mul(0.8));
+      return { impl: 'native' };
+    },
+    source: horizonSource,
+  },
+
+  'fresnel-atmosphere': {
+    id: 'fresnel/atmosphereShell',
+    parityGeo: 'sphere',
+    parityTolerance: { maxDiffPct: 1.0 },
+    sweep: [{ power: 2.5 }, { power: 3.5 }],
+    apply(TSL, mat, { power = 3.5 } = {}) {
+      const L = TSL.vec3(0.75, 0.35, 0.55).normalize();
+      const atmo = atmosphereShell(TSL, L, { power });
+      mat.transparent = true;
+      mat.blending = 2; // THREE.AdditiveBlending
+      mat.depthWrite = false;
+      mat.colorNode = atmo.color;
+      mat.opacityNode = atmo.opacity;
+      return { impl: 'native' };
+    },
+    source: atmoSource,
+  },
+
+  'fresnel-terminator': {
+    id: 'fresnel/terminator',
+    parityGeo: 'sphere',
+    parityTolerance: { maxDiffPct: 1.0 },
+    sweep: [{ floor: 0.18 }, { floor: 0.4 }],
+    apply(TSL, mat, { floor = 0.18 } = {}) {
+      const { terra } = palette(TSL);
+      const dir = TSL.positionLocal.normalize();
+      const L = TSL.vec3(0.8, 0.25, 0.5).normalize();
+      const { shade, night } = terminator(TSL, dir, L, { floor });
+      const land = TSL.smoothstep(0.05, 0.45, trigLattice(TSL, dir, { terms: 3, freq: 3 }));
+      mat.colorNode = TSL.mix(terra.ocean, terra.land, land).mul(shade)
+        .add(terra.city.mul(land).mul(night).mul(0.7));
+      return { impl: 'native' };
+    },
+    source: terminatorSource,
+  },
+
+  'pattern-grid': {
+    id: 'pattern/grid',
+    sweep: [{ cells: 6 }, { cells: 12 }],
+    apply(TSL, mat, { cells = 8 } = {}) {
+      const { brand } = palette(TSL);
+      const line = gridLines(TSL, TSL.uv(), { cells });
+      mat.colorNode = brand.cyan.mul(line).add(brand.blue.mul(0.12));
+      return { impl: 'native' };
+    },
+    source: gridSource,
+  },
+
+  'pattern-hex': {
+    id: 'pattern/hexGrid',
+    sweep: [{ cells: 4 }, { cells: 7 }],
+    apply(TSL, mat, { cells = 6 } = {}) {
+      const { brand } = palette(TSL);
+      const { edge, dist } = hexGrid(TSL, TSL.uv().sub(0.5), { cells });
+      mat.colorNode = brand.cyan.mul(edge)
+        .add(brand.blue.mul(TSL.smoothstep(0.5, 0.0, dist).mul(0.25)));
+      return { impl: 'native' };
+    },
+    source: gridSource,
+  },
+
+  'pattern-stripes': {
+    id: 'pattern/stripes',
+    sweep: [{ duty: 0.3 }, { duty: 0.6 }],
+    apply(TSL, mat, { duty = 0.5 } = {}) {
+      const { brand } = palette(TSL);
+      const pick = TSL.step(0.5, TSL.uv().y); // top: stripes · bottom: checker
+      const s = stripes(TSL, TSL.uv().x, { freq: 8, duty });
+      const c = checker(TSL, TSL.uv(), { freq: 6 });
+      mat.colorNode = brand.gold.mul(s.mul(pick))
+        .add(brand.blue.mul(c.mul(pick.oneMinus()).mul(0.8)));
+      return { impl: 'native' };
+    },
+    source: stripesSource,
+  },
+
+  'pattern-sdf': {
+    id: 'pattern/sdf',
+    sweep: [{ k: 0.05 }, { k: 0.2 }, { k: 0.45 }],
+    apply(TSL, mat, { k = 0.2 } = {}) {
+      const { brand } = palette(TSL);
+      const p = TSL.uv().sub(0.5).mul(2);
+      const d = opSmoothUnion(TSL,
+        sdCircle(TSL, p.add(TSL.vec2(0.25, -0.1)), 0.35),
+        sdBox(TSL, p.sub(TSL.vec2(0.3, 0.15)), 0.3, 0.2), k);
+      mat.colorNode = brand.cyan.mul(sdOutline(TSL, d, { width: 0.02 }))
+        .add(brand.blue.mul(sdFill(TSL, d).mul(0.35)));
+      return { impl: 'native' };
+    },
+    source: sdfSource,
+  },
+
+  'pattern-streaks': {
+    id: 'pattern/streaks',
+    sweep: [{ lobes: 3 }, { lobes: 6 }],
+    apply(TSL, mat, { clock, lobes = 3 } = {}) {
+      const { solar } = palette(TSL);
+      const q = TSL.uv().sub(0.5).mul(2);
+      const ang = TSL.atan(q.y, q.x);
+      const radial = TSL.smoothstep(1.0, 0.1, q.length());
+      const st = streaks(TSL, ang, { lobes, drift: clock.mul(0.3) });
+      mat.colorNode = solar.mid.mul(radial.mul(st))
+        .add(solar.hot.mul(TSL.smoothstep(0.35, 0.0, q.length())));
+      return { impl: 'native' };
+    },
+    source: streaksSource,
+  },
+
+  'pattern-curtain': {
+    id: 'pattern/curtain',
+    sweep: [{ decay: 4.6, ridgeBase: 0.62 }, { decay: 5.5, ridgeBase: 0.76 }],
+    apply(TSL, mat, { clock, decay = 4.6, ridgeBase = 0.62 } = {}) {
+      const { brand } = palette(TSL);
+      const { glow, edge } = curtain(TSL, TSL.uv(), { decay, ridgeBase, clock: clock.mul(0.05) });
+      mat.colorNode = brand.cyan.mul(glow.mul(1.15))
+        .add(brand.blue.mul(glow.mul(0.5)))
+        .add(brand.gold.mul(edge.mul(0.9)));
+      return { impl: 'native' };
+    },
+    source: curtainSource,
   },
 
   'util-latlon': {
