@@ -135,16 +135,16 @@ Promote, don't rewrite. **COMPLETE 2026-07-27 — deliverable: [docs/INVENTORY.m
 
 ## 7 · Phase 6 — New materials (prove the library)
 
-Each ships Lab-first: source visible, frame time attached, built only from library nodes.
+**COMPLETE 2026-07-29** — all eight shipped Lab-first (12 chips live on both backends, zero console errors), library nodes only, generated sources, registry badges. Bench parity ≤0.067%.
 
-- [ ] **MAGMA** — fireRamp + domain-warped fbm + emissive crack edges.
-- [ ] **ICE** — fresnel + worley cracks + depth tint.
-- [ ] **FORCE FIELD** — hex grid + fresnel + slider-linked impact pulse.
-- [ ] **GLITCH** — scanlines + posterize + hash-row uv tear.
-- [ ] **MARBLE** — domain-warped fbm veins + polish fresnel.
-- [ ] **AURORA SILK** — ridged-fbm curtain as a material (reuses the aurora recipe).
-- [ ] **NEBULA GLASS** — dual-fbm veil + fresnel (reuses the backdrop recipe).
-- [ ] **TOON CEL** — quantize ramp + rim.
+- [x] **MAGMA** ⑤ 21.0 ms — warp+fbm through fireRamp, obsidian crust, ember crack edges (gold magma — on brand).
+- [x] **ICE** ⑤ 11.5 ms — **deliberately uses the pure-TSL worley fallback** (faster than mx native: the tiered impl system earning its keep, noted in its source snippet).
+- [x] **FORCE FIELD** ③ 1.83 ms — the Wave-2 hexGrid + fresnel + impact pulses.
+- [x] **GLITCH** ④ 5.07 ms — row-hashed uv tears, stutter-quantized reroll, posterized bands, slice flashes.
+- [x] **MARBLE** ⑤ 21.0 ms — warp+fbm veins through a 4-stop ramp, gold seams, polish fresnel.
+- [x] **AURORA SILK** ⑤ 45.7 ms — two curtain layers over uv space; the Lab's most expensive material and honestly badged as such (optimization candidate: fewer curtain octaves).
+- [x] **NEBULA GLASS** ⑤ 18.0 ms — the backdrop's dual-fbm recipe in a fresnel shell.
+- [x] **TOON CEL** ③ 1.41 ms — 3-step posterized lambert, ink outline, biased rim.
 - [ ] Stretch: brushed-metal anisotropy, starfield, plasma arcs.
 
 ## 8 · Later / stretch

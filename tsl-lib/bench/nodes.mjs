@@ -40,6 +40,14 @@ import * as matHologram from '../src/materials/hologram.js';
 import * as matShield from '../src/materials/shield.js';
 import * as matLiquid from '../src/materials/liquidMetal.js';
 import * as matDissolve from '../src/materials/dissolveMat.js';
+import * as matMagma from '../src/materials/magma.js';
+import * as matIce from '../src/materials/ice.js';
+import * as matForceField from '../src/materials/forceField.js';
+import * as matGlitch from '../src/materials/glitch.js';
+import * as matMarble from '../src/materials/marble.js';
+import * as matAuroraSilk from '../src/materials/auroraSilk.js';
+import * as matNebulaGlass from '../src/materials/nebulaGlass.js';
+import * as matToonCel from '../src/materials/toonCel.js';
 
 // material modules share the bench entry contract directly
 const materialEntry = (id, mod, tolerance = 1.5) => ({
@@ -512,6 +520,14 @@ export const nodes = {
   'mat-shield': materialEntry('materials/shield', matShield),
   'mat-liquidmetal': materialEntry('materials/liquidMetal', matLiquid),
   'mat-dissolve': materialEntry('materials/dissolve', matDissolve),
+  'mat-magma': materialEntry('materials/magma', matMagma),
+  'mat-ice': materialEntry('materials/ice', matIce),
+  'mat-forcefield': materialEntry('materials/forceField', matForceField),
+  'mat-glitch': materialEntry('materials/glitch', matGlitch),
+  'mat-marble': materialEntry('materials/marble', matMarble),
+  'mat-aurorasilk': materialEntry('materials/auroraSilk', matAuroraSilk),
+  'mat-nebulaglass': materialEntry('materials/nebulaGlass', matNebulaGlass),
+  'mat-tooncel': materialEntry('materials/toonCel', matToonCel),
 
   'util-latlon': {
     id: 'util/latlonUv',

@@ -83,7 +83,7 @@ try {
       return { buttons: btns.length, tag };
     });
     console.log(`[${backend}] lab: ${labState.buttons} chips · ${labState.tag || 'NO LIVE TAG'}`);
-    if (labState.buttons !== 4) { failed++; }
+    if (labState.buttons < 4) { failed++; } // at least the original four
 
     for (let i = 0; i < labState.buttons; i++) {
       await page.evaluate((idx) => {

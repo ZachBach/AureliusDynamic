@@ -25,14 +25,30 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 
 | Node | Class | gpuMs (p95) | wall wgpu/wgl2 | Impl wgsl/glsl | Parity | Mobile | Verified |
 |---|---|---|---|---|---|---|---|
+| `materials/auroraSilk` | ⑤ | 45.73 (47.36) | 0.4/1.2 | native/native | ✓ 0.001% | 34.3 ms ⚠ | 2026-07-29 |
 | `materials/dissolve` | ⑤ | 13.64 (14.44) | 0.4/0.4 | native/native | ✓ 0.001% | 16.7 ms | 2026-07-29 |
+| `materials/forceField` | ③ | 1.83 (2.68) | 0.5/3.8 | native/native | ✓ 0.027% | 16.7 ms | 2026-07-29 |
+| `materials/glitch` | ④ | 5.07 (5.81) | 0.4/1.7 | native/native | ✓ 0.005% | 16.7 ms | 2026-07-29 |
 | `materials/hologram` | ③ | 1.47 (1.88) | 0.4/2.7 | native/native | ✓ 0.019% | 16.7 ms | 2026-07-29 |
+| `materials/ice` | ⑤ | 11.51 (13.36) | 0.4/0.9 | fallback/fallback | ✓ 0.001% | 16.7 ms | 2026-07-29 |
 | `materials/liquidMetal` | ④ | 5.21 (5.45) | 0.3/0.4 | native/native | ✓ 0.025% | 16.7 ms | 2026-07-29 |
+| `materials/magma` | ⑤ | 21.01 (24.06) | 0.4/0.7 | native/native | ✓ 0.01% | 16.7 ms | 2026-07-29 |
+| `materials/marble` | ⑤ | 21.00 (24.46) | 0.5/0.9 | native/native | ✓ 0.011% | 16.7 ms | 2026-07-29 |
+| `materials/nebulaGlass` | ⑤ | 18.00 (23.06) | 0.4/1.4 | native/native | ✓ 0.067% | 16.7 ms | 2026-07-29 |
 | `materials/shield` | ⑤ | 25.35 (25.94) | 0.4/0.4 | native/native | ✓ 0.097% | 19.3 ms | 2026-07-29 |
+| `materials/toonCel` | ③ | 1.41 (1.76) | 1.4/3.1 | native/native | ✓ 0.008% | 16.7 ms | 2026-07-29 |
 
+- `materials/auroraSilk` — AURORA SILK — the hero's aurora curtain draped over geometry via uv space: *(src/materials/auroraSilk.js)*
+- `materials/forceField` — FORCE FIELD — hex lattice + fresnel shell + impact pulse rings. The *(src/materials/forceField.js)*
+- `materials/glitch` — row-hashed uv tears over posterized noise bands, scanlines, and *(src/materials/glitch.js)*
 - `materials/hologram` — fresnel shell + traveling scanlines + flicker. Library rebuild *(src/materials/hologram.js)*
+- `materials/ice` — worley crack veins + fresnel glaze + depth tint. Deliberately uses *(src/materials/ice.js)*
 - `materials/liquidMetal` — LIQUID METAL — fbm vertex ripple + dark chrome via sheared horizon bands. *(src/materials/liquidMetal.js)*
+- `materials/magma` — domain-warped fbm through the fire ramp, with a cooling crust and *(src/materials/magma.js)*
+- `materials/marble` — domain-warped fbm veins through an N-stop ramp, with a polish *(src/materials/marble.js)*
+- `materials/nebulaGlass` — NEBULA GLASS — the deep-space backdrop recipe sealed inside a fresnel *(src/materials/nebulaGlass.js)*
 - `materials/shield` — worley cell lattice + fresnel rim + radial pulse. Library rebuild *(src/materials/shield.js)*
+- `materials/toonCel` — TOON CEL — posterized lambert bands from a fixed key light, gold-on-slate, *(src/materials/toonCel.js)*
 
 ## noise
 

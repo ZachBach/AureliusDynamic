@@ -23,14 +23,25 @@ const registry = JSON.parse(readFileSync(join(LIB, 'docs', 'REGISTRY.json'), 'ut
 // dependency-ordered inline set — everything the four materials reach
 const LIB_FILES = [
   'noise/adapters/mx.js', 'noise/valueNoise.js', 'noise/fbm.js', 'noise/worley.js',
-  'util/palette.js', 'fresnel/fresnel.js', 'fresnel/horizonBand.js',
+  'noise/warp.js',
+  'util/palette.js', 'fresnel/fresnel.js', 'fresnel/horizonBand.js', 'fresnel/rimLight.js',
+  'ramp/fireRamp.js', 'ramp/remap.js', 'ramp/ramp.js', 'ramp/posterize.js',
   'pattern/scanlines.js', 'pattern/radialPulse.js', 'pattern/dissolve.js', 'pattern/flicker.js',
+  'pattern/grid.js', 'pattern/curtain.js',
 ];
 const MATERIALS = [
   { file: 'materials/hologram.js', fn: '__mat_hologram', id: 'materials/hologram' },
   { file: 'materials/shield.js', fn: '__mat_shield', id: 'materials/shield' },
   { file: 'materials/liquidMetal.js', fn: '__mat_liquidmetal', id: 'materials/liquidMetal' },
   { file: 'materials/dissolveMat.js', fn: '__mat_dissolve', id: 'materials/dissolve' },
+  { file: 'materials/magma.js', fn: '__mat_magma', id: 'materials/magma' },
+  { file: 'materials/ice.js', fn: '__mat_ice', id: 'materials/ice' },
+  { file: 'materials/forceField.js', fn: '__mat_forcefield', id: 'materials/forceField' },
+  { file: 'materials/glitch.js', fn: '__mat_glitch', id: 'materials/glitch' },
+  { file: 'materials/marble.js', fn: '__mat_marble', id: 'materials/marble' },
+  { file: 'materials/auroraSilk.js', fn: '__mat_aurorasilk', id: 'materials/auroraSilk' },
+  { file: 'materials/nebulaGlass.js', fn: '__mat_nebulaglass', id: 'materials/nebulaGlass' },
+  { file: 'materials/toonCel.js', fn: '__mat_tooncel', id: 'materials/toonCel' },
 ];
 
 const strip = (relPath, renameApply = null) => {
