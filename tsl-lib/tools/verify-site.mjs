@@ -77,7 +77,7 @@ try {
 
     const labState = await page.evaluate(() => {
       const root = document.querySelector('[data-shaderlab]');
-      const btns = root ? [...root.querySelectorAll('button')] : [];
+      const btns = root ? [...root.querySelectorAll('button:not([data-galchip])')] : [];
       const tag = root ? [...root.querySelectorAll('div')].map((d) => d.textContent)
         .find((t) => t && t.startsWith('LIVE')) : null;
       return { buttons: btns.length, tag };
@@ -87,7 +87,7 @@ try {
 
     for (let i = 0; i < labState.buttons; i++) {
       await page.evaluate((idx) => {
-        document.querySelectorAll('[data-shaderlab] button')[idx].click();
+        document.querySelectorAll('[data-shaderlab] button:not([data-galchip])')[idx].click();
       }, i);
       await sleep(1500);
       const info = await page.evaluate(() => {
@@ -109,6 +109,27 @@ try {
           clip: { x: box.x, y: box.y, width: Math.min(box.width, 900), height: Math.min(box.height, 500) } });
       }
       console.log(`[${backend}] mat${i}: "${info.firstLine.slice(0, 46)}"  ${info.badge.slice(0, 60)}`);
+    }
+
+    // node-gallery drawer (if this bundle has it)
+    const hasDrawer = await page.$('[data-galtoggle]');
+    if (hasDrawer) {
+      await page.click('[data-galtoggle]');
+      await sleep(400);
+      const galCount = (await page.$$('[data-galchip]')).length;
+      for (const idx of [0, galCount - 1]) {
+        await page.evaluate((i) => document.querySelectorAll('[data-galchip]')[i].click(), idx);
+        await sleep(1800); // lazy shader build
+        const info = await page.evaluate(() => {
+          const root = document.querySelector('[data-shaderlab]');
+          const pre = root.querySelector('pre');
+          return { badge: pre.previousElementSibling.textContent,
+                   firstLine: pre.textContent.split('\n')[0] };
+        });
+        console.log(`[${backend}] gallery[${idx}]: "${info.firstLine.slice(0, 40)}"  ${info.badge.slice(0, 64)}`);
+      }
+      console.log(`[${backend}] drawer: ${galCount} node chips`);
+      if (galCount < 20) failed++;
     }
 
     console.log(`[${backend}] console errors: ${errors.length ? errors.join(' | ') : 'none'}`);

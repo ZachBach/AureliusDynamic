@@ -131,7 +131,7 @@ Promote, don't rewrite. **COMPLETE 2026-07-27 — deliverable: [docs/INVENTORY.m
 - [x] Repack workflow: `tools/build-lab.mjs` splices between stable anchors (`const uFlux…` → `// ---- widget DOM`), idempotent; `tools/verify-site.mjs` (committed — scratchpad fragility ended) smokes hero + Lab on both backends with per-chip shots and a console-error gate (`--root=` serves a pre-change baseline from git).
 - [x] Invariants preserved: singleton guard, reattach/purge loop, lazy scroll-armed init untouched (splice ends before the widget DOM); verified live on both backends, zero console errors.
 - [x] Mobile: full widget kept on the 20k tier — one material at a time on a 12.8k-tri knot fits budget (bench mobile advisory 16.7 ms).
-- [x] **DECIDED (2026-07-27):** hybrid UI — the default Lab view stays materials-only (approachable); an advanced drawer holds the registry-generated node gallery (the technical bench). *(Drawer not yet built — deferred to a follow-up wave; materials-only default shipped 2026-07-29.)*
+- [x] **Hybrid UI COMPLETE 2026-07-29**: materials-only default + **node-gallery drawer shipped** — `src/gallery.js` (23 curated visualizers, family-grouped: 9 noise · 4 ramp · 3 fresnel · 7 pattern), collapsible "▸ NODE GALLERY · 23 VERIFIED NODES" toggle, lazy shader builds on first click, sources from module `source()` + badges from registry (family-prefixed), embedded by build-lab (GALLERY_SOURCES map stripped from the inline build). Verified both backends, all 23 render, zero console errors. Bundle now inlines 28 lib files + 12 materials (~34 KB).
 
 ## 7 · Phase 6 — New materials (prove the library)
 
