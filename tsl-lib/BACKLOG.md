@@ -113,25 +113,25 @@ Promote, don't rewrite. **COMPLETE 2026-07-27 — deliverable: [docs/INVENTORY.m
 
 ## 5 · Phase 4 — Cost measurement & documentation
 
-- [ ] `docs/COST-METHOD.md`: warm N frames → median + p95 frame-ms over M frames; fixed stage (800×600, pixelRatio 1). **DECIDED:** one explicitly named baseline device; each record captures GPU, browser version, OS, three.js revision, and test date.
-- [ ] Honest GPU time: investigate three r178 WebGPU timestamp queries (`renderer.resolveTimestampsAsync` / `TimestampQuery`) — the Lab's current number is wall-clock rAF EMA, not GPU cost. Use GPU time where available; annotate wall-clock elsewhere.
-- [ ] Cost record per node: `{ "gpuMs": …, "wallMs": …, "costClass": ①–⑤ }`. **Cost class is the public-facing metric** — raw ms age badly as hardware changes; they stay in the registry as provenance.
-- [ ] Per-node doc-block template (signature / params / cost / backends / example / derived display snippet).
-- [ ] `docs/REGISTRY.json` — **the single source of truth** for verification status, impl (native/fallback per backend), parity, cost record, and verified date. Everything downstream is *generated* from it:
-  `src/**/*.js → bench/verify-all.mjs → REGISTRY.json → NODES.md + Lab badges + node gallery` — nothing the registry can generate is ever hand-edited.
-- [ ] `tools/gen-docs` — generate `docs/NODES.md` from doc blocks + registry.
+- [x] `docs/COST-METHOD.md` (2026-07-29): 30 warm + 150 measured frames, 800×600 px-ratio-1 stage, frozen clock, **vsync-disabled browser** (`--disable-gpu-vsync --disable-frame-rate-limit` — without it wall dt is just the compositor's 16.7 ms). Baseline recorded in `REGISTRY._baseline`: **Intel Gen9 iGPU** — a deliberately humble floor.
+- [x] Honest GPU time (2026-07-29): three r178 `trackTimestamp: true` + `resolveTimestampsAsync(TimestampQuery.RENDER)`, feature-detected. Two protocol gotchas found and handled: awaiting timestamp resolution per-frame forces a GPU sync that inflates wall dt (→ wall and GPU measured in separate phases), and the timestamp counter can accumulate (→ monotonic series detected and differenced). WebGL2 has no timestamp path — wall-only, annotated via `basis`.
+- [x] Cost record per node: `{gpuMs, gpuP95, wallMs{webgpu,webgl2}, mobileWallMs, costClass, basis}`; `CLASS_MS = [0.25, 1, 3, 8]` calibrated to the gen-9 baseline. Cost class is the public metric.
+- [x] Per-node doc-block template — in place across all 30 src files since Wave 1/2 (`@param/@returns/@cost/@backend` + `source()`); doc-block `@cost` lines are design-time estimates, registry is authority (noted in COST-METHOD).
+- [x] `docs/REGISTRY.json` — single source of truth, now with full cost records for all 34 entries + `_baseline` (Intel UHD 630 / gen-9, Chrome 150, Win10, r178, 2026-07-29). Distribution: ② ×17 · ③ ×5 · ④ ×9 · ⑤ ×2 (① unreachable — 0.46 ms stage floor, documented).
+- [x] `tools/gen-docs.mjs` (2026-07-29) — generates `docs/NODES.md`: baseline banner, per-family cost/parity/impl tables, description lines from src doc blocks, plus a "not yet bench-verified" completeness section (currently the 8 helper/adapter files). Regenerate after every verify-all run.
 
 ## 6 · Phase 5 — Lab integration (the public test bench)
 
-- [ ] Rebuild HOLOGRAM, SHIELD, LIQUID METAL, DISSOLVE purely from library nodes; screenshot-parity against the current bundle **before** swapping.
-- [ ] Single source of truth for displayed code: the `<pre>` snippet comes from library metadata, never handwritten strings.
-- [ ] Frame-time attachment: keep the live ms/fps EMA readout, add the registry's measured baseline per material ("≈0.8 ms @ baseline · verified 2026-07-xx").
-- [ ] Backend badges per material: WGSL ✓ / GLSL ✓ + verified date, from the registry.
-- [ ] New-material pipeline: drop a file in `src/materials/` + registry entry + repack = it's live in the Lab. Documented in `tools/README`.
-- [ ] Repack workflow: `tools/pack.py` injects the built lab module into the bundle template; verify with the existing puppeteer smoke scripts (webgpu/webgl2/mobile).
-- [ ] Preserve the bundle's hard-won invariants: `window.__aurShaderLab` singleton guard, the reattach/purge loop against dc-runtime re-renders, lazy scroll-armed init. Refactor must not disturb these.
-- [ ] Mobile: decide Lab behavior on the 20k tier (reduced knot segments vs static fallback).
-- [x] **DECIDED (2026-07-27):** hybrid UI — the default Lab view stays materials-only (approachable); an advanced drawer holds the registry-generated node gallery (the technical bench). 
+**COMPLETE 2026-07-29** — the bundle's Lab now runs the library.
+
+- [x] Four materials rebuilt as `src/materials/*` from library nodes, bench-gated (parity 0.001–0.097%, cost: hologram ③ 1.47 · liquidMetal ④ 5.21 · dissolve ⑤ 13.64 · shield ⑤ 25.35 ms — **optimization lead: shield via the faster pure-TSL worley fallback**). Before/after site shots diff 0.39–0.66% (dissolve 4.07% — moving burn-line artifact; bench parity 0.001% proves the math).
+- [x] Displayed code is generated: `build-lab.mjs` embeds each module's `source()` — the bundle's old handwritten strings are gone.
+- [x] Badges live under the chips: "③ · 1.47 MS @ UHD 630 · WGSL ✓ GLSL ✓ · VERIFIED 2026-07-29" per material, from the registry; live ms/fps EMA readout kept.
+- [x] New-material pipeline documented in `tools/README.md` (5 steps, extract → build-lab → pack → verify-site).
+- [x] Repack workflow: `tools/build-lab.mjs` splices between stable anchors (`const uFlux…` → `// ---- widget DOM`), idempotent; `tools/verify-site.mjs` (committed — scratchpad fragility ended) smokes hero + Lab on both backends with per-chip shots and a console-error gate (`--root=` serves a pre-change baseline from git).
+- [x] Invariants preserved: singleton guard, reattach/purge loop, lazy scroll-armed init untouched (splice ends before the widget DOM); verified live on both backends, zero console errors.
+- [x] Mobile: full widget kept on the 20k tier — one material at a time on a 12.8k-tri knot fits budget (bench mobile advisory 16.7 ms).
+- [x] **DECIDED (2026-07-27):** hybrid UI — the default Lab view stays materials-only (approachable); an advanced drawer holds the registry-generated node gallery (the technical bench). *(Drawer not yet built — deferred to a follow-up wave; materials-only default shipped 2026-07-29.)*
 
 ## 7 · Phase 6 — New materials (prove the library)
 

@@ -20,7 +20,8 @@
   // WebGPU via Dawn even with --disable-features=WebGPU, so the only reliable
   // switch is deleting the adapter.
   window.__bench = { ready: false, error: null, backend: null, frameMs: null,
-                     impl: null, tslKeys: null, revision: null };
+                     impl: null, tslKeys: null, revision: null,
+                     cost: null, costDone: false };
   if (new URLSearchParams(location.search).get('backend') === 'webgl2') {
     Object.defineProperty(navigator, 'gpu', { get: () => undefined });
   }
@@ -44,6 +45,10 @@
   // stops the idle spin and hides the HUD (its backend text would otherwise
   // differ between the two parity shots).
   const freeze = q.get('freeze') !== null ? parseFloat(q.get('freeze')) : null;
+  // cost=1: the COST-METHOD.md protocol — fixed 800x600 stage, 30 warm +
+  // 150 measured frames, GPU timestamps where the device offers them.
+  // Meant to run in a vsync-disabled browser so wall dt is honest.
+  const cost = q.get('cost') === '1';
   const B = window.__bench;
 
   const def = nodes[nodeName];
@@ -59,7 +64,8 @@
     if (!def) throw new Error('unknown node "' + nodeName + '" — have: ' + Object.keys(nodes).join(', '));
     document.getElementById('hud-node').textContent = nodeName + (sweep ? ' · sweep' : '');
 
-    const renderer = new THREE.WebGPURenderer({ canvas: document.getElementById('cv'), antialias: true });
+    const renderer = new THREE.WebGPURenderer({ canvas: document.getElementById('cv'), antialias: true,
+                                                trackTimestamp: cost });
     renderer.setClearColor(0x05070C, 1);
     await renderer.init();
     const backend = renderer.backend && renderer.backend.isWebGPUBackend ? 'webgpu' : 'webgl2';
@@ -96,24 +102,94 @@
 
     const size = () => {
       renderer.setPixelRatio(1);
-      renderer.setSize(innerWidth, innerHeight, false);
-      cam.aspect = innerWidth / innerHeight;
+      if (cost) {
+        renderer.setSize(800, 600, false);
+        cam.aspect = 800 / 600;
+      } else {
+        renderer.setSize(innerWidth, innerHeight, false);
+        cam.aspect = innerWidth / innerHeight;
+      }
       cam.updateProjectionMatrix();
     };
     size();
-    addEventListener('resize', size);
+    if (!cost) addEventListener('resize', size);
 
-    let last = performance.now(), ema = 16.7, tick = 0;
-    renderer.setAnimationLoop(() => {
-      const now = performance.now();
-      ema += (now - last - ema) * 0.05;
-      last = now;
-      if (freeze === null && geoName !== 'quad')
-        for (const m of meshes) { m.rotation.y += 0.004; m.rotation.x += 0.0011; }
-      if ((tick++ & 31) === 0) document.getElementById('hud-ms').textContent = ema.toFixed(1) + ' ms';
-      B.frameMs = ema;
-      renderer.render(scene, cam);
-    });
+    if (cost) {
+      const raf = () => new Promise((r) => requestAnimationFrame(r));
+      const TQ = THREE.TimestampQuery ? THREE.TimestampQuery.RENDER : 'render';
+      const canTs = backend === 'webgpu' && renderer.backend.device &&
+        renderer.backend.device.features && renderer.backend.device.features.has('timestamp-query');
+      (async () => {
+        for (let i = 0; i < 30; i++) { renderer.render(scene, cam); await raf(); } // warm
+        // phase A — wall: pure render+rAF, no timestamp resolution (awaiting
+        // resolveTimestampsAsync forces a GPU sync that inflates wall dt)
+        const wall = [];
+        let prev = performance.now();
+        for (let i = 0; i < 150; i++) {
+          renderer.render(scene, cam);
+          const t = await raf();
+          wall.push(t - prev);
+          prev = t;
+        }
+        // phase B — GPU timestamps (webgpu only), measured separately so the
+        // per-frame sync only pollutes its own discarded wall time
+        let gpu = [];
+        if (canTs) {
+          const raw = [];
+          for (let i = 0; i < 60; i++) {
+            renderer.render(scene, cam);
+            try {
+              await renderer.resolveTimestampsAsync(TQ);
+              raw.push(renderer.info.render.timestamp);
+            } catch (e) { break; }
+            await raf();
+          }
+          // info.render.timestamp may be a running accumulator — detect a
+          // strongly monotonic series and difference it
+          const cumulative = raw.length > 10 && raw[raw.length - 1] > raw[0] * 2 &&
+            raw.every((v, i) => i === 0 || v >= raw[i - 1]);
+          gpu = cumulative ? raw.slice(1).map((v, i) => v - raw[i]) : raw;
+          gpu = gpu.filter((v) => v > 0);
+        }
+        const stat = (a) => {
+          if (!a.length) return null;
+          const s = [...a].sort((x, y) => x - y);
+          return { median: +s[Math.floor(s.length * 0.5)].toFixed(3),
+                   p95: +s[Math.floor(s.length * 0.95)].toFixed(3) };
+        };
+        // combine adapter info (often just an architecture slug like "gen-9")
+        // with the WebGL renderer string for a human-recognizable name
+        let adapterName = null, glName = null;
+        if (navigator.gpu) {
+          try {
+            const ad = await navigator.gpu.requestAdapter();
+            const inf = ad && ad.info;
+            adapterName = inf && (inf.description || [inf.vendor, inf.architecture].filter(Boolean).join(' ')) || null;
+          } catch (e) { /* fall through */ }
+        }
+        try {
+          const gl = document.createElement('canvas').getContext('webgl2');
+          const ext = gl.getExtension('WEBGL_debug_renderer_info');
+          glName = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : null;
+        } catch (e) { /* leave null */ }
+        const gpuName = [adapterName, glName].filter(Boolean).join(' · ') || null;
+        B.cost = { wall: stat(wall), gpu: canTs ? stat(gpu) : null, frames: 150,
+                   device: { gpu: gpuName, ua: navigator.userAgent } };
+        B.costDone = true;
+      })().catch((e) => { B.error = String(e && e.message || e); });
+    } else {
+      let last = performance.now(), ema = 16.7, tick = 0;
+      renderer.setAnimationLoop(() => {
+        const now = performance.now();
+        ema += (now - last - ema) * 0.05;
+        last = now;
+        if (freeze === null && geoName !== 'quad')
+          for (const m of meshes) { m.rotation.y += 0.004; m.rotation.x += 0.0011; }
+        if ((tick++ & 31) === 0) document.getElementById('hud-ms').textContent = ema.toFixed(1) + ' ms';
+        B.frameMs = ema;
+        renderer.render(scene, cam);
+      });
+    }
 
     B.backend = backend;
     B.impl = impl && impl.impl;

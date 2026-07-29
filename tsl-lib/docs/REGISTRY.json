@@ -14,13 +14,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 3.427,
+      "gpuP95": 3.571,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.8
+        "webgpu": 0.4,
+        "webgl2": 0.5
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 1.4
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 4,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -41,13 +47,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 1.826,
+      "gpuP95": 1.912,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.3,
+        "webgl2": 0.9
+      },
+      "wallP95": {
+        "webgpu": 0.5,
+        "webgl2": 2.3
       },
       "mobileWallMs": 16.6,
-      "costClass": null
+      "costClass": 3,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -68,13 +80,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.717,
+      "gpuP95": 0.763,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.4,
+        "webgl2": 1.4
+      },
+      "wallP95": {
+        "webgpu": 1,
+        "webgl2": 2.4
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -95,13 +113,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 5.918,
+      "gpuP95": 6.265,
       "wallMs": {
-        "webgpu": 22.2,
-        "webgl2": 16.7
+        "webgpu": 0.4,
+        "webgl2": 0.5
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 1.8
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 4,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -122,13 +146,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 11.174,
+      "gpuP95": 11.562,
       "wallMs": {
-        "webgpu": 39.8,
-        "webgl2": 17.4
+        "webgpu": 0.3,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.4,
+        "webgl2": 2
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 5,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -149,13 +179,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 3.581,
+      "gpuP95": 3.634,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.3,
+        "webgl2": 0.5
+      },
+      "wallP95": {
+        "webgpu": 0.5,
+        "webgl2": 1.9
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 4,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -176,13 +212,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.47,
+      "gpuP95": 0.517,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.9,
+        "webgl2": 1.3
+      },
+      "wallP95": {
+        "webgpu": 2.1,
+        "webgl2": 2.3
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -203,13 +245,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.766,
+      "gpuP95": 0.865,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.4,
+        "webgl2": 1.8
+      },
+      "wallP95": {
+        "webgpu": 1.5,
+        "webgl2": 2.9
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -230,13 +278,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 3.427,
+      "gpuP95": 3.564,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.3,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.4,
+        "webgl2": 1.8
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 4,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -257,13 +311,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.471,
+      "gpuP95": 0.524,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 2.1,
+        "webgl2": 1.5
+      },
+      "wallP95": {
+        "webgpu": 3.7,
+        "webgl2": 2.6
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -284,13 +344,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.463,
+      "gpuP95": 0.53,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.9,
+        "webgl2": 1.7
+      },
+      "wallP95": {
+        "webgpu": 2,
+        "webgl2": 3.2
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -311,13 +377,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 3.592,
+      "gpuP95": 3.721,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 18.8
+        "webgpu": 0.3,
+        "webgl2": 0.5
+      },
+      "wallP95": {
+        "webgpu": 0.5,
+        "webgl2": 1.5
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 4,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -338,13 +410,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.465,
+      "gpuP95": 0.521,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 1.3,
+        "webgl2": 1.5
+      },
+      "wallP95": {
+        "webgpu": 2.5,
+        "webgl2": 2.9
       },
       "mobileWallMs": 16.6,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -365,13 +443,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.459,
+      "gpuP95": 0.502,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 1.5,
+        "webgl2": 1.4
+      },
+      "wallP95": {
+        "webgpu": 2.9,
+        "webgl2": 2.4
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -392,13 +476,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.473,
+      "gpuP95": 0.554,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.5,
+        "webgl2": 1.4
+      },
+      "wallP95": {
+        "webgpu": 1.7,
+        "webgl2": 2.7
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -419,13 +509,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.747,
+      "gpuP95": 0.838,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 1,
+        "webgl2": 1.5
+      },
+      "wallP95": {
+        "webgpu": 3.1,
+        "webgl2": 2.7
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -446,13 +542,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 1.123,
+      "gpuP95": 1.169,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.4,
+        "webgl2": 1.4
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 2.2
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 3,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -473,13 +575,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 1.344,
+      "gpuP95": 1.397,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.3,
+        "webgl2": 1.6
+      },
+      "wallP95": {
+        "webgpu": 0.4,
+        "webgl2": 2.4
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 3,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -500,13 +608,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 3.459,
+      "gpuP95": 3.588,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.3,
+        "webgl2": 0.5
+      },
+      "wallP95": {
+        "webgpu": 0.4,
+        "webgl2": 1.8
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 4,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -527,13 +641,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 10.233,
+      "gpuP95": 10.877,
       "wallMs": {
-        "webgpu": 32.7,
-        "webgl2": 39
+        "webgpu": 0.4,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.8,
+        "webgl2": 1.3
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 5,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -554,13 +674,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 3.403,
+      "gpuP95": 3.569,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.4,
+        "webgl2": 0.5
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 2
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 4,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -581,13 +707,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.462,
+      "gpuP95": 0.519,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 2,
+        "webgl2": 1.5
+      },
+      "wallP95": {
+        "webgpu": 2.9,
+        "webgl2": 2.9
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -608,13 +740,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 2.66,
+      "gpuP95": 2.762,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.4,
+        "webgl2": 0.5
+      },
+      "wallP95": {
+        "webgpu": 0.5,
+        "webgl2": 1.8
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 3,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -635,13 +773,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 2.667,
+      "gpuP95": 2.81,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.3,
+        "webgl2": 0.5
+      },
+      "wallP95": {
+        "webgpu": 0.5,
+        "webgl2": 1.8
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 3,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -662,13 +806,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.766,
+      "gpuP95": 0.908,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.4,
+        "webgl2": 1.9
+      },
+      "wallP95": {
+        "webgpu": 1.4,
+        "webgl2": 3.6
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -689,13 +839,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 3.059,
+      "gpuP95": 3.24,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.3,
+        "webgl2": 0.6
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 2.1
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 4,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -716,13 +872,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.591,
+      "gpuP95": 0.936,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.4,
+        "webgl2": 1.5
+      },
+      "wallP95": {
+        "webgpu": 1.5,
+        "webgl2": 2.6
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -743,13 +905,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.76,
+      "gpuP95": 0.883,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.5,
+        "webgl2": 1.6
+      },
+      "wallP95": {
+        "webgpu": 2.5,
+        "webgl2": 2.7
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -770,13 +938,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.464,
+      "gpuP95": 0.509,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.6,
+        "webgl2": 1.4
+      },
+      "wallP95": {
+        "webgpu": 1.7,
+        "webgl2": 2.5
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -797,13 +971,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.509,
+      "gpuP95": 0.589,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.4,
+        "webgl2": 1.6
+      },
+      "wallP95": {
+        "webgpu": 2,
+        "webgl2": 2.6
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -824,13 +1004,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.455,
+      "gpuP95": 0.521,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 0.6,
+        "webgl2": 1.6
+      },
+      "wallP95": {
+        "webgpu": 2.2,
+        "webgl2": 2.6
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -851,13 +1037,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.487,
+      "gpuP95": 0.59,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.7
+        "webgpu": 1,
+        "webgl2": 1.5
+      },
+      "wallP95": {
+        "webgpu": 2.1,
+        "webgl2": 2.8
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -878,13 +1070,19 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 0.535,
+      "gpuP95": 0.605,
       "wallMs": {
-        "webgpu": 16.7,
-        "webgl2": 16.6
+        "webgpu": 0.9,
+        "webgl2": 1.4
+      },
+      "wallP95": {
+        "webgpu": 1.8,
+        "webgl2": 2.5
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 2,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",
@@ -905,13 +1103,158 @@
       }
     },
     "cost": {
-      "gpuMs": null,
+      "gpuMs": 4.997,
+      "gpuP95": 5.222,
       "wallMs": {
-        "webgpu": 19.3,
-        "webgl2": 22.2
+        "webgpu": 0.4,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.8,
+        "webgl2": 1.2
       },
       "mobileWallMs": 16.7,
-      "costClass": null
+      "costClass": 4,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "_baseline": {
+    "gpu": "intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "browser": "Chrome/150.0.0.0",
+    "os": "Windows 10",
+    "three": "r178",
+    "date": "2026-07-29"
+  },
+  "materials/hologram": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.019,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 1.47,
+      "gpuP95": 1.878,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 2.7
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 4.3
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "materials/shield": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.097,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 25.352,
+      "gpuP95": 25.94,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 0.9
+      },
+      "mobileWallMs": 19.3,
+      "costClass": 5,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "materials/liquidMetal": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.025,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 5.215,
+      "gpuP95": 5.447,
+      "wallMs": {
+        "webgpu": 0.3,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.5,
+        "webgl2": 1.6
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 4,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-29"
+  },
+  "materials/dissolve": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.001,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 13.64,
+      "gpuP95": 14.44,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 1.1
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 5,
+      "basis": "gpu"
     },
     "mobileOverBudget": false,
     "three": "r178",

@@ -99,16 +99,23 @@ Every node file opens with:
 
 ```json
 {
+  "_baseline": { "gpu": "…", "browser": "Chrome/150…", "os": "Windows 10",
+                 "three": "r178", "date": "2026-07-29" },
   "noise/fbm": {
     "status": "verified",
     "impl": { "webgpu": "native", "webgl2": "native" },
-    "parity": "pass",
-    "cost": { "gpuMs": 0.82, "wallMs": 1.11, "costClass": 2 },
-    "baseline": { "gpu": "…", "browser": "…", "os": "…", "three": "r178" },
-    "verified": "2026-07-27"
+    "parity": { "pass": true, "diffPct": 0 },
+    "cost": { "gpuMs": 3.51, "gpuP95": 3.68,
+              "wallMs": { "webgpu": 0.4, "webgl2": 0.5 },
+              "mobileWallMs": 16.7, "costClass": 4, "basis": "gpu" },
+    "verified": "2026-07-29"
   }
 }
 ```
+
+Cost semantics live in [COST-METHOD.md](COST-METHOD.md): `basis` says whether
+the class came from GPU timestamps or wall dt; `_baseline` names the device
+every number was measured on.
 
 `NODES.md`, Lab badges, and the node gallery are generated from the registry.
 Nothing the registry can generate is hand-edited. Cost class (①–⑤) is the

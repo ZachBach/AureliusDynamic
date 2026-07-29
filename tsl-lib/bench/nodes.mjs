@@ -36,6 +36,20 @@ import { stripes, checker, source as stripesSource } from '../src/pattern/stripe
 import { sdCircle, sdBox, opSmoothUnion, sdFill, sdOutline, source as sdfSource } from '../src/pattern/sdf.js';
 import { streaks, source as streaksSource } from '../src/pattern/streaks.js';
 import { curtain, source as curtainSource } from '../src/pattern/curtain.js';
+import * as matHologram from '../src/materials/hologram.js';
+import * as matShield from '../src/materials/shield.js';
+import * as matLiquid from '../src/materials/liquidMetal.js';
+import * as matDissolve from '../src/materials/dissolveMat.js';
+
+// material modules share the bench entry contract directly
+const materialEntry = (id, mod, tolerance = 1.5) => ({
+  id,
+  parityGeo: 'knot',
+  parityTolerance: { maxDiffPct: tolerance },
+  sweep: [{}],
+  apply: (TSL, mat, opts) => mod.apply(TSL, mat, opts),
+  source: mod.source,
+});
 
 export const nodes = {
   'noise-fbm': {
@@ -493,6 +507,11 @@ export const nodes = {
     },
     source: curtainSource,
   },
+
+  'mat-hologram': materialEntry('materials/hologram', matHologram),
+  'mat-shield': materialEntry('materials/shield', matShield),
+  'mat-liquidmetal': materialEntry('materials/liquidMetal', matLiquid),
+  'mat-dissolve': materialEntry('materials/dissolve', matDissolve),
 
   'util-latlon': {
     id: 'util/latlonUv',
