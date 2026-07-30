@@ -125,11 +125,13 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 
 | Node | Class | gpuMs (p95) | wall wgpu/wgl2 | Impl wgsl/glsl | Parity | Mobile | Verified |
 |---|---|---|---|---|---|---|---|
+| `ramp/blackbody` | ② | 0.68 (1.20) | 0.4/2.6 | native/native | ✓ 0% | 16.7 ms | 2026-07-30 |
 | `ramp/cosinePalette` | ③ | 2.66 (2.76) | 0.4/0.5 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `ramp/fireRamp` | ④ | 3.43 (3.56) | 0.3/0.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `ramp/posterize` | ③ | 2.67 (2.81) | 0.3/0.5 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `ramp/ramp` | ② | 0.46 (0.52) | 2.0/1.5 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 
+- `ramp/blackbody` — star/ember color from temperature in Kelvin. Chromaticity *(src/ramp/blackbody.js)*
 - `ramp/cosinePalette` — IQ's procedural palette: a + b·cos(2π(c·t + d)). *(src/ramp/cosinePalette.js)*
 - `ramp/fireRamp` — blackbody-ish fire colors from a scalar: vec3(b, b², b⁴), *(src/ramp/fireRamp.js)*
 - `ramp/posterize` — quantize a scalar or color into discrete steps. The toon/cel *(src/ramp/posterize.js)*

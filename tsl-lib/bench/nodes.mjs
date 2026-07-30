@@ -37,6 +37,7 @@ import { sdCircle, sdBox, opSmoothUnion, sdFill, sdOutline, source as sdfSource 
 import { streaks, source as streaksSource } from '../src/pattern/streaks.js';
 import { curtain, source as curtainSource } from '../src/pattern/curtain.js';
 import { bandedFlow, source as bandedSource } from '../src/pattern/bandedFlow.js';
+import { blackbody, source as blackbodySource } from '../src/ramp/blackbody.js';
 import * as matHologram from '../src/materials/hologram.js';
 import * as matShield from '../src/materials/shield.js';
 import * as matLiquid from '../src/materials/liquidMetal.js';
@@ -536,6 +537,19 @@ export const nodes = {
       return { impl: 'native' };
     },
     source: bandedSource,
+  },
+
+  'ramp-blackbody': {
+    id: 'ramp/blackbody',
+    sweep: [{ tLo: 1700, tHi: 30000 }, { tLo: 3000, tHi: 8000 }],
+    apply(TSL, mat, { tLo = 1700, tHi = 30000 } = {}) {
+      // temperature strip, mired-linear across x (the node's own axis)
+      const mLo = 1e6 / tHi, mHi = 1e6 / tLo;
+      const mired = TSL.uv().x.mul(mHi - mLo).add(mLo);
+      mat.colorNode = blackbody(TSL, TSL.float(1e6).div(mired));
+      return { impl: 'native' };
+    },
+    source: blackbodySource,
   },
 
   'mat-hologram': materialEntry('materials/hologram', matHologram),

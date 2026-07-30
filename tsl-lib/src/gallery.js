@@ -31,6 +31,7 @@ import { sdCircle, sdBox, opSmoothUnion, sdFill, sdOutline, source as sdfSource 
 import { streaks, source as streaksSource } from './pattern/streaks.js';
 import { curtain, source as curtainSource } from './pattern/curtain.js';
 import { bandedFlow, source as bandedSource } from './pattern/bandedFlow.js';
+import { blackbody, source as blackbodySource } from './ramp/blackbody.js';
 import { thinFilm, source as thinFilmSource } from './fresnel/thinFilm.js';
 import { truchet, source as truchetSource } from './pattern/truchet.js';
 import { curl, source as curlSource } from './noise/curl.js';
@@ -215,6 +216,13 @@ export const GALLERY = [
       mat.colorNode = brand.gold.mul(t)
         .add(brand.blue.mul(t.oneMinus().mul(0.35)));
     } },
+  { id: 'ramp/blackbody', name: 'BLACKBODY', family: 'RAMP',
+    apply(TSL, mat) {
+      // Planckian strip along the knot's height — ember to blue-white
+      const t = TSL.positionLocal.y.mul(0.3).add(0.5).clamp(0, 1);
+      const mired = t.mul(555).add(33.3); // 30,000 K … 1,800 K, mired-linear
+      mat.colorNode = blackbody(TSL, TSL.float(1e6).div(mired));
+    } },
 ];
 
 // build-time only — stripped from the inline bundle (tools/build-lab.mjs)
@@ -234,4 +242,5 @@ export const GALLERY_SOURCES = {
   'pattern/curtain': curtainSource(),
   'noise/curl': curlSource(), 'fresnel/thinFilm': thinFilmSource(),
   'pattern/truchet': truchetSource(), 'pattern/bandedFlow': bandedSource(),
+  'ramp/blackbody': blackbodySource(),
 };

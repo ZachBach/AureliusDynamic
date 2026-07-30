@@ -1754,5 +1754,38 @@
     "mobileOverBudget": false,
     "three": "r178",
     "verified": "2026-07-30"
+  },
+  "ramp/blackbody": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 0.675,
+      "gpuP95": 1.201,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 2.6
+      },
+      "wallP95": {
+        "webgpu": 1.3,
+        "webgl2": 4.5
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 2,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-30"
   }
 }
