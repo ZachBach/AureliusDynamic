@@ -98,3 +98,12 @@ docs-level exercise rather than a port.
   any `x.pow(k)` where x can go negative.
 - Derivative-based nodes (`fwidth`, AA helpers like `mx_aastep`) may differ
   at tile edges between backends.
+- **WebGL2 storage-compute re-dispatch: alternate dispatches invisible**
+  (observed 2026-07-30, echoGalaxy G3 on r184): dispatching the same
+  `instancedArray` compute repeatedly with changed uniforms shows stale
+  buffer contents on every second dispatch — a clean dispatch-parity
+  pattern (1st ✓ 2nd ✗ 3rd ✓ 4th ✗). Transform-feedback ping-pong reading
+  the wrong half is the suspect; mechanism unconfirmed. WebGPU is
+  byte-perfect under the same sequence. Rule until confirmed: treat
+  repeated compute-into-render-buffer as **WebGPU-only**; keep a live
+  vertex-path fallback on WebGL2 (echoGalaxy does exactly this).
