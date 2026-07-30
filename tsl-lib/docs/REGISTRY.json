@@ -1126,7 +1126,7 @@
     "browser": "Chrome/150.0.0.0",
     "os": "Windows 10",
     "three": "r178",
-    "date": "2026-07-29"
+    "date": "2026-07-30"
   },
   "materials/hologram": {
     "status": "verified",
@@ -1721,5 +1721,38 @@
     "mobileOverBudget": true,
     "three": "r178",
     "verified": "2026-07-29"
+  },
+  "pattern/bandedFlow": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 2.694,
+      "gpuP95": 2.797,
+      "wallMs": {
+        "webgpu": 0.3,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 1.8
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-07-30"
   }
 }

@@ -30,6 +30,7 @@ import { hexGrid, source as gridSource } from './pattern/grid.js';
 import { sdCircle, sdBox, opSmoothUnion, sdFill, sdOutline, source as sdfSource } from './pattern/sdf.js';
 import { streaks, source as streaksSource } from './pattern/streaks.js';
 import { curtain, source as curtainSource } from './pattern/curtain.js';
+import { bandedFlow, source as bandedSource } from './pattern/bandedFlow.js';
 import { thinFilm, source as thinFilmSource } from './fresnel/thinFilm.js';
 import { truchet, source as truchetSource } from './pattern/truchet.js';
 import { curl, source as curlSource } from './noise/curl.js';
@@ -207,6 +208,13 @@ export const GALLERY = [
       mat.colorNode = brand.cyan.mul(truchet(TSL, TSL.positionLocal.xy, { cells: 5 }))
         .add(brand.blue.mul(0.1));
     } },
+  { id: 'pattern/bandedFlow', name: 'BANDED FLOW', family: 'PATTERN',
+    apply(TSL, mat, { clock } = {}) {
+      const { brand } = palette(TSL);
+      const t = bandedFlow(TSL, TSL.positionLocal.normalize(), { drift: clock.mul(0.05) });
+      mat.colorNode = brand.gold.mul(t)
+        .add(brand.blue.mul(t.oneMinus().mul(0.35)));
+    } },
 ];
 
 // build-time only — stripped from the inline bundle (tools/build-lab.mjs)
@@ -225,5 +233,5 @@ export const GALLERY_SOURCES = {
   'pattern/sdf': sdfSource(), 'pattern/streaks': streaksSource(),
   'pattern/curtain': curtainSource(),
   'noise/curl': curlSource(), 'fresnel/thinFilm': thinFilmSource(),
-  'pattern/truchet': truchetSource(),
+  'pattern/truchet': truchetSource(), 'pattern/bandedFlow': bandedSource(),
 };

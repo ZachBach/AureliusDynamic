@@ -3,7 +3,7 @@
 > **GENERATED** by `tools/gen-docs.mjs` from `docs/REGISTRY.json` — do not edit.
 > Regenerate after any `verify-all` run. Methodology: [COST-METHOD.md](COST-METHOD.md).
 
-Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)** · Chrome/150.0.0.0 · Windows 10 · three r178 · measured 2026-07-29
+Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)** · Chrome/150.0.0.0 · Windows 10 · three r178 · measured 2026-07-30
 
 ## fresnel
 
@@ -91,6 +91,7 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 
 | Node | Class | gpuMs (p95) | wall wgpu/wgl2 | Impl wgsl/glsl | Parity | Mobile | Verified |
 |---|---|---|---|---|---|---|---|
+| `pattern/bandedFlow` | ③ | 2.69 (2.80) | 0.3/0.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-30 |
 | `pattern/curtain` | ④ | 5.00 (5.22) | 0.4/0.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `pattern/dissolve` | ④ | 3.59 (3.72) | 0.3/0.5 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `pattern/flicker` | ② | 0.47 (0.52) | 1.3/1.5 | native/native | ✓ 0% | 16.6 ms | 2026-07-29 |
@@ -105,6 +106,7 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | `pattern/truchet` | ② | 0.51 (0.63) | 0.5/2.3 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `pattern/vignette` | ② | 0.46 (0.50) | 1.5/1.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 
+- `pattern/bandedFlow` — gas-giant latitude banding: a unit direction's y wobbled by *(src/pattern/bandedFlow.js)*
 - `pattern/curtain` — aurora curtain: an fbm ridgeline the glow hangs from, hard top *(src/pattern/curtain.js)*
 - `pattern/dissolve` — noise-threshold cutout with a glowing edge band, generalized *(src/pattern/dissolve.js)*
 - `pattern/flicker` — bounded sinusoidal brightness wobble. Five hand-rolled shipped *(src/pattern/flicker.js)*

@@ -36,6 +36,7 @@ import { stripes, checker, source as stripesSource } from '../src/pattern/stripe
 import { sdCircle, sdBox, opSmoothUnion, sdFill, sdOutline, source as sdfSource } from '../src/pattern/sdf.js';
 import { streaks, source as streaksSource } from '../src/pattern/streaks.js';
 import { curtain, source as curtainSource } from '../src/pattern/curtain.js';
+import { bandedFlow, source as bandedSource } from '../src/pattern/bandedFlow.js';
 import * as matHologram from '../src/materials/hologram.js';
 import * as matShield from '../src/materials/shield.js';
 import * as matLiquid from '../src/materials/liquidMetal.js';
@@ -520,6 +521,21 @@ export const nodes = {
       return { impl: 'native' };
     },
     source: curtainSource,
+  },
+
+  'pattern-bandedflow': {
+    id: 'pattern/bandedFlow',
+    sweep: [{ bands: 6, warpAmp: 0.22 }, { bands: 9, warpAmp: 0.35 }],
+    apply(TSL, mat, { clock, bands = 6, warpAmp = 0.22 } = {}) {
+      const { brand } = palette(TSL);
+      const q = TSL.uv().sub(0.5).mul(2);
+      const dir = TSL.vec3(q.x, q.y, 0.6).normalize();
+      const t = bandedFlow(TSL, dir, { bands, warpAmp, drift: clock.mul(0.05) });
+      mat.colorNode = brand.gold.mul(t)
+        .add(brand.blue.mul(t.oneMinus().mul(0.4)));
+      return { impl: 'native' };
+    },
+    source: bandedSource,
   },
 
   'mat-hologram': materialEntry('materials/hologram', matHologram),
