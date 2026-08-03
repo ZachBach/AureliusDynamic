@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Case Studies — Aurelius Dynamic</title>
-<meta name="description" content="Engineering writeups from a small studio building browser-native systems: the Helix plasma simulation, the IKOS knowledge-graph runtime, the TSL Shader Lab, and the echoGalaxy universe explorer — architecture, findings, and measured results.">
+<meta name="description" content="Aurelius case studies by maturity: proven systems running today, active research and development, and future directions for browser-native computing.">
 <link rel="canonical" href="https://aureliusdynamic.com/cases/">
 <meta name="theme-color" content="#06080C">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Aurelius Dynamic">
 <meta property="og:title" content="Case Studies — Aurelius Dynamic">
-<meta property="og:description" content="Helix, IKOS, the Shader Lab, and echoGalaxy: what was built, how it works, what it taught.">
+<meta property="og:description" content="Proven Today, Active R&amp;D, and Future Programs: what Aurelius has built, what is evolving, and what is direction.">
 <meta property="og:url" content="https://aureliusdynamic.com/cases/">
 <meta property="og:image" content="https://aureliusdynamic.com/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,19 +33,102 @@
 
 <main>
   <div class="kicker"><span class="dot"></span><span class="t">Dossier · Case Studies</span><span class="rule"></span></div>
-  <h1>Four systems, examined honestly.</h1>
-  <p class="lede">Aurelius is a small engineering studio creating browser-native graphics, simulation, visualization, and experimental computing systems using WebGPU and modern web technologies. These are engineering writeups of four of those systems — each one open to run while you read. Every project carries a status label so you know exactly where it sits:</p>
-  <div class="stats"><span><b>Production Demo</b> — deployed, measured, stable</span><span><b>Active Prototype</b> — working, still evolving</span><span><b>Research Experiment</b> — investigating a question</span><span><b>Open Education Project</b> — free, public, for learning</span></div>
+  <h1>Case studies, sorted by what is real now.</h1>
+  <p class="lede">Aurelius builds browser-native graphics, visualization, simulation, and interactive computing systems. These engineering writeups use the same maturity model as <a href="/capabilities/">Capabilities</a>, so it is clear whether a system is running today, still evolving as research, or only a stated direction.</p>
+  <nav class="stats" aria-label="Case study index">
+    <span><b>Proven Today</b> — public systems running now: <a href="#shaderlab">Shader Lab</a>, <a href="#echogalaxy">echoGalaxy</a></span>
+    <span><b>Active R&amp;D</b> — working systems still evolving: <a href="#helix">Helix</a>, <a href="#ikos">IKOS</a></span>
+    <span><b>Future Programs</b> — direction, not a current offering</span>
+  </nav>
 
   <hr>
 
-  <span class="num" id="helix">CASE 01 · RESEARCH EXPERIMENT</span>
-  <h2>Helix — browser-native plasma simulation</h2>
-  <p class="sub">interactive charged-particle simulation · <a href="/helix/">run it at /helix/ →</a></p>
+  <div class="callout">
+    <div class="t">Proven Today</div>
+    <p>Public systems on Aurelius domains. Visitors can open them, interact with them, and evaluate the claims directly — no deck required.</p>
+  </div>
+
+  <span class="num" id="shaderlab">PROVEN TODAY · CASE 01</span>
+  <h2>The Shader Lab</h2>
+  <p class="sub">status · proven today · live TSL material gallery · <a href="/shader-lab/">open the Shader Lab →</a></p>
+
+  <h3>Why TSL</h3>
+  <p>The browser GPU world is mid-transition: WebGPU (shaders in WGSL) is where capable browsers are; WebGL2 (shaders in GLSL) is the reality everywhere else. Maintaining parallel shader codebases across that split is a tax that compounds with every material. <strong>TSL — Three.js Shading Language — resolves the split at the authoring layer:</strong> materials are written once as JavaScript node graphs, and the compiler emits WGSL or GLSL per backend. The Shader Lab is our public verification that this holds for non-trivial materials — every material in it runs on both backends from a single source, and the widget's header reports which backend you're on.</p>
+  <p>TSL's second advantage is composability: a fresnel term, a noise field, a color ramp are JavaScript values, so materials share subexpressions the way code shares functions. The Lab's four materials draw on one shared basis — view vector, fresnel, a global <code>FLUX</code> uniform driven by the on-page slider.</p>
+
+  <h3>Material architecture</h3>
+  <p>Four materials chosen to cover four distinct shading regimes:</p>
+  <ul>
+    <li><strong>HOLOGRAM</strong> — additive transparency: fresnel shell, world-space scanlines, temporal flicker. The regime of depth-write discipline and blend-order reasoning.</li>
+    <li><strong>SHIELD</strong> — pattern-driven emission: a Worley-noise cell lattice with radial pulse waves. The procedural-pattern regime.</li>
+    <li><strong>LIQUID METAL</strong> — geometry participation: fbm vertex displacement through <code>positionNode</code> with a dark chrome ramp. The regime where vertex and fragment stages must agree.</li>
+    <li><strong>DISSOLVE</strong> — threshold logic: noise-versus-threshold cutout with an ember edge. The regime of hard alpha and edge fields.</li>
+  </ul>
+  <p>Each material's actual TSL source is displayed beside the running result — parameter control and visible source as proof the graphs are live, not recordings.</p>
+
+  <h3>Cross-backend findings</h3>
+  <p>Published because they cost real debugging time and are documented almost nowhere:</p>
+  <ul>
+    <li><strong>Storage-buffer attributes pad to vec4 on WebGPU.</strong> An <code>instancedArray('vec3')</code> read back as an attribute is vec4-shaped on the WebGPU backend; constructing <code>vec4(attr, 1)</code> compiles on WebGL2 and throws on WebGPU. Take <code>.xyz</code> first, always.</li>
+    <li><strong>Sprite billboard space bypasses <code>positionView</code>.</strong> In sprite materials, <code>positionView</code> evaluates uselessly (view-z ≈ 0); per-instance depth requires <code>modelViewMatrix.mul(vec4(instancePos,1)).z</code> explicitly.</li>
+    <li><strong>Reversed <code>smoothstep</code> edges are undefined behavior.</strong> Some GLSL drivers tolerate <code>smoothstep(hi, lo, x)</code>; treat edge order as a hard rule and invert with <code>1 − smoothstep(lo, hi, x)</code>.</li>
+    <li><strong>Power-ramp color math has a validity domain.</strong> A classic fire ramp <code>(b, b², b⁴)</code> inverts to blue-white the moment <code>b &gt; 1</code> — clamp at the ramp, not at the symptom.</li>
+    <li><strong>The host page is part of the runtime.</strong> Component frameworks re-render; a module can execute twice and its DOM can be absorbed mid-flight. Every live widget on the Aurelius landing page is a window-level singleton with a reattach-and-purge loop.</li>
+  </ul>
+
+  <h3>Measured performance</h3>
+  <p>Numbers from the Shader Lab benchmark runs — headless Chrome at 1600×900 on an NVIDIA GeForce GTX 1060; the widget publishes its own live frame time, so your hardware reports its own truth:</p>
+  <div class="stats"><span>WebGPU · <b>16.7 ms</b> steady across all four materials</span><span>WebGL2 · <b>16–36 ms</b> depending on material</span><span><b>12.8k</b> triangles · pixel ratio capped at 1.5</span></div>
+  <p>The spread on the WebGL2 path is the honest story: the additive transparency materials hold 60 fps, while the displacement-plus-noise materials drop to the high-20s on the same rig — the cost profile you'd predict from the extra per-vertex noise evaluations. The widget renders only while on screen and shows its frame time continuously, which is the standard we think any performance claim on the web should meet: measured where you can see it.</p>
+
+  <h3>Future development</h3>
+  <p>The reusable library the Lab was growing toward now exists: the shared basis became a verified TSL node collection — noise, ramps, fresnel, patterns — with every entry run through the same gate (both backends, measured cost, generated source) and published in the Lab's node gallery. Its first consumer beyond this page is echoGalaxy (Case 02), which sends new nodes back through that gate as it grows. That loop is the plan from here: building the universe together, one line of code at a time.</p>
+
+  <hr>
+
+  <span class="num" id="echogalaxy">PROVEN TODAY · CASE 02</span>
+  <h2>echoGalaxy — a free tool for exploring the universe</h2>
+  <p class="sub">status · proven today · open education project · <a href="/galaxy/">run it at /galaxy/ →</a></p>
 
   <h3>Overview</h3>
-  <p>Helix is Aurelius' primary browser-native simulation project. It explores how modern browser technologies can deliver interactive scientific computing through a standard web browser: it combines charged-particle simulation, real-time 3D visualization, and live diagnostics in a single system that requires no installation or specialized software.</p>
-  <p>It is labeled a research experiment deliberately. Helix exists to investigate a specific physical question, and its value is measured by whether that investigation is honest — not by how impressive the visuals are.</p>
+  <p>echoGalaxy is a free educational explorer: four connected scales — planet, star system, galaxy, Local Group — each rendered procedurally and each carrying its own set of astronomy facts. Scroll past the edge of one scale and you climb to the next; the facts panel is the point, the graphics are how it earns attention.</p>
+  <p>It is also this studio's first structural reuse test: echoGalaxy consumes the same TSL shader library that powers the Shader Lab above, in a different codebase, on a different three.js release, under a different renderer setup. That made it the proving ground for a question the Lab alone can't answer — does the library survive contact with a second product?</p>
+
+  <h3>What the scales actually compute</h3>
+  <ul>
+    <li><strong>Planets</strong> — procedural worlds from the library's planetary nodes: lattice-noise continents, a day/night terminator with night-side city light, an additive atmosphere shell.</li>
+    <li><strong>Star system</strong> — orbits move on Kepler's third law, not decoration: period follows distance, and the facts panel reads the live configuration.</li>
+    <li><strong>Galaxies</strong> — four Hubble classes from one persistent star field; every per-star quantity is derived on the GPU from its index, so switching galaxy type is a uniform swap, not a rebuild. Star colors come from a blackbody ramp anchored to published color-matching data (validated to a worst-case channel error of 8/255 against the reference table).</li>
+    <li><strong>Local Group</strong> — the Milky Way, Andromeda and companions, and Triangulum inside a single 24,000-star budget, with the blueshift story told on the HUD.</li>
+  </ul>
+
+  <h3>The consumer test, honestly scored</h3>
+  <p>The library is verified on three.js r178; echoGalaxy runs r184. The result: <strong>zero library-code changes</strong> — every node the app uses built and rendered on both backends unchanged, because the library injects its dependencies rather than importing them. The friction lived around the library, and it was real: point primitives cannot render sized sprites under the WebGPU renderer at all (the galaxy became instanced sprites, which the GPU-derived star field then required anyway), and repeated compute dispatches into a render buffer proved unreliable on the WebGL2 backend — so that path keeps a live vertex fallback while the divergence sits on the library's public watch list.</p>
+  <p>Two nodes were born in this project and promoted upstream through the library's verification gate before they counted as done: a latitude-band flow field for gas giants, and the blackbody color ramp. Both now sit in the Lab's node gallery with their cost and parity records.</p>
+
+  <h3>Measured performance</h3>
+  <p>On the studio's Intel UHD 630 development machine — a deliberately modest floor — the explorer holds <strong>33–45 fps on WebGPU</strong> and <strong>27–35 fps on WebGL2</strong> across all four scales, after baking the star positions, gas veil, and sky sphere to textures at load.</p>
+
+  <h3>Distribution</h3>
+  <p>echoGalaxy ships as an installable PWA at <a href="/galaxy/">/galaxy/</a>: offline-capable after first visit, touch-ready, and prepared for Android Trusted Web Activity packaging. Privacy is intentional and short — <a href="/privacy/">no accounts, analytics, or tracking</a>.</p>
+
+  <h3>Future development</h3>
+  <p>The journey is not complete: more worlds, more facts, and deeper rungs on the ladder are planned, and new shader work will keep flowing back into the library the same way — extracted, verified on both backends, then consumed back as a vendored copy.</p>
+
+  <hr>
+
+  <div class="callout">
+    <div class="t">Active Research &amp; Development</div>
+    <p>Working implementations and research instruments under continued development. Their capabilities are real; their models, scope, and future product shape are still evolving.</p>
+  </div>
+
+  <span class="num" id="helix">ACTIVE R&amp;D · CASE 03</span>
+  <h2>Helix — browser-native plasma simulation</h2>
+  <p class="sub">status · active research &amp; development · <a href="/helix/">run it at /helix/ →</a></p>
+
+  <h3>Overview</h3>
+  <p>Helix is Aurelius' primary browser-native simulation project. It explores how modern browser technologies can deliver interactive scientific computing through a standard web browser: charged-particle simulation, real-time 3D visualization, and live diagnostics in a single system that requires no installation or specialized software.</p>
+  <p>It sits in Active R&amp;D deliberately. Helix exists to investigate a specific physical question, and its value is measured by whether that investigation is honest — not by how impressive the visuals are.</p>
 
   <h3>The question under test</h3>
   <p>An RF antenna launches a helical wave; the reactor's magnetic field lines twist with their own pitch. The <strong>match number M</strong> compares the two helices, and the working hypothesis is that power coupling peaks when they align (M ≈ 1). What makes the simulator interesting as an instrument is that it refuses to assume its own conclusion: it ships three coupling models —</p>
@@ -102,9 +185,9 @@ Physics engine — Boris pusher · Monte-Carlo collisions
 
   <hr>
 
-  <span class="num" id="ikos">CASE 02 · ACTIVE PROTOTYPE</span>
+  <span class="num" id="ikos">ACTIVE R&amp;D · CASE 04</span>
   <h2>IKOS — Iterative Knowledge OS</h2>
-  <p class="sub">knowledge-graph runtime · <a href="/ikos/">run it at /ikos/ →</a></p>
+  <p class="sub">status · active research &amp; development · <a href="/ikos/">run it at /ikos/ →</a></p>
 
   <p>IKOS is a different kind of problem from Helix — not numerics, but knowledge representation — so this writeup is organized around the design questions the project actually had to answer.</p>
 
@@ -122,76 +205,17 @@ Physics engine — Boris pusher · Monte-Carlo collisions
   <p>The Orbit renders every concept as a spinning wireframe planet on typed orbital shells — with per-connection moons, rings on mastered nodes, comet streaks, and a camera that flies <em>into</em> a planet on click. That is hundreds of animated 3D objects with custom materials and real depth, which is out of reach for SVG and painful at interactive rates on 2D canvas. It runs on <strong>WebGPU with TSL node materials by default, with fallback to classic WebGL</strong> (the engine in use is shown in-app and can be toggled). It is also the shared-DNA point with the rest of the studio's work: the same TSL material approach used on the Aurelius landing page and Shader Lab drives the Orbit's planets.</p>
 
   <h3>What's deliberately conservative</h3>
-  <p>IKOS treats trust as a first-class design constraint, which is unusual for a prototype: AI-suggested nodes are quarantined as <em>pending</em> until explicitly approved, experimental modules are gated behind a mode that can only be changed from the terminal, and a single <code>killswitch</code> command forces safe mode, rejects pending AI content, and disarms module rules. The interesting lesson: those guardrails made it <em>easier</em> to experiment with AI-generated graph content, not harder, because mistakes were cheap to contain.</p>
+  <p>IKOS treats trust as a first-class design constraint: AI-suggested nodes are quarantined as <em>pending</em> until explicitly approved, experimental modules are gated behind a mode that can only be changed from the terminal, and a single <code>killswitch</code> command forces safe mode, rejects pending AI content, and disarms module rules. The interesting lesson: those guardrails made it <em>easier</em> to experiment with AI-generated graph content, not harder, because mistakes were cheap to contain.</p>
 
   <h3>Future development</h3>
-  <p>IKOS is an active prototype, and its roadmap is exploratory: richer semantic layout in the Orbit, deeper terminal-as-query-language work, and convergence experiments with the studio's other systems. Directions, not commitments.</p>
+  <p>IKOS remains Active R&amp;D, and its roadmap is exploratory: richer semantic layout in the Orbit, deeper terminal-as-query-language work, and convergence experiments with the studio's other systems. Directions, not commitments.</p>
 
   <hr>
 
-  <span class="num" id="shaderlab">CASE 03 · PRODUCTION DEMO</span>
-  <h2>The Shader Lab</h2>
-  <p class="sub">live TSL material gallery · <a href="/#lab">run it in section 05 →</a></p>
-
-  <h3>Why TSL</h3>
-  <p>The browser GPU world is mid-transition: WebGPU (shaders in WGSL) is where capable browsers are; WebGL2 (shaders in GLSL) is the reality everywhere else. Maintaining parallel shader codebases across that split is a tax that compounds with every material. <strong>TSL — Three.js Shading Language — resolves the split at the authoring layer:</strong> materials are written once as JavaScript node graphs, and the compiler emits WGSL or GLSL per backend. The Shader Lab is our public verification that this holds for non-trivial materials — every material in it runs on both backends from a single source, and the widget's header reports which backend you're on.</p>
-  <p>TSL's second advantage is composability: a fresnel term, a noise field, a color ramp are JavaScript values, so materials share subexpressions the way code shares functions. The Lab's four materials draw on one shared basis — view vector, fresnel, a global <code>FLUX</code> uniform driven by the on-page slider.</p>
-
-  <h3>Material architecture</h3>
-  <p>Four materials chosen to cover four distinct shading regimes:</p>
-  <ul>
-    <li><strong>HOLOGRAM</strong> — additive transparency: fresnel shell, world-space scanlines, temporal flicker. The regime of depth-write discipline and blend-order reasoning.</li>
-    <li><strong>SHIELD</strong> — pattern-driven emission: a Worley-noise cell lattice with radial pulse waves. The procedural-pattern regime.</li>
-    <li><strong>LIQUID METAL</strong> — geometry participation: fbm vertex displacement through <code>positionNode</code> with a dark chrome ramp. The regime where vertex and fragment stages must agree.</li>
-    <li><strong>DISSOLVE</strong> — threshold logic: noise-versus-threshold cutout with an ember edge. The regime of hard alpha and edge fields.</li>
-  </ul>
-  <p>Each material's actual TSL source is displayed beside the running result — parameter control and visible source as proof the graphs are live, not recordings.</p>
-
-  <h3>Cross-backend findings</h3>
-  <p>Published because they cost real debugging time and are documented almost nowhere:</p>
-  <ul>
-    <li><strong>Storage-buffer attributes pad to vec4 on WebGPU.</strong> An <code>instancedArray('vec3')</code> read back as an attribute is vec4-shaped on the WebGPU backend; constructing <code>vec4(attr, 1)</code> compiles on WebGL2 and throws on WebGPU. Take <code>.xyz</code> first, always.</li>
-    <li><strong>Sprite billboard space bypasses <code>positionView</code>.</strong> In sprite materials, <code>positionView</code> evaluates uselessly (view-z ≈ 0); per-instance depth requires <code>modelViewMatrix.mul(vec4(instancePos,1)).z</code> explicitly.</li>
-    <li><strong>Reversed <code>smoothstep</code> edges are undefined behavior.</strong> Some GLSL drivers tolerate <code>smoothstep(hi, lo, x)</code>; treat edge order as a hard rule and invert with <code>1 − smoothstep(lo, hi, x)</code>.</li>
-    <li><strong>Power-ramp color math has a validity domain.</strong> A classic fire ramp <code>(b, b², b⁴)</code> inverts to blue-white the moment <code>b &gt; 1</code> — clamp at the ramp, not at the symptom.</li>
-    <li><strong>The host page is part of the runtime.</strong> Component frameworks re-render; a module can execute twice and its DOM can be absorbed mid-flight. Every live widget on the Aurelius landing page is a window-level singleton with a reattach-and-purge loop.</li>
-  </ul>
-
-  <h3>Measured performance</h3>
-  <p>Numbers from the Shader Lab benchmark runs — headless Chrome at 1600×900 on an NVIDIA GeForce GTX 1060; the widget publishes its own live frame time, so your hardware reports its own truth:</p>
-  <div class="stats"><span>WebGPU · <b>16.7 ms</b> steady across all four materials</span><span>WebGL2 · <b>16–36 ms</b> depending on material</span><span><b>12.8k</b> triangles · pixel ratio capped at 1.5</span></div>
-  <p>The spread on the WebGL2 path is the honest story: the additive transparency materials hold 60 fps, while the displacement-plus-noise materials drop to the high-20s on the same rig — the cost profile you'd predict from the extra per-vertex noise evaluations. The widget renders only while on screen and shows its frame time continuously, which is the standard we think any performance claim on the web should meet: measured where you can see it.</p>
-
-  <h3>Future development</h3>
-  <p>The reusable library the Lab was growing toward now exists: the shared basis became a verified TSL node collection — noise, ramps, fresnel, patterns — with every entry run through the same gate (both backends, measured cost, generated source) and published in the Lab's node gallery. Its first consumer beyond this page is echoGalaxy (Case 04), which sends new nodes back through that gate as it grows. That loop is the plan from here: building the universe together, one line of code at a time.</p>
-
-  <hr>
-
-  <span class="num" id="echogalaxy">CASE 04 · OPEN EDUCATION PROJECT</span>
-  <h2>echoGalaxy — a free tool for exploring the universe</h2>
-  <p class="sub">four scales, planet to Local Group · <a href="/galaxy/">run it at /galaxy/ →</a></p>
-
-  <h3>Overview</h3>
-  <p>echoGalaxy is a free educational explorer: four connected scales — planet, star system, galaxy, Local Group — each rendered procedurally and each carrying its own set of astronomy facts. Scroll past the edge of one scale and you climb to the next; the facts panel is the point, the graphics are how it earns attention.</p>
-  <p>It is also this studio's first structural reuse test: echoGalaxy consumes the same TSL shader library that powers the Shader Lab above, in a different codebase, on a different three.js release, under a different renderer setup. That made it the proving ground for a question the Lab alone can't answer — does the library survive contact with a second product?</p>
-
-  <h3>What the scales actually compute</h3>
-  <ul>
-    <li><strong>Planets</strong> — procedural worlds from the library's planetary nodes: lattice-noise continents, a day/night terminator with night-side city light, an additive atmosphere shell.</li>
-    <li><strong>Star system</strong> — orbits move on Kepler's third law, not decoration: period follows distance, and the facts panel reads the live configuration.</li>
-    <li><strong>Galaxies</strong> — four Hubble classes from one persistent star field; every per-star quantity is derived on the GPU from its index, so switching galaxy type is a uniform swap, not a rebuild. Star colors come from a blackbody ramp anchored to published color-matching data (validated to a worst-case channel error of 8/255 against the reference table).</li>
-    <li><strong>Local Group</strong> — the Milky Way, Andromeda and companions, and Triangulum inside a single 24,000-star budget, with the blueshift story told on the HUD.</li>
-  </ul>
-
-  <h3>The consumer test, honestly scored</h3>
-  <p>The library is verified on three.js r178; echoGalaxy runs r184. The result: <strong>zero library-code changes</strong> — every node the app uses built and rendered on both backends unchanged, because the library injects its dependencies rather than importing them. The friction lived around the library, and it was real: point primitives cannot render sized sprites under the WebGPU renderer at all (the galaxy became instanced sprites, which the GPU-derived star field then required anyway), and repeated compute dispatches into a render buffer proved unreliable on the WebGL2 backend — so that path keeps a live vertex fallback while the divergence sits on the library's public watch list.</p>
-  <p>Two nodes were born in this project and promoted upstream through the library's verification gate before they counted as done: a latitude-band flow field for gas giants, and the blackbody color ramp. Both now sit in the Lab's node gallery with their cost and parity records.</p>
-
-  <h3>Measured performance</h3>
-  <p>On the studio's Intel UHD 630 development machine — a deliberately modest floor — the explorer holds <strong>33–45 fps on WebGPU</strong> and <strong>27–35 fps on WebGL2</strong> across all four scales, after baking the star positions, gas veil, and sky sphere to textures at load.</p>
-
-  <h3>Future development</h3>
-  <p>The journey is not complete: more worlds, more facts, and deeper rungs on the ladder are planned, and new shader work will keep flowing back into the library the same way — extracted, verified on both backends, then consumed back as a vendored copy.</p>
+  <div class="callout">
+    <div class="t">Future Programs</div>
+    <p>Digital twins and AI-assisted simulation are strategic directions, not current case studies or service offerings. The <a href="/capabilities/">Capabilities</a> page and the <a href="/roadmap/">Roadmap</a> distinguish those ambitions from systems visitors can evaluate today.</p>
+  </div>
 
   <div class="next">
     <a href="/capabilities/">Capabilities →</a>
@@ -203,6 +227,7 @@ Physics engine — Boris pusher · Monte-Carlo collisions
 <footer class="ft">
   <span>© MMXXVI Aurelius Dynamic</span>
   <a href="mailto:build@aureliusdynamic.com">build@aureliusdynamic.com</a>
+  <a href="/privacy/">Privacy</a>
   <a href="/">← aureliusdynamic.com</a>
 </footer>
 

@@ -30,7 +30,7 @@ const LIB_FILES = [
   'pattern/grid.js', 'pattern/curtain.js',
   'noise/gradientNoise.js', 'noise/ridgedFbm.js', 'noise/turbulence.js', 'noise/trigLattice.js',
   'ramp/cosinePalette.js', 'fresnel/terminator.js', 'pattern/sdf.js', 'pattern/streaks.js',
-  'fresnel/thinFilm.js', 'pattern/truchet.js', 'noise/curl.js',
+  'fresnel/thinFilm.js', 'pattern/truchet.js', 'pattern/bandedFlow.js', 'noise/curl.js',
   'gallery.js', // last — its visualizers reference everything above
 ];
 const MATERIALS = [
@@ -49,6 +49,9 @@ const MATERIALS = [
   { file: 'materials/brushedMetal.js', fn: '__mat_brushed', id: 'materials/brushedMetal' },
   { file: 'materials/starfield.js', fn: '__mat_starfield', id: 'materials/starfield' },
   { file: 'materials/plasmaArcs.js', fn: '__mat_plasma', id: 'materials/plasmaArcs' },
+  { file: 'materials/prismaticField.js', fn: '__mat_prismatic', id: 'materials/prismaticField' },
+  { file: 'materials/circuitMaze.js', fn: '__mat_circuitmaze', id: 'materials/circuitMaze' },
+  { file: 'materials/vortexFlow.js', fn: '__mat_vortexflow', id: 'materials/vortexFlow' },
 ];
 
 const strip = (relPath, renameApply = null) => {

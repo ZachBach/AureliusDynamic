@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shader Lab &mdash; Aurelius Dynamic</title>
+<meta name="description" content="A live browser-native TSL material workbench. Inspect 18 verified WebGPU and WebGL2 shaders, their derived source, performance class, and rendering behavior.">
+<link rel="canonical" href="https://aureliusdynamic.com/shader-lab/">
+<meta name="theme-color" content="#06080C">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Aurelius Dynamic">
+<meta property="og:title" content="Shader Lab &mdash; Aurelius Dynamic">
+<meta property="og:description" content="A live TSL material workbench: 18 verified shaders, source visible, WebGPU and WebGL2 tested.">
+<meta property="og:url" content="https://aureliusdynamic.com/shader-lab/">
+<meta property="og:image" content="https://aureliusdynamic.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2306080C'/%3E%3Cpath d='M32 10 53 52H41l-9-19-9 19H11z' fill='%2357D4FF'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../pages.css">
+<link rel="stylesheet" href="./lab.css">
+</head>
+<body>
+
+<header class="hd">
+  <div class="mark"><a href="/"><span class="n">AURELIUS</span><br><span class="s">DYNAMIC</span></a></div>
+  <nav>
+    <a href="/philosophy/">Philosophy</a>
+    <a href="/capabilities/">Capabilities</a>
+    <a href="/cases/">Case Studies</a>
+    <a href="/roadmap/">Roadmap</a>
+  </nav>
+</header>
+
+<main class="wide">
+  <div class="kicker"><span class="dot"></span><span class="t">Proven Today &middot; Shader Lab</span><span class="rule"></span></div>
+  <h1>Live TSL materials, with the receipts attached.</h1>
+  <p class="lede">Shader Lab is Aurelius' public rendering workbench. Pick a material, drag the geometry, adjust the clock, and inspect the source that built the result. Every material here is a reusable module verified on both WebGPU and WebGL2 before it appears.</p>
+  <div class="stats">
+    <span><b>18</b> verified material programs</span>
+    <span><b>WebGPU + WebGL2</b> parity-gated</span>
+    <span><b>Source derived</b> from implementation modules</span>
+  </div>
+
+  <section class="lab-shell" aria-labelledby="workbench-title">
+    <div class="lab-stage-card">
+      <div class="lab-title-row">
+        <div>
+          <p class="lab-eyebrow">Interactive workbench</p>
+          <h2 id="workbench-title">Choose a material. Inspect its behavior.</h2>
+        </div>
+        <a class="lab-preview-link" href="/#lab">Landing preview &rarr;</a>
+      </div>
+      <div class="lab-stage" data-lab-stage>
+        <canvas data-lab-canvas aria-label="Interactive Shader Lab material preview"></canvas>
+        <div class="lab-hud" aria-live="polite">
+          <span data-lab-backend>INITIALIZING</span>
+          <span data-lab-metrics>-- MS &middot; -- FPS</span>
+        </div>
+        <p class="lab-drag-hint">DRAG TO ROTATE &middot; SCROLL TO ZOOM</p>
+      </div>
+      <p class="lab-status" data-lab-status role="status">Loading the pinned renderer and verified material modules.</p>
+    </div>
+
+    <aside class="lab-console" aria-label="Shader Lab controls and source">
+      <div>
+        <p class="lab-eyebrow">Verified materials</p>
+        <div class="lab-chips" data-lab-chips aria-label="Material choices"></div>
+      </div>
+      <div class="lab-flux">
+        <label for="lab-flux">FLUX <output data-lab-flux-output>0.50</output></label>
+        <input id="lab-flux" data-lab-flux type="range" min="0" max="1" step="0.01" value="0.50">
+      </div>
+      <p class="lab-badge" data-lab-badge>Loading verification record...</p>
+      <pre class="lab-source" aria-label="Derived material source"><code data-lab-source>Loading source...</code></pre>
+    </aside>
+  </section>
+
+  <div class="callout">
+    <div class="t">What this proves</div>
+    <p>These are not screenshots or separate shader forks. The material selected above is the same ES module used by the benchmark, the landing-page preview, and this dedicated workbench. The source pane is exported by that module, so it cannot silently diverge from the implementation.</p>
+  </div>
+
+  <h2>From material idea to public artifact</h2>
+  <div class="grid">
+    <div class="cell">
+      <div class="k">01 &middot; Author</div>
+      <h3>One module, one source of truth</h3>
+      <p>Every material exports its name, its TSL <code>apply()</code> function, and the readable source fragment displayed in the Lab.</p>
+    </div>
+    <div class="cell">
+      <div class="k">02 &middot; Verify</div>
+      <h3>Both browser GPU paths</h3>
+      <p>The bench renders frozen parity frames, live animation, and a mobile advisory pass on WebGPU and WebGL2. Console errors and invalid frames fail the gate.</p>
+    </div>
+    <div class="cell">
+      <div class="k">03 &middot; Measure</div>
+      <h3>Cost is part of the claim</h3>
+      <p>Each chip carries its measured cost class and baseline provenance. Expensive materials remain visible, but never hidden behind a performance claim.</p>
+    </div>
+  </div>
+
+  <h2>New in this material wave</h2>
+  <p>Three new materials broaden the library without adding redundant variations:</p>
+  <div class="grid">
+    <div class="cell">
+      <div class="k">Prismatic Field</div>
+      <h3>Thin film meets Truchet facets</h3>
+      <p>An iridescent shell exposes view-dependent thin-film color alongside a drifting, circuit-like facet field.</p>
+    </div>
+    <div class="cell">
+      <div class="k">Circuit Maze</div>
+      <h3>Signal on a patterned surface</h3>
+      <p>Animated radial pulses illuminate Truchet traces, turning a low-cost pattern primitive into a readable surface language.</p>
+    </div>
+    <div class="cell">
+      <div class="k">Vortex Flow</div>
+      <h3>Flow as a material</h3>
+      <p>Curl noise drives color bands and filaments. It is intentionally expensive and visibly badged as the right reference for a real flow-field shader.</p>
+    </div>
+  </div>
+
+  <h2>Why TSL</h2>
+  <p>Modern browser rendering spans two backends: WebGPU uses WGSL and WebGL2 uses GLSL. Three.js Shading Language lets Aurelius author one node graph and compile it for both. That reduces parallel maintenance, but only if the graph is tested on both paths. The Lab exists to make that testable work public.</p>
+
+  <h2>Engineering notes</h2>
+  <div class="grid">
+    <div class="cell">
+      <div class="k">Backend discipline</div>
+      <h3>Parity is measured, not assumed</h3>
+      <p>Materials receive a frozen clock for screenshot comparison, then run live under each backend. Differences beyond a material-specific tolerance block release.</p>
+    </div>
+    <div class="cell">
+      <div class="k">Performance discipline</div>
+      <h3>Frame time has context</h3>
+      <p>Cost classes come from a documented Intel UHD 630 baseline. The live readout is your machine's current frame time, not a borrowed benchmark number.</p>
+    </div>
+    <div class="cell">
+      <div class="k">Interaction discipline</div>
+      <h3>Explore the implementation</h3>
+      <p>Drag the knot, change the clock, and switch materials. Direct interaction is a useful test of behavior that static imagery cannot provide.</p>
+    </div>
+  </div>
+
+  <div class="next">
+    <a href="/cases/#shaderlab">Shader Lab case study &rarr;</a>
+    <a href="/capabilities/">Technical capabilities &rarr;</a>
+    <a href="/#contact">Start a conversation &rarr;</a>
+  </div>
+</main>
+
+<footer class="ft">
+  <span>&copy; MMXXVI Aurelius Dynamic</span>
+  <a href="mailto:build@aureliusdynamic.com">build@aureliusdynamic.com</a>
+  <a href="/">&larr; aureliusdynamic.com</a>
+</footer>
+
+<script type="module" src="./lab.js"></script>
+</body>
+</html>

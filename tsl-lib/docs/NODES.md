@@ -3,7 +3,7 @@
 > **GENERATED** by `tools/gen-docs.mjs` from `docs/REGISTRY.json` — do not edit.
 > Regenerate after any `verify-all` run. Methodology: [COST-METHOD.md](COST-METHOD.md).
 
-Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)** · Chrome/150.0.0.0 · Windows 10 · three r178 · measured 2026-07-30
+Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)** · Chrome/150.0.0.0 · Windows 10 · three r178 · measured 2026-08-03
 
 ## fresnel
 
@@ -29,6 +29,7 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 |---|---|---|---|---|---|---|---|
 | `materials/auroraSilk` | ⑤ | 45.73 (47.36) | 0.4/1.2 | native/native | ✓ 0.001% | 34.3 ms ⚠ | 2026-07-29 |
 | `materials/brushedMetal` | ④ | 5.23 (5.51) | 0.4/0.4 | native/native | ✓ 0.014% | 16.7 ms | 2026-07-29 |
+| `materials/circuitMaze` | ③ | 2.05 (2.46) | 0.4/3.5 | native/native | ✓ 0.036% | 16.6 ms | 2026-08-03 |
 | `materials/dissolve` | ⑤ | 13.64 (14.44) | 0.4/0.4 | native/native | ✓ 0.001% | 16.7 ms | 2026-07-29 |
 | `materials/forceField` | ③ | 1.83 (2.68) | 0.5/3.8 | native/native | ✓ 0.027% | 16.7 ms | 2026-07-29 |
 | `materials/glitch` | ④ | 5.07 (5.81) | 0.4/1.7 | native/native | ✓ 0.005% | 16.7 ms | 2026-07-29 |
@@ -39,12 +40,15 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | `materials/marble` | ⑤ | 21.00 (24.46) | 0.5/0.9 | native/native | ✓ 0.011% | 16.7 ms | 2026-07-29 |
 | `materials/nebulaGlass` | ⑤ | 18.00 (23.06) | 0.4/1.4 | native/native | ✓ 0.067% | 16.7 ms | 2026-07-29 |
 | `materials/plasmaArcs` | ⑤ | 16.38 (19.64) | 0.4/0.4 | native/native | ✓ 0.017% | 16.7 ms | 2026-07-29 |
+| `materials/prismaticField` | ③ | 2.27 (2.75) | 0.4/2.5 | native/native | ✓ 0.055% | 16.7 ms | 2026-08-03 |
 | `materials/shield` | ⑤ | 16.82 (18.41) | 0.4/0.4 | fallback/fallback | ✓ 0.073% | 16.7 ms | 2026-07-29 |
 | `materials/starfield` | ④ | 5.05 (5.29) | 0.4/0.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `materials/toonCel` | ③ | 1.41 (1.76) | 1.4/3.1 | native/native | ✓ 0.008% | 16.7 ms | 2026-07-29 |
+| `materials/vortexFlow` | ⑤ | 37.46 (38.78) | 0.7/0.4 | native/native | ✓ 0.016% | 34.6 ms ⚠ | 2026-08-03 |
 
 - `materials/auroraSilk` — AURORA SILK — the hero's aurora curtain draped over geometry via uv space: *(src/materials/auroraSilk.js)*
 - `materials/brushedMetal` — BRUSHED METAL — anisotropically stretched noise grooves shearing a *(src/materials/brushedMetal.js)*
+- `materials/circuitMaze` — CIRCUIT MAZE — animated Truchet traces driven by radial signal pulses: *(src/materials/circuitMaze.js)*
 - `materials/forceField` — FORCE FIELD — hex lattice + fresnel shell + impact pulse rings. The *(src/materials/forceField.js)*
 - `materials/glitch` — row-hashed uv tears over posterized noise bands, scanlines, and *(src/materials/glitch.js)*
 - `materials/hologram` — fresnel shell + traveling scanlines + flicker. Library rebuild *(src/materials/hologram.js)*
@@ -54,9 +58,11 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 - `materials/marble` — domain-warped fbm veins through an N-stop ramp, with a polish *(src/materials/marble.js)*
 - `materials/nebulaGlass` — NEBULA GLASS — the deep-space backdrop recipe sealed inside a fresnel *(src/materials/nebulaGlass.js)*
 - `materials/plasmaArcs` — PLASMA ARCS — ridged-fbm filaments thresholded into crawling lightning, *(src/materials/plasmaArcs.js)*
+- `materials/prismaticField` — PRISMATIC FIELD — thin-film interference under a drifting Truchet lattice: *(src/materials/prismaticField.js)*
 - `materials/shield` — worley cell lattice + fresnel rim + radial pulse. Library rebuild *(src/materials/shield.js)*
 - `materials/starfield` — hash-cell stars (worley machinery pointed at points of light): *(src/materials/starfield.js)*
 - `materials/toonCel` — TOON CEL — posterized lambert bands from a fixed key light, gold-on-slate, *(src/materials/toonCel.js)*
+- `materials/vortexFlow` — VORTEX FLOW — curl-noise directions folded into moving color bands: *(src/materials/vortexFlow.js)*
 
 ## noise
 

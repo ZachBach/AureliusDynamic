@@ -26,14 +26,15 @@ This repository contains the production source for the Aurelius Dynamic site, pl
 
 ## The Lab
 
-Two working research instruments are deployed on this domain and featured in the landing page's **Lab** section:
+Working instruments deployed on this domain and featured from the landing page's **Lab** section:
 
 | App | Path | What it is |
 | --- | --- | --- |
 | **Electromagnetic Helix Reactor** | [`/helix/`](helix/) | Browser-native plasma simulation built around charged-particle dynamics, GPU acceleration, and interactive diagnostics — ~18k macro-electrons under a Boris integrator, Monte-Carlo collisions, live 3D diagnostics, and a dusty-plasma module. Fully self-hosted (React, Babel, and Three.js are vendored in [`helix/vendor/`](helix/vendor/)). |
 | **IKOS — Iterative Knowledge OS** | [`/ikos/`](ikos/) | A knowledge-graph runtime rendered four ways — Book, Graph, Terminal, and Orbit — from one living state. Ships as a self-contained bundle with an offline-first service worker; the optional 3D Orbit view loads Three.js modules from a CDN at runtime. |
+| **echoGalaxy** | [`/galaxy/`](galaxy/) | Free educational universe explorer — planet → star system → galaxy → Local Group — installable PWA, offline after first visit, built on the studio's verified TSL node library. Privacy policy at [`/privacy/`](privacy/). Android TWA package name: `com.aureliusdynamic.echogalaxy` (Digital Asset Links stub in [`.well-known/assetlinks.json`](.well-known/assetlinks.json)). |
 
-Both apps are copies of their source repositories' built output, adjusted only for subdirectory serving (relative service-worker and manifest paths for IKOS).
+Helix and IKOS are copies of their source repositories' built output, adjusted only for subdirectory serving. echoGalaxy is the same pattern: static build output under `/galaxy/` with relative service-worker and manifest paths.
 
 ## Getting Started
 

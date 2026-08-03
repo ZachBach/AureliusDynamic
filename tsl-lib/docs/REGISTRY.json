@@ -1126,7 +1126,7 @@
     "browser": "Chrome/150.0.0.0",
     "os": "Windows 10",
     "three": "r178",
-    "date": "2026-07-30"
+    "date": "2026-08-03"
   },
   "materials/hologram": {
     "status": "verified",
@@ -1787,5 +1787,104 @@
     "mobileOverBudget": false,
     "three": "r178",
     "verified": "2026-07-30"
+  },
+  "materials/prismaticField": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.055,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 2.265,
+      "gpuP95": 2.752,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 2.5
+      },
+      "wallP95": {
+        "webgpu": 0.9,
+        "webgl2": 4.1
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-03"
+  },
+  "materials/circuitMaze": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.036,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 2.054,
+      "gpuP95": 2.458,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 3.5
+      },
+      "wallP95": {
+        "webgpu": 1,
+        "webgl2": 6.5
+      },
+      "mobileWallMs": 16.6,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-03"
+  },
+  "materials/vortexFlow": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.016,
+      "tolerance": {
+        "maxDiffPct": 2,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 37.464,
+      "gpuP95": 38.783,
+      "wallMs": {
+        "webgpu": 0.7,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 1.7,
+        "webgl2": 1.5
+      },
+      "mobileWallMs": 34.6,
+      "costClass": 5,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": true,
+    "three": "r178",
+    "verified": "2026-08-03"
   }
 }

@@ -53,6 +53,9 @@ import * as matToonCel from '../src/materials/toonCel.js';
 import * as matBrushed from '../src/materials/brushedMetal.js';
 import * as matStarfield from '../src/materials/starfield.js';
 import * as matPlasma from '../src/materials/plasmaArcs.js';
+import * as matPrismatic from '../src/materials/prismaticField.js';
+import * as matCircuitMaze from '../src/materials/circuitMaze.js';
+import * as matVortexFlow from '../src/materials/vortexFlow.js';
 import { thinFilm, source as thinFilmSource } from '../src/fresnel/thinFilm.js';
 import { truchet, source as truchetSource } from '../src/pattern/truchet.js';
 import { curl, source as curlSource } from '../src/noise/curl.js';
@@ -567,6 +570,9 @@ export const nodes = {
   'mat-brushed': materialEntry('materials/brushedMetal', matBrushed),
   'mat-starfield': materialEntry('materials/starfield', matStarfield),
   'mat-plasma': materialEntry('materials/plasmaArcs', matPlasma),
+  'mat-prismatic': materialEntry('materials/prismaticField', matPrismatic),
+  'mat-circuitmaze': materialEntry('materials/circuitMaze', matCircuitMaze),
+  'mat-vortexflow': materialEntry('materials/vortexFlow', matVortexFlow, 2.0),
 
   'fresnel-thinfilm': {
     id: 'fresnel/thinFilm',
