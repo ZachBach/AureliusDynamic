@@ -6,7 +6,8 @@
       "package_name": "com.aureliusdynamic.echogalaxy",
       "sha256_cert_fingerprints": [
         "REPLACE_WITH_PLAY_APP_SIGNING_SHA256_FROM_PLAY_CONSOLE_APP_INTEGRITY"
-      ]
+      ],
+      "_comment_upgrade_here": "Play Console → your app → Setup → App integrity → App signing key certificate → SHA-256. Paste that colon-hex fingerprint above, then redeploy this file to https://aureliusdynamic.com/.well-known/assetlinks.json"
     }
   }
 ]
