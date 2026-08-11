@@ -18,13 +18,18 @@ image-slot.js
 # Nested duplicate deploy trees (the served site is the repo root)
 deploy/
 
-# Nested standalone repo — a separate product with its own git remote,
+# Nested standalone repos — separate products with their own git remotes,
 # not part of the Aurelius site deploy
 echoGalaxy/
+Zookahs-Casino/
 
 # Redesign prototype (parallax homepage) — local working copy, kept out of the
 # published root site
 prototype/
+
+# Machine-local agent config (permission allowlist, local paths to other
+# projects). The shared commands under .claude/commands/ stay tracked.
+.claude/settings.local.json
 
 # OS / editor cruft
 .DS_Store
