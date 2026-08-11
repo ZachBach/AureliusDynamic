@@ -56,6 +56,32 @@ import * as matPlasma from '../src/materials/plasmaArcs.js';
 import * as matPrismatic from '../src/materials/prismaticField.js';
 import * as matCircuitMaze from '../src/materials/circuitMaze.js';
 import * as matVortexFlow from '../src/materials/vortexFlow.js';
+// Wave 3 materials
+import * as matOilSlick from '../src/materials/oilSlick.js';
+import * as matCrystal from '../src/materials/crystal.js';
+import * as matRust from '../src/materials/rust.js';
+import * as matTopoMap from '../src/materials/topoMap.js';
+import * as matRadarSweep from '../src/materials/radarSweep.js';
+import * as matLavaLamp from '../src/materials/lavaLamp.js';
+import * as matDamascus from '../src/materials/damascus.js';
+import * as matStainedGlass from '../src/materials/stainedGlass.js';
+import * as matCaustics from '../src/materials/caustics.js';
+import * as matVelvet from '../src/materials/velvet.js';
+import * as matBark from '../src/materials/bark.js';
+import * as matSnakeScales from '../src/materials/snakeScales.js';
+import * as matNeonTubes from '../src/materials/neonTubes.js';
+import * as matThermalCam from '../src/materials/thermalCam.js';
+import * as matCrtScreen from '../src/materials/crtScreen.js';
+import * as matMatrixRain from '../src/materials/matrixRain.js';
+import * as matSoapBubble from '../src/materials/soapBubble.js';
+import * as matOpal from '../src/materials/opal.js';
+import * as matMalachite from '../src/materials/malachite.js';
+import * as matSandDunes from '../src/materials/sandDunes.js';
+import * as matCoral from '../src/materials/coral.js';
+import * as matHalftone from '../src/materials/halftone.js';
+import * as matBlueprint from '../src/materials/blueprint.js';
+import * as matPlasmaGlobe from '../src/materials/plasmaGlobe.js';
+import * as matKaleidoscope from '../src/materials/kaleidoscope.js';
 import { thinFilm, source as thinFilmSource } from '../src/fresnel/thinFilm.js';
 import { truchet, source as truchetSource } from '../src/pattern/truchet.js';
 import { curl, source as curlSource } from '../src/noise/curl.js';
@@ -573,6 +599,37 @@ export const nodes = {
   'mat-prismatic': materialEntry('materials/prismaticField', matPrismatic),
   'mat-circuitmaze': materialEntry('materials/circuitMaze', matCircuitMaze),
   'mat-vortexflow': materialEntry('materials/vortexFlow', matVortexFlow, 2.0),
+
+  // Wave 3. All on the default 1.5% tolerance: the high-frequency designs here
+  // (fine rulings, hard-stepped dots and glyphs) were budgeted for looser
+  // limits on the BACKEND-NOTES curved-edge-AA argument, but measured
+  // 0.001–0.077% across the wave, so the default holds everywhere and the gate
+  // stays tight.
+  'mat-oilslick': materialEntry('materials/oilSlick', matOilSlick),
+  'mat-crystal': materialEntry('materials/crystal', matCrystal),
+  'mat-rust': materialEntry('materials/rust', matRust),
+  'mat-topomap': materialEntry('materials/topoMap', matTopoMap),
+  'mat-radarsweep': materialEntry('materials/radarSweep', matRadarSweep),
+  'mat-lavalamp': materialEntry('materials/lavaLamp', matLavaLamp),
+  'mat-damascus': materialEntry('materials/damascus', matDamascus),
+  'mat-stainedglass': materialEntry('materials/stainedGlass', matStainedGlass),
+  'mat-caustics': materialEntry('materials/caustics', matCaustics),
+  'mat-velvet': materialEntry('materials/velvet', matVelvet),
+  'mat-bark': materialEntry('materials/bark', matBark),
+  'mat-snakescales': materialEntry('materials/snakeScales', matSnakeScales),
+  'mat-neontubes': materialEntry('materials/neonTubes', matNeonTubes),
+  'mat-thermalcam': materialEntry('materials/thermalCam', matThermalCam),
+  'mat-crtscreen': materialEntry('materials/crtScreen', matCrtScreen),
+  'mat-matrixrain': materialEntry('materials/matrixRain', matMatrixRain),
+  'mat-soapbubble': materialEntry('materials/soapBubble', matSoapBubble),
+  'mat-opal': materialEntry('materials/opal', matOpal),
+  'mat-malachite': materialEntry('materials/malachite', matMalachite),
+  'mat-sanddunes': materialEntry('materials/sandDunes', matSandDunes),
+  'mat-coral': materialEntry('materials/coral', matCoral),
+  'mat-halftone': materialEntry('materials/halftone', matHalftone),
+  'mat-blueprint': materialEntry('materials/blueprint', matBlueprint),
+  'mat-plasmaglobe': materialEntry('materials/plasmaGlobe', matPlasmaGlobe),
+  'mat-kaleidoscope': materialEntry('materials/kaleidoscope', matKaleidoscope),
 
   'fresnel-thinfilm': {
     id: 'fresnel/thinFilm',

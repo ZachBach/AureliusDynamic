@@ -3,7 +3,7 @@
 > **GENERATED** by `tools/gen-docs.mjs` from `docs/REGISTRY.json` — do not edit.
 > Regenerate after any `verify-all` run. Methodology: [COST-METHOD.md](COST-METHOD.md).
 
-Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)** · Chrome/150.0.0.0 · Windows 10 · three r178 · measured 2026-08-03
+Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)** · Chrome/150.0.0.0 · Windows 10 · three r178 · measured 2026-08-11
 
 ## fresnel
 
@@ -28,40 +28,90 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | Node | Class | gpuMs (p95) | wall wgpu/wgl2 | Impl wgsl/glsl | Parity | Mobile | Verified |
 |---|---|---|---|---|---|---|---|
 | `materials/auroraSilk` | ⑤ | 45.73 (47.36) | 0.4/1.2 | native/native | ✓ 0.001% | 34.3 ms ⚠ | 2026-07-29 |
+| `materials/bark` | ⑤ | 9.51 (10.03) | 0.6/0.6 | native/native | ✓ 0.002% | 16.7 ms | 2026-08-11 |
+| `materials/blueprint` | ③ | 1.45 (1.57) | 3.3/4.9 | native/native | ✓ 0.004% | 16.7 ms | 2026-08-11 |
 | `materials/brushedMetal` | ④ | 5.23 (5.51) | 0.4/0.4 | native/native | ✓ 0.014% | 16.7 ms | 2026-07-29 |
+| `materials/caustics` | ⑤ | 12.69 (13.80) | 0.7/0.7 | fallback/fallback | ✓ 0.002% | 16.7 ms | 2026-08-11 |
 | `materials/circuitMaze` | ③ | 2.05 (2.46) | 0.4/3.5 | native/native | ✓ 0.036% | 16.6 ms | 2026-08-03 |
+| `materials/coral` | ⑤ | 12.60 (13.12) | 0.6/0.6 | fallback/fallback | ✓ 0.005% | 16.7 ms | 2026-08-11 |
+| `materials/crtScreen` | ④ | 5.03 (8.84) | 0.7/1.1 | native/native | ✓ 0.001% | 16.7 ms | 2026-08-11 |
+| `materials/crystal` | ④ | 7.06 (7.45) | 0.6/0.8 | fallback/fallback | ✓ 0.005% | 16.7 ms | 2026-08-11 |
+| `materials/damascus` | ④ | 5.13 (5.38) | 0.8/0.9 | native/native | ✓ 0.02% | 16.7 ms | 2026-08-11 |
 | `materials/dissolve` | ⑤ | 13.64 (14.44) | 0.4/0.4 | native/native | ✓ 0.001% | 16.7 ms | 2026-07-29 |
 | `materials/forceField` | ③ | 1.83 (2.68) | 0.5/3.8 | native/native | ✓ 0.027% | 16.7 ms | 2026-07-29 |
 | `materials/glitch` | ④ | 5.07 (5.81) | 0.4/1.7 | native/native | ✓ 0.005% | 16.7 ms | 2026-07-29 |
+| `materials/halftone` | ④ | 5.96 (6.27) | 0.6/1.1 | native/native | ✓ 0.01% | 16.7 ms | 2026-08-11 |
 | `materials/hologram` | ③ | 1.47 (1.88) | 0.4/2.7 | native/native | ✓ 0.019% | 16.7 ms | 2026-07-29 |
 | `materials/ice` | ⑤ | 11.51 (13.36) | 0.4/0.9 | fallback/fallback | ✓ 0.001% | 16.7 ms | 2026-07-29 |
+| `materials/kaleidoscope` | ③ | 1.48 (1.61) | 2.6/2.9 | native/native | ✓ 0.037% | 16.7 ms | 2026-08-11 |
+| `materials/lavaLamp` | ⑤ | 15.38 (16.78) | 0.5/0.6 | fallback/fallback | ✓ 0.003% | 16.7 ms | 2026-08-11 |
 | `materials/liquidMetal` | ④ | 5.21 (5.45) | 0.3/0.4 | native/native | ✓ 0.025% | 16.7 ms | 2026-07-29 |
 | `materials/magma` | ⑤ | 21.01 (24.06) | 0.4/0.7 | native/native | ✓ 0.01% | 16.7 ms | 2026-07-29 |
+| `materials/malachite` | ⑤ | 16.00 (19.02) | 0.8/0.6 | fallback/fallback | ✓ 0.032% | 16.7 ms | 2026-08-11 |
 | `materials/marble` | ⑤ | 21.00 (24.46) | 0.5/0.9 | native/native | ✓ 0.011% | 16.7 ms | 2026-07-29 |
+| `materials/matrixRain` | ③ | 1.49 (5.37) | 3.0/3.1 | native/native | ✓ 0.005% | 16.7 ms | 2026-08-11 |
 | `materials/nebulaGlass` | ⑤ | 18.00 (23.06) | 0.4/1.4 | native/native | ✓ 0.067% | 16.7 ms | 2026-07-29 |
+| `materials/neonTubes` | ③ | 1.54 (2.28) | 0.9/4.1 | native/native | ✓ 0.005% | 16.7 ms | 2026-08-11 |
+| `materials/oilSlick` | ④ | 6.57 (6.74) | 0.7/0.6 | native/native | ✓ 0.03% | 16.7 ms | 2026-08-11 |
+| `materials/opal` | ⑤ | 11.42 (15.67) | 0.8/0.6 | fallback/fallback | ✓ 0.012% | 16.7 ms | 2026-08-11 |
 | `materials/plasmaArcs` | ⑤ | 16.38 (19.64) | 0.4/0.4 | native/native | ✓ 0.017% | 16.7 ms | 2026-07-29 |
+| `materials/plasmaGlobe` | ④ | 5.61 (5.67) | 0.7/0.8 | native/native | ✓ 0.007% | 16.7 ms | 2026-08-11 |
 | `materials/prismaticField` | ③ | 2.27 (2.75) | 0.4/2.5 | native/native | ✓ 0.055% | 16.7 ms | 2026-08-03 |
+| `materials/radarSweep` | ③ | 1.39 (1.53) | 1.8/2.9 | native/native | ✓ 0.006% | 16.7 ms | 2026-08-11 |
+| `materials/rust` | ⑤ | 12.64 (12.76) | 0.6/0.7 | fallback/fallback | ✓ 0.009% | 16.7 ms | 2026-08-11 |
+| `materials/sandDunes` | ⑤ | 9.58 (10.47) | 0.6/0.6 | native/native | ✓ 0.026% | 16.7 ms | 2026-08-11 |
 | `materials/shield` | ⑤ | 16.82 (18.41) | 0.4/0.4 | fallback/fallback | ✓ 0.073% | 16.7 ms | 2026-07-29 |
+| `materials/snakeScales` | ④ | 5.70 (8.88) | 0.7/0.6 | native/native | ✓ 0.014% | 16.7 ms | 2026-08-11 |
+| `materials/soapBubble` | ④ | 5.16 (5.73) | 0.8/0.8 | native/native | ✓ 0.077% | 16.7 ms | 2026-08-11 |
+| `materials/stainedGlass` | ④ | 7.11 (7.47) | 0.6/0.8 | fallback/fallback | ✓ 0.02% | 16.7 ms | 2026-08-11 |
 | `materials/starfield` | ④ | 5.05 (5.29) | 0.4/0.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
+| `materials/thermalCam` | ④ | 7.05 (10.92) | 0.7/0.7 | native/native | ✓ 0.002% | 16.7 ms | 2026-08-11 |
 | `materials/toonCel` | ③ | 1.41 (1.76) | 1.4/3.1 | native/native | ✓ 0.008% | 16.7 ms | 2026-07-29 |
+| `materials/topoMap` | ④ | 7.68 (8.07) | 0.5/0.7 | native/native | ✓ 0.018% | 16.7 ms | 2026-08-11 |
+| `materials/velvet` | ④ | 3.63 (3.87) | 0.6/1.2 | native/native | ✓ 0.021% | 16.7 ms | 2026-08-11 |
 | `materials/vortexFlow` | ⑤ | 37.46 (38.78) | 0.7/0.4 | native/native | ✓ 0.016% | 34.6 ms ⚠ | 2026-08-03 |
 
 - `materials/auroraSilk` — AURORA SILK — the hero's aurora curtain draped over geometry via uv space: *(src/materials/auroraSilk.js)*
+- `materials/bark` — ridged fbm with the domain squashed on Y, so the fissures run *(src/materials/bark.js)*
+- `materials/blueprint` — two grid frequencies (fine ruling under a heavier major grid) *(src/materials/blueprint.js)*
 - `materials/brushedMetal` — BRUSHED METAL — anisotropically stretched noise grooves shearing a *(src/materials/brushedMetal.js)*
+- `materials/caustics` — the bright web light draws on a pool floor. Two worley fields *(src/materials/caustics.js)*
 - `materials/circuitMaze` — CIRCUIT MAZE — animated Truchet traces driven by radial signal pulses: *(src/materials/circuitMaze.js)*
+- `materials/coral` — turbulence for the branching mass, a tight worley for the polyp *(src/materials/coral.js)*
+- `materials/crtScreen` — CRT SCREEN — the shadow mask done properly: phosphor triads striping across *(src/materials/crtScreen.js)*
+- `materials/crystal` — worley cells read as gem facets: F1 posterized into flat planes, *(src/materials/crystal.js)*
+- `materials/damascus` — pattern-welded steel. Folded layers are just stripes; the *(src/materials/damascus.js)*
 - `materials/forceField` — FORCE FIELD — hex lattice + fresnel shell + impact pulse rings. The *(src/materials/forceField.js)*
 - `materials/glitch` — row-hashed uv tears over posterized noise bands, scanlines, and *(src/materials/glitch.js)*
+- `materials/halftone` — print screen. The tone is sampled once per cell, at the cell *(src/materials/halftone.js)*
 - `materials/hologram` — fresnel shell + traveling scanlines + flicker. Library rebuild *(src/materials/hologram.js)*
 - `materials/ice` — worley crack veins + fresnel glaze + depth tint. Deliberately uses *(src/materials/ice.js)*
+- `materials/kaleidoscope` — the angle is folded into one wedge and then mirrored about *(src/materials/kaleidoscope.js)*
+- `materials/lavaLamp` — LAVA LAMP — worley blobs climbing through a warped domain. The domain *(src/materials/lavaLamp.js)*
 - `materials/liquidMetal` — LIQUID METAL — fbm vertex ripple + dark chrome via sheared horizon bands. *(src/materials/liquidMetal.js)*
 - `materials/magma` — domain-warped fbm through the fire ramp, with a cooling crust and *(src/materials/magma.js)*
+- `materials/malachite` — botryoidal banding. The mineral grows in nested shells around *(src/materials/malachite.js)*
 - `materials/marble` — domain-warped fbm veins through an N-stop ramp, with a polish *(src/materials/marble.js)*
+- `materials/matrixRain` — MATRIX RAIN — one falling head per column, each with its own rate and *(src/materials/matrixRain.js)*
 - `materials/nebulaGlass` — NEBULA GLASS — the deep-space backdrop recipe sealed inside a fresnel *(src/materials/nebulaGlass.js)*
+- `materials/neonTubes` — NEON TUBES — truchet routing sampled twice at the same cell count: once *(src/materials/neonTubes.js)*
+- `materials/oilSlick` — OIL SLICK — thin-film interference over near-black water. The film's *(src/materials/oilSlick.js)*
+- `materials/opal` — play-of-colour is diffraction off stacked silica spheres, so the *(src/materials/opal.js)*
 - `materials/plasmaArcs` — PLASMA ARCS — ridged-fbm filaments thresholded into crawling lightning, *(src/materials/plasmaArcs.js)*
+- `materials/plasmaGlobe` — PLASMA GLOBE — angular streaks give the filaments their radial anchor, *(src/materials/plasmaGlobe.js)*
 - `materials/prismaticField` — PRISMATIC FIELD — thin-film interference under a drifting Truchet lattice: *(src/materials/prismaticField.js)*
+- `materials/radarSweep` — RADAR SWEEP — a PPI scope. The beam is one angular position with an *(src/materials/radarSweep.js)*
+- `materials/rust` — oxide blooming across steel. A low-frequency fbm decides where the *(src/materials/rust.js)*
+- `materials/sandDunes` — SAND DUNES — a transverse dune train: one sine ridge system warped so the *(src/materials/sandDunes.js)*
 - `materials/shield` — worley cell lattice + fresnel rim + radial pulse. Library rebuild *(src/materials/shield.js)*
+- `materials/snakeScales` — SNAKE SCALES — hexGrid's `dist` term doing double duty: it darkens toward *(src/materials/snakeScales.js)*
+- `materials/soapBubble` — SOAP BUBBLE — the film drains under gravity, so it is thin and nearly *(src/materials/soapBubble.js)*
+- `materials/stainedGlass` — STAINED GLASS — worley cells as leaded panes. Each pane's hue rides its *(src/materials/stainedGlass.js)*
 - `materials/starfield` — hash-cell stars (worley machinery pointed at points of light): *(src/materials/starfield.js)*
+- `materials/thermalCam` — THERMAL CAM — an fbm heat field remapped onto a real Planckian range and *(src/materials/thermalCam.js)*
 - `materials/toonCel` — TOON CEL — posterized lambert bands from a fixed key light, gold-on-slate, *(src/materials/toonCel.js)*
+- `materials/topoMap` — TOPO MAP — a cartographer's reading of an fbm height field: posterized *(src/materials/topoMap.js)*
+- `materials/velvet` — the sheen lobe, not a diffuse lobe. Velvet's signature is that *(src/materials/velvet.js)*
 - `materials/vortexFlow` — VORTEX FLOW — curl-noise directions folded into moving color bands: *(src/materials/vortexFlow.js)*
 
 ## noise
