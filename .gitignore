@@ -23,6 +23,11 @@ deploy/
 echoGalaxy/
 Zookahs-Casino/
 
+# Git worktrees checked out from the nested echoGalaxy repo. Same reasoning
+# as the line above — that repo's branches are its own business, and a
+# worktree is just another view of them.
+echoGalaxy.worktrees/
+
 # Redesign prototype (parallax homepage) — local working copy, kept out of the
 # published root site
 prototype/
