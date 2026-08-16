@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shader Lab &mdash; Aurelius Dynamic</title>
-<meta name="description" content="A live browser-native TSL material workbench. Inspect 18 verified WebGPU and WebGL2 shaders, their derived source, performance class, and rendering behavior.">
+<meta name="description" content="A live browser-native TSL material workbench. Inspect 54 verified WebGPU and WebGL2 shaders, their derived source, performance class, and rendering behavior.">
 <link rel="canonical" href="https://aureliusdynamic.com/shader-lab/">
 <meta name="theme-color" content="#06080C">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Aurelius Dynamic">
 <meta property="og:title" content="Shader Lab &mdash; Aurelius Dynamic">
-<meta property="og:description" content="A live TSL material workbench: 18 verified shaders, source visible, WebGPU and WebGL2 tested.">
+<meta property="og:description" content="A live TSL material workbench: 54 verified shaders, source visible, WebGPU and WebGL2 tested.">
 <meta property="og:url" content="https://aureliusdynamic.com/shader-lab/">
 <meta property="og:image" content="https://aureliusdynamic.com/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -38,7 +38,7 @@
   <h1>Live TSL materials, with the receipts attached.</h1>
   <p class="lede">Shader Lab is Aurelius' public rendering workbench. Pick a material, drag the geometry, adjust the clock, and inspect the source that built the result. Every material here is a reusable module verified on both WebGPU and WebGL2 before it appears.</p>
   <div class="stats">
-    <span><b>18</b> verified material programs</span>
+    <span><b>54</b> verified material programs</span>
     <span><b>WebGPU + WebGL2</b> parity-gated</span>
     <span><b>Source derived</b> from implementation modules</span>
   </div>
@@ -65,7 +65,11 @@
 
     <aside class="lab-console" aria-label="Shader Lab controls and source">
       <div>
-        <p class="lab-eyebrow">Verified materials</p>
+        <p class="lab-eyebrow">Verified materials &middot; <span data-lab-count>--</span></p>
+        <label class="lab-filter" for="lab-filter">
+          <span class="vh">Filter materials</span>
+          <input id="lab-filter" data-lab-filter type="search" placeholder="Filter&hellip;" autocomplete="off">
+        </label>
         <div class="lab-chips" data-lab-chips aria-label="Material choices"></div>
       </div>
       <div class="lab-flux">
@@ -79,7 +83,7 @@
 
   <div class="callout">
     <div class="t">What this proves</div>
-    <p>These are not screenshots or separate shader forks. The material selected above is the same ES module used by the benchmark, the landing-page preview, and this dedicated workbench. The source pane is exported by that module, so it cannot silently diverge from the implementation.</p>
+    <p>These are not screenshots or separate shader forks. The material selected above is the same ES module used by the benchmark, the landing-page preview, and this dedicated workbench. The source pane is exported by that module, so it cannot silently diverge from the implementation. The chip list is not written here either &mdash; the page walks the library's own material roster, so a material that ships is a material that appears.</p>
   </div>
 
   <h2>From material idea to public artifact</h2>
@@ -102,24 +106,43 @@
   </div>
 
   <h2>New in this material wave</h2>
-  <p>Three new materials broaden the library without adding redundant variations:</p>
+  <p>Eleven new materials, each built on a mechanism the library did not already own:</p>
   <div class="grid">
     <div class="cell">
-      <div class="k">Prismatic Field</div>
-      <h3>Thin film meets Truchet facets</h3>
-      <p>An iridescent shell exposes view-dependent thin-film color alongside a drifting, circuit-like facet field.</p>
+      <div class="k">Ripple Tank</div>
+      <h3>Nodal lines as geometry</h3>
+      <p>Two sources, summed as phasors. The envelope of that sum has no time term in it, so the dark hyperbolae where the waves always cancel are drawn as the fixed geometry they are &mdash; not caught on a lucky frame.</p>
     </div>
     <div class="cell">
-      <div class="k">Circuit Maze</div>
-      <h3>Signal on a patterned surface</h3>
-      <p>Animated radial pulses illuminate Truchet traces, turning a low-cost pattern primitive into a readable surface language.</p>
+      <div class="k">Carbon Weave</div>
+      <h3>A highlight that turns with the tow</h3>
+      <p>The over/under swap of a plain weave chooses which way the fibre runs, and the anisotropic sheen band turns ninety degrees with it. An isotropic specular cannot make cloth flash in a chequer.</p>
     </div>
     <div class="cell">
-      <div class="k">Vortex Flow</div>
-      <h3>Flow as a material</h3>
-      <p>Curl noise drives color bands and filaments. It is intentionally expensive and visibly badged as the right reference for a real flow-field shader.</p>
+      <div class="k">Cumulus</div>
+      <h3>One step toward the sun</h3>
+      <p>A second density sample offset along the light direction, attenuated through exp(&minus;&tau;). That one-step light march is the whole reason a cloud has a blinding top and a flat grey base.</p>
+    </div>
+    <div class="cell">
+      <div class="k">Spiral Galaxy</div>
+      <h3>The pattern turns, the stars do not</h3>
+      <p>A logarithmic spiral advanced by a rigid pattern speed &mdash; the density-wave model. Arms made of fixed stars would wind shut within a few orbits. Colour comes from the Planckian locus, not from taste.</p>
+    </div>
+    <div class="cell">
+      <div class="k">Rain Glass</div>
+      <h3>Beads as lenses</h3>
+      <p>Each drop samples the backdrop at a coordinate inverted about its own centre, which is what a converging lens does. Every bead carries a small upside-down copy of what is behind the window.</p>
+    </div>
+    <div class="cell">
+      <div class="k">Snowflake &middot; Chainmail &middot; Moir&eacute;</div>
+      <h3>Symmetry, interlock, and beat</h3>
+      <p>Twelve mirror sectors give ice its point group; row parity turns stacked washers into mail; two rulings a few degrees apart produce rosettes at a frequency the shader never evaluates.</p>
     </div>
   </div>
+  <p>Ferrofluid, Cracked Clay, and Tiger&rsquo;s Eye round out the wave &mdash; Rosensweig spikes gated by field alignment, crack width driven by a dryness field, and chatoyancy from a sheen band that slides along the fibres instead of sitting still.</p>
+
+  <h2>New nodes behind them</h2>
+  <p>Five library primitives shipped with this wave and are visible in their own right: <b>interference</b> (phasor sum with a time-independent envelope), <b>weave</b> (over/under interlacing), <b>polarFold</b> (mirror-fold into a wedge, promoted out of Kaleidoscope so one copy serves both), <b>anisoSheen</b> (the Kajiya&ndash;Kay fibre highlight), and <b>valueNoise2D</b>.</p>
 
   <h2>Why TSL</h2>
   <p>Modern browser rendering spans two backends: WebGPU uses WGSL and WebGL2 uses GLSL. Three.js Shading Language lets Aurelius author one node graph and compile it for both. That reduces parallel maintenance, but only if the graph is tested on both paths. The Lab exists to make that testable work public.</p>

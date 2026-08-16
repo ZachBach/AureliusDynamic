@@ -1123,10 +1123,10 @@
   },
   "_baseline": {
     "gpu": "intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)",
-    "browser": "Chrome/150.0.0.0",
+    "browser": "Chrome/151.0.0.0",
     "os": "Windows 10",
     "three": "r178",
-    "date": "2026-08-11"
+    "date": "2026-08-16"
   },
   "materials/hologram": {
     "status": "verified",
@@ -2694,15 +2694,213 @@
       }
     },
     "cost": {
-      "gpuMs": 1.477,
-      "gpuP95": 1.611,
+      "gpuMs": 1.252,
+      "gpuP95": 1.488,
+      "wallMs": {
+        "webgpu": 0.5,
+        "webgl2": 2.7
+      },
+      "wallP95": {
+        "webgpu": 5.2,
+        "webgl2": 4.5
+      },
+      "mobileWallMs": 16.6,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "noise/valueNoise2D": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 0.669,
+      "gpuP95": 0.739,
       "wallMs": {
         "webgpu": 2.6,
+        "webgl2": 2.5
+      },
+      "wallP95": {
+        "webgpu": 3.9,
+        "webgl2": 3.9
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 2,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "pattern/interference": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 0.596,
+      "gpuP95": 0.736,
+      "wallMs": {
+        "webgpu": 2.5,
+        "webgl2": 1.9
+      },
+      "wallP95": {
+        "webgpu": 3.9,
+        "webgl2": 3.9
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 2,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "pattern/weave": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 0.539,
+      "gpuP95": 0.621,
+      "wallMs": {
+        "webgpu": 1.3,
+        "webgl2": 2.5
+      },
+      "wallP95": {
+        "webgpu": 2.9,
+        "webgl2": 3.9
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 2,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "pattern/polarFold": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 0.66,
+      "gpuP95": 0.744,
+      "wallMs": {
+        "webgpu": 0.5,
+        "webgl2": 2.6
+      },
+      "wallP95": {
+        "webgpu": 3,
+        "webgl2": 4.1
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 2,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "fresnel/anisoSheen": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.001,
+      "tolerance": {
+        "maxDiffPct": 1,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 0.826,
+      "gpuP95": 0.974,
+      "wallMs": {
+        "webgpu": 1.3,
         "webgl2": 2.9
       },
       "wallP95": {
-        "webgpu": 4.7,
-        "webgl2": 4.5
+        "webgpu": 4.3,
+        "webgl2": 4.1
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 2,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/rippleTank": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.007,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 1.369,
+      "gpuP95": 1.611,
+      "wallMs": {
+        "webgpu": 0.7,
+        "webgl2": 3.2
+      },
+      "wallP95": {
+        "webgpu": 4.3,
+        "webgl2": 5
       },
       "mobileWallMs": 16.7,
       "costClass": 3,
@@ -2710,6 +2908,336 @@
     },
     "mobileOverBudget": false,
     "three": "r178",
-    "verified": "2026-08-11"
+    "verified": "2026-08-16"
+  },
+  "materials/moire": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.012,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 1.213,
+      "gpuP95": 1.48,
+      "wallMs": {
+        "webgpu": 0.6,
+        "webgl2": 2.7
+      },
+      "wallP95": {
+        "webgpu": 5.1,
+        "webgl2": 4.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/chainmail": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.008,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 1.236,
+      "gpuP95": 1.437,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 3.1
+      },
+      "wallP95": {
+        "webgpu": 2.8,
+        "webgl2": 5.3
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/carbonWeave": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.011,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 1.694,
+      "gpuP95": 1.821,
+      "wallMs": {
+        "webgpu": 0.5,
+        "webgl2": 3.1
+      },
+      "wallP95": {
+        "webgpu": 0.9,
+        "webgl2": 4.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/crackedClay": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "fallback",
+      "webgl2": "fallback"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.009,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 14.129,
+      "gpuP95": 14.694,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.3
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 0.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 5,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/ferrofluid": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "fallback",
+      "webgl2": "fallback"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.006,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 6.817,
+      "gpuP95": 7.444,
+      "wallMs": {
+        "webgpu": 0.3,
+        "webgl2": 0.7
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 2.2
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 4,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/cumulus": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.006,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 10.895,
+      "gpuP95": 12.091,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.8
+      },
+      "wallP95": {
+        "webgpu": 0.8,
+        "webgl2": 2.2
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 5,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/rainGlass": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.001,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 1.858,
+      "gpuP95": 1.972,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 2.8
+      },
+      "wallP95": {
+        "webgpu": 1.2,
+        "webgl2": 4.8
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/spiralGalaxy": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.001,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 1.662,
+      "gpuP95": 1.725,
+      "wallMs": {
+        "webgpu": 0.7,
+        "webgl2": 3
+      },
+      "wallP95": {
+        "webgpu": 2.9,
+        "webgl2": 4.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/tigersEye": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.01,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 10.128,
+      "gpuP95": 10.658,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.7
+      },
+      "wallP95": {
+        "webgpu": 0.7,
+        "webgl2": 2.4
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 5,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
+  },
+  "materials/snowflake": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.002,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 6.854,
+      "gpuP95": 7.58,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.5
+      },
+      "wallP95": {
+        "webgpu": 1,
+        "webgl2": 2.4
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 4,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-08-16"
   }
 }

@@ -50,6 +50,10 @@ const url = (params) => `http://localhost:${PORT}/bench/index.html?` + new URLSe
 
 async function capture(browser, params, shotPath, { settle = 900, viewport = null, waitFor = 'ready' } = {}) {
   const page = await browser.newPage();
+  // the per-profile disk cache survives between runs and python's http.server
+  // sends no cache headers, so without this the gate can certify a stale
+  // module as verified (observed 2026-08-16 on bench/nodes.mjs)
+  await page.setCacheEnabled(false);
   if (viewport) await page.setViewport(viewport);
   const errors = [];
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text().slice(0, 200)); });

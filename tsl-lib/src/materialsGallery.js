@@ -59,6 +59,17 @@ import * as halftone from './materials/halftone.js';
 import * as blueprint from './materials/blueprint.js';
 import * as plasmaGlobe from './materials/plasmaGlobe.js';
 import * as kaleidoscope from './materials/kaleidoscope.js';
+import * as rippleTank from './materials/rippleTank.js';
+import * as moire from './materials/moire.js';
+import * as chainmail from './materials/chainmail.js';
+import * as carbonWeave from './materials/carbonWeave.js';
+import * as crackedClay from './materials/crackedClay.js';
+import * as ferrofluid from './materials/ferrofluid.js';
+import * as cumulus from './materials/cumulus.js';
+import * as rainGlass from './materials/rainGlass.js';
+import * as spiralGalaxy from './materials/spiralGalaxy.js';
+import * as tigersEye from './materials/tigersEye.js';
+import * as snowflake from './materials/snowflake.js';
 
 // [registry id, module]. Order follows tools/build-lab.mjs MATERIALS so the
 // Lab's chip order and any consumer's walk order agree.
@@ -106,6 +117,17 @@ const MODULES = [
   ['materials/blueprint', blueprint],
   ['materials/plasmaGlobe', plasmaGlobe],
   ['materials/kaleidoscope', kaleidoscope],
+  ['materials/rippleTank', rippleTank],
+  ['materials/moire', moire],
+  ['materials/chainmail', chainmail],
+  ['materials/carbonWeave', carbonWeave],
+  ['materials/crackedClay', crackedClay],
+  ['materials/ferrofluid', ferrofluid],
+  ['materials/cumulus', cumulus],
+  ['materials/rainGlass', rainGlass],
+  ['materials/spiralGalaxy', spiralGalaxy],
+  ['materials/tigersEye', tigersEye],
+  ['materials/snowflake', snowflake],
 ];
 
 export const MATERIALS_GALLERY = MODULES.map(([id, mod]) => ({

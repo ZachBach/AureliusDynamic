@@ -14,7 +14,11 @@
 .lab-drag-hint{position:absolute;right:14px;bottom:10px;margin:0;font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:var(--dim);pointer-events:none}
 .lab-status{min-height:20px;margin:12px 0 0;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--body)}
 .lab-status[data-state="error"]{color:#FF9B9B}
-.lab-chips{display:flex;flex-wrap:wrap;gap:7px}
+.lab-filter{display:block;margin:0 0 9px}
+.lab-filter input{width:100%;padding:6px 9px;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:transparent;color:var(--body);font-family:var(--mono);font-size:9px;letter-spacing:.08em}
+.lab-filter input:focus{outline:none;border-color:rgba(87,212,255,.5);color:var(--cyan)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lab-chips{display:flex;flex-wrap:wrap;gap:7px;max-height:260px;overflow-y:auto;padding-right:4px}
 .lab-chip{cursor:pointer;font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--body);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:6px 9px;background:transparent;transition:color .2s,border-color .2s,background .2s}
 .lab-chip:hover{color:var(--cyan);border-color:rgba(87,212,255,.45)}
 .lab-chip[aria-pressed="true"]{color:var(--gold);border-color:rgba(244,201,93,.62);background:rgba(244,201,93,.08)}

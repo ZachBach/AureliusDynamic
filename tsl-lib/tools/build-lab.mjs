@@ -31,6 +31,14 @@ const LIB_FILES = [
   'noise/gradientNoise.js', 'noise/ridgedFbm.js', 'noise/turbulence.js', 'noise/trigLattice.js',
   'ramp/cosinePalette.js', 'fresnel/terminator.js', 'pattern/sdf.js', 'pattern/streaks.js',
   'fresnel/thinFilm.js', 'pattern/truchet.js', 'pattern/bandedFlow.js', 'noise/curl.js',
+  // these four were reached by shipped materials but never listed, so the
+  // bundle carried RADAR SWEEP / DAMASCUS / CRT SCREEN / HALFTONE chips and a
+  // BLACKBODY gallery node that referenced undefined functions (found and
+  // fixed 2026-08-16; assertInlineClosure below now makes it a build error)
+  'pattern/stripes.js', 'pattern/vignette.js', 'pattern/spriteDisc.js', 'ramp/blackbody.js',
+  // Wave 4
+  'noise/valueNoise2D.js', 'pattern/interference.js', 'pattern/weave.js',
+  'pattern/polarFold.js', 'fresnel/anisoSheen.js',
   'gallery.js', // last — its visualizers reference everything above
 ];
 const MATERIALS = [
@@ -78,7 +86,82 @@ const MATERIALS = [
   { file: 'materials/blueprint.js', fn: '__mat_blueprint', id: 'materials/blueprint' },
   { file: 'materials/plasmaGlobe.js', fn: '__mat_plasmaglobe', id: 'materials/plasmaGlobe' },
   { file: 'materials/kaleidoscope.js', fn: '__mat_kaleidoscope', id: 'materials/kaleidoscope' },
+  // Wave 4
+  { file: 'materials/rippleTank.js', fn: '__mat_rippletank', id: 'materials/rippleTank' },
+  { file: 'materials/moire.js', fn: '__mat_moire', id: 'materials/moire' },
+  { file: 'materials/chainmail.js', fn: '__mat_chainmail', id: 'materials/chainmail' },
+  { file: 'materials/carbonWeave.js', fn: '__mat_carbonweave', id: 'materials/carbonWeave' },
+  { file: 'materials/crackedClay.js', fn: '__mat_crackedclay', id: 'materials/crackedClay' },
+  { file: 'materials/ferrofluid.js', fn: '__mat_ferrofluid', id: 'materials/ferrofluid' },
+  { file: 'materials/cumulus.js', fn: '__mat_cumulus', id: 'materials/cumulus' },
+  { file: 'materials/rainGlass.js', fn: '__mat_rainglass', id: 'materials/rainGlass' },
+  { file: 'materials/spiralGalaxy.js', fn: '__mat_spiralgalaxy', id: 'materials/spiralGalaxy' },
+  { file: 'materials/tigersEye.js', fn: '__mat_tigerseye', id: 'materials/tigersEye' },
+  { file: 'materials/snowflake.js', fn: '__mat_snowflake', id: 'materials/snowflake' },
 ];
+
+// The inline set is concatenated into one scope with every `import` line
+// stripped, so a module reached by an import but absent from LIB_FILES becomes
+// a silent ReferenceError the moment a visitor clicks that chip — invisible at
+// build time and invisible to the parity gate, which renders from src/ where
+// the imports still resolve. Walk the real import graph and refuse to build.
+const assertInlineClosure = () => {
+  const resolve = (from, spec) => {
+    const parts = from.split('/').slice(0, -1);
+    for (const segment of spec.split('/')) {
+      if (segment === '.') continue;
+      else if (segment === '..') parts.pop();
+      else parts.push(segment);
+    }
+    return parts.join('/');
+  };
+  const listed = new Set([...LIB_FILES, ...MATERIALS.map((m) => m.file)]);
+  const seen = new Set();
+  const missing = new Map();
+  const walk = (file) => {
+    if (seen.has(file)) return;
+    seen.add(file);
+    const text = readFileSync(join(LIB, 'src', file), 'utf8');
+    for (const match of text.matchAll(/from '([^']+)'/g)) {
+      const dep = resolve(file, match[1]);
+      if (!listed.has(dep)) missing.set(dep, (missing.get(dep) || []).concat(file));
+      walk(dep);
+    }
+  };
+  for (const file of listed) walk(file);
+  if (missing.size) {
+    const lines = [...missing].map(([dep, from]) => `  ${dep}  <- ${from.join(', ')}`);
+    throw new Error(`build-lab: these modules are imported but not inlined —\n${lines.join('\n')}\n` +
+      'add them to LIB_FILES (before the module that imports them).');
+  }
+};
+assertInlineClosure();
+
+// Same concatenation, second hazard: two modules may each declare a private
+// helper of the same name. Separately they are module-scoped and fine; inlined
+// they are a redeclaration SyntaxError that takes the entire Lab widget down.
+// (valueNoise.js and valueNoise2D.js both had `corner`, caught 2026-08-16.)
+const assertNoTopLevelCollisions = () => {
+  const owners = new Map();
+  const clashes = [];
+  const files = [...LIB_FILES, ...MATERIALS.map((m) => m.file)];
+  for (const file of files) {
+    // scan only what strip() actually inlines: source() is a template literal
+    // whose displayed code sits at column 0 and would read as declarations
+    const text = readFileSync(join(LIB, 'src', file), 'utf8').split(/^export const source/m)[0];
+    for (const match of text.matchAll(/^(?:export )?(?:const|let|function) ([A-Za-z_$][\w$]*)/gm)) {
+      const name = match[1];
+      if (name === 'name' || name === 'apply' || name === 'source') continue; // renamed per material
+      if (owners.has(name)) clashes.push(`  ${name}: ${owners.get(name)} vs ${file}`);
+      else owners.set(name, file);
+    }
+  }
+  if (clashes.length) {
+    throw new Error(`build-lab: top-level names collide once inlined —\n${clashes.join('\n')}\n` +
+      'rename one of them; module scope does not survive the concatenation.');
+  }
+};
+assertNoTopLevelCollisions();
 
 const strip = (relPath, renameApply = null) => {
   let t = readFileSync(join(LIB, 'src', relPath), 'utf8');

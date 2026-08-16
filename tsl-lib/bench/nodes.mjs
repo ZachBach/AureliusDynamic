@@ -85,6 +85,24 @@ import * as matKaleidoscope from '../src/materials/kaleidoscope.js';
 import { thinFilm, source as thinFilmSource } from '../src/fresnel/thinFilm.js';
 import { truchet, source as truchetSource } from '../src/pattern/truchet.js';
 import { curl, source as curlSource } from '../src/noise/curl.js';
+// Wave 4 nodes
+import { valueNoise2D, source as value2dSource } from '../src/noise/valueNoise2D.js';
+import { interference, source as interferenceSource } from '../src/pattern/interference.js';
+import { weave, source as weaveSource } from '../src/pattern/weave.js';
+import { polarFold, source as polarFoldSource } from '../src/pattern/polarFold.js';
+import { anisoSheen, surfaceTangent, source as anisoSource } from '../src/fresnel/anisoSheen.js';
+// Wave 4 materials
+import * as matRippleTank from '../src/materials/rippleTank.js';
+import * as matMoire from '../src/materials/moire.js';
+import * as matChainmail from '../src/materials/chainmail.js';
+import * as matCarbonWeave from '../src/materials/carbonWeave.js';
+import * as matCrackedClay from '../src/materials/crackedClay.js';
+import * as matFerrofluid from '../src/materials/ferrofluid.js';
+import * as matCumulus from '../src/materials/cumulus.js';
+import * as matRainGlass from '../src/materials/rainGlass.js';
+import * as matSpiralGalaxy from '../src/materials/spiralGalaxy.js';
+import * as matTigersEye from '../src/materials/tigersEye.js';
+import * as matSnowflake from '../src/materials/snowflake.js';
 
 // material modules share the bench entry contract directly
 const materialEntry = (id, mod, tolerance = 1.5) => ({
@@ -666,6 +684,97 @@ export const nodes = {
     },
     source: curlSource,
   },
+
+  // ---- Wave 4 nodes ----
+
+  'noise-value2d': {
+    id: 'noise/valueNoise2D',
+    sweep: [{ scale: 4 }, { scale: 9 }, { scale: 18 }],
+    apply(TSL, mat, { clock, scale = 9 } = {}) {
+      const { brand } = palette(TSL);
+      const n = valueNoise2D(TSL, TSL.positionLocal.xy.mul(scale).add(TSL.vec2(clock.mul(0.1), 0)))
+        .mul(0.5).add(0.5);
+      mat.colorNode = brand.ice.mul(n).add(brand.blue.mul(n.pow(3)));
+      return { impl: 'native' };
+    },
+    source: value2dSource,
+  },
+
+  'pattern-interference': {
+    id: 'pattern/interference',
+    sweep: [{ freq: 14 }, { freq: 26 }, { freq: 40 }],
+    apply(TSL, mat, { clock, freq = 26 } = {}) {
+      const { brand, terra } = palette(TSL);
+      const p = TSL.positionLocal.xy;
+      const { field, envelope } = interference(TSL, p, {
+        sources: [[-0.55, -0.2], [0.55, -0.2]], freq, decay: 0.8, clock,
+      });
+      mat.colorNode = terra.atmo.mul(field.mul(0.5).add(0.5))
+        .mul(TSL.smoothstep(0.02, 0.34, envelope))
+        .add(brand.blue.mul(0.12));
+      return { impl: 'native' };
+    },
+    source: interferenceSource,
+  },
+
+  'pattern-weave': {
+    id: 'pattern/weave',
+    sweep: [{ cells: 5 }, { cells: 9 }, { cells: 14 }],
+    apply(TSL, mat, { cells = 9 } = {}) {
+      const { brand } = palette(TSL);
+      const { height, mask, warpVisible } = weave(TSL, TSL.positionLocal.xy, { cells });
+      const lift = height.mul(0.75).add(0.25);
+      mat.colorNode = brand.slate.mul(mask.mul(0.5))
+        .add(brand.cyan.mul(warpVisible.mul(mask).mul(lift).mul(0.7)))
+        .add(brand.gold.mul(warpVisible.oneMinus().mul(mask).mul(lift).mul(0.6)));
+      return { impl: 'native' };
+    },
+    source: weaveSource,
+  },
+
+  'pattern-polarfold': {
+    id: 'pattern/polarFold',
+    sweep: [{ sectors: 6 }, { sectors: 8 }, { sectors: 12 }],
+    apply(TSL, mat, { clock, sectors = 8 } = {}) {
+      const { brand } = palette(TSL);
+      const { p: q, radius } = polarFold(TSL, TSL.positionLocal.xy, {
+        sectors, spin: clock.mul(0.06),
+      });
+      const arcs = truchet(TSL, q, { cells: 3 });
+      mat.colorNode = brand.cyan.mul(arcs.mul(0.9))
+        .add(brand.gold.mul(TSL.smoothstep(1.3, 0.1, radius).mul(0.25)));
+      return { impl: 'native' };
+    },
+    source: polarFoldSource,
+  },
+
+  'fresnel-anisosheen': {
+    id: 'fresnel/anisoSheen',
+    parityGeo: 'sphere',
+    parityTolerance: { maxDiffPct: 1.0 },
+    sweep: [{ power: 8 }, { power: 24 }, { power: 60 }],
+    apply(TSL, mat, { power = 24 } = {}) {
+      const { brand } = palette(TSL);
+      const { u } = surfaceTangent(TSL);
+      mat.colorNode = brand.void.mul(0.8)
+        .add(brand.gold.mul(anisoSheen(TSL, u, { power }).mul(1.2)));
+      return { impl: 'native' };
+    },
+    source: anisoSource,
+  },
+
+  // ---- Wave 4 materials ----
+  'mat-rippletank': materialEntry('materials/rippleTank', matRippleTank),
+  'mat-moire': materialEntry('materials/moire', matMoire),
+  'mat-chainmail': materialEntry('materials/chainmail', matChainmail),
+  'mat-carbonweave': materialEntry('materials/carbonWeave', matCarbonWeave),
+  'mat-crackedclay': materialEntry('materials/crackedClay', matCrackedClay),
+  'mat-ferrofluid': materialEntry('materials/ferrofluid', matFerrofluid),
+  'mat-cumulus': materialEntry('materials/cumulus', matCumulus),
+  'mat-rainglass': materialEntry('materials/rainGlass', matRainGlass),
+  'mat-spiralgalaxy': materialEntry('materials/spiralGalaxy', matSpiralGalaxy),
+  'mat-tigerseye': materialEntry('materials/tigersEye', matTigersEye),
+  'mat-snowflake': materialEntry('materials/snowflake', matSnowflake),
 
   'util-latlon': {
     id: 'util/latlonUv',

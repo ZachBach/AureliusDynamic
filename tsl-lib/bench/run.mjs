@@ -45,6 +45,10 @@ try {
 
     for (const name of nodeNames) {
       const page = await browser.newPage();
+      // the profile dir persists between runs, and python's http.server offers
+      // no cache headers — without this Chrome happily re-serves a stale
+      // nodes.mjs and the runner reports PASS on code that never ran
+      await page.setCacheEnabled(false);
       const consoleErrors = [];
       page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text().slice(0, 200)); });
       page.on('pageerror', (e) => consoleErrors.push(String(e).slice(0, 200)));

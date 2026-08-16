@@ -1,25 +1,11 @@
 import * as THREE from './vendor/three.webgpu.min.js';
+import { MATERIALS_GALLERY, MATERIALS_SOURCES } from '../tsl-lib/src/materialsGallery.js';
 
-const MATERIAL_MODULES = [
-  ['materials/hologram', () => import('../tsl-lib/src/materials/hologram.js')],
-  ['materials/shield', () => import('../tsl-lib/src/materials/shield.js')],
-  ['materials/liquidMetal', () => import('../tsl-lib/src/materials/liquidMetal.js')],
-  ['materials/dissolve', () => import('../tsl-lib/src/materials/dissolveMat.js')],
-  ['materials/magma', () => import('../tsl-lib/src/materials/magma.js')],
-  ['materials/ice', () => import('../tsl-lib/src/materials/ice.js')],
-  ['materials/forceField', () => import('../tsl-lib/src/materials/forceField.js')],
-  ['materials/glitch', () => import('../tsl-lib/src/materials/glitch.js')],
-  ['materials/marble', () => import('../tsl-lib/src/materials/marble.js')],
-  ['materials/auroraSilk', () => import('../tsl-lib/src/materials/auroraSilk.js')],
-  ['materials/nebulaGlass', () => import('../tsl-lib/src/materials/nebulaGlass.js')],
-  ['materials/toonCel', () => import('../tsl-lib/src/materials/toonCel.js')],
-  ['materials/brushedMetal', () => import('../tsl-lib/src/materials/brushedMetal.js')],
-  ['materials/starfield', () => import('../tsl-lib/src/materials/starfield.js')],
-  ['materials/plasmaArcs', () => import('../tsl-lib/src/materials/plasmaArcs.js')],
-  ['materials/prismaticField', () => import('../tsl-lib/src/materials/prismaticField.js')],
-  ['materials/circuitMaze', () => import('../tsl-lib/src/materials/circuitMaze.js')],
-  ['materials/vortexFlow', () => import('../tsl-lib/src/materials/vortexFlow.js')],
-];
+// The roster is the source of truth. This page used to restate the material
+// list, which meant every new library material had to be remembered here too —
+// and twenty-five of them were not. materialsGallery.js derives name and
+// display source from each module, so a material that ships is a material that
+// appears, with no second list to rot.
 
 const getElement = (selector) => {
   const element = document.querySelector(selector);
@@ -37,6 +23,8 @@ const badge = getElement('[data-lab-badge]');
 const source = getElement('[data-lab-source]');
 const fluxInput = getElement('[data-lab-flux]');
 const fluxOutput = getElement('[data-lab-flux-output]');
+const filterInput = getElement('[data-lab-filter]');
+const countOutput = getElement('[data-lab-count]');
 
 const COST_CLASSES = ['', 'I', 'II', 'III', 'IV', 'V'];
 
@@ -62,23 +50,23 @@ const setStatus = (message, state = 'ready') => {
   status.dataset.state = state;
 };
 
-const createMaterialEntries = async (registry, clock) => {
-  const modules = await Promise.all(MATERIAL_MODULES.map(async ([id, load]) => [id, await load()]));
-  return modules.map(([id, module]) => {
-    if (!module.name || typeof module.apply !== 'function' || typeof module.source !== 'function') {
-      throw new Error(`${id} does not implement the Shader Lab material contract.`);
-    }
-    const material = new THREE.MeshBasicNodeMaterial();
-    module.apply(THREE.TSL, material, { clock });
-    return {
-      id,
-      name: module.name,
-      material,
-      source: module.source(),
-      badge: formatBadge(registry[id], registry._baseline),
-    };
-  });
-};
+// Entries describe a material; the GPU program behind one is only built when
+// it is first selected. Compiling fifty-four node graphs up front would stall
+// the first paint for no benefit — nobody looks at all of them at once.
+const createEntries = (registry) => MATERIALS_GALLERY.map((entry) => {
+  const code = MATERIALS_SOURCES[entry.id];
+  if (!entry.name || typeof entry.apply !== 'function' || !code) {
+    throw new Error(`${entry.id} does not implement the Shader Lab material contract.`);
+  }
+  return {
+    id: entry.id,
+    name: entry.name,
+    apply: entry.apply,
+    source: code,
+    badge: formatBadge(registry[entry.id], registry._baseline),
+    material: null,
+  };
+});
 
 const init = async () => {
   if (!THREE.WebGPURenderer || !THREE.MeshBasicNodeMaterial) {
@@ -95,22 +83,29 @@ const init = async () => {
   const flux = THREE.TSL.uniform(Number(fluxInput.value));
   const clock = THREE.TSL.time.mul(flux.mul(1.8).add(0.25));
   const registry = await registryPromise;
-  const entries = await createMaterialEntries(registry, clock);
-  if (entries.length !== MATERIAL_MODULES.length) {
-    throw new Error('The Shader Lab did not load its complete material set.');
-  }
+  const entries = createEntries(registry);
+  if (!entries.length) throw new Error('The Shader Lab material roster is empty.');
+
+  const materialOf = (entry) => {
+    if (!entry.material) {
+      const material = new THREE.MeshBasicNodeMaterial();
+      entry.apply(THREE.TSL, material, { clock });
+      entry.material = material;
+    }
+    return entry.material;
+  };
 
   const rendererBackend = renderer.backend && renderer.backend.isWebGPUBackend ? 'WEBGPU' : 'WEBGL2';
   backend.textContent = `${rendererBackend} · THREE R${THREE.REVISION}`;
+  countOutput.textContent = String(entries.length);
   setStatus(`${entries.length} verified materials loaded. Drag to rotate the geometry.`);
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 30);
   const geometry = new THREE.TorusKnotGeometry(1, 0.36, 200, 32);
-  const knot = new THREE.Mesh(geometry, entries[0].material);
+  const knot = new THREE.Mesh(geometry, materialOf(entries[0]));
   scene.add(knot);
 
-  let activeIndex = 0;
   let distance = 3.7;
   let targetYaw = 0.35;
   let targetPitch = -0.2;
@@ -122,27 +117,39 @@ const init = async () => {
   let disposed = false;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  const updateMaterial = (index) => {
-    const entry = entries[index];
-    activeIndex = index;
-    knot.material = entry.material;
-    source.textContent = entry.source;
-    badge.textContent = entry.badge;
-    chips.querySelectorAll('button').forEach((button, buttonIndex) => {
-      button.setAttribute('aria-pressed', String(buttonIndex === index));
-    });
-  };
-
-  entries.forEach((entry, index) => {
+  const buttons = entries.map((entry) => {
     const button = document.createElement('button');
     button.className = 'lab-chip';
     button.type = 'button';
     button.textContent = entry.name;
     button.setAttribute('aria-pressed', 'false');
-    button.addEventListener('click', () => updateMaterial(index));
+    button.addEventListener('click', () => updateMaterial(entry.id));
     chips.appendChild(button);
+    return button;
   });
-  updateMaterial(0);
+
+  const updateMaterial = (id) => {
+    const index = entries.findIndex((entry) => entry.id === id);
+    const entry = entries[index];
+    knot.material = materialOf(entry);
+    source.textContent = entry.source;
+    badge.textContent = entry.badge;
+    buttons.forEach((button, buttonIndex) => {
+      button.setAttribute('aria-pressed', String(buttonIndex === index));
+    });
+  };
+  updateMaterial(entries[0].id);
+
+  filterInput.addEventListener('input', () => {
+    const needle = filterInput.value.trim().toLowerCase();
+    let shown = 0;
+    entries.forEach((entry, index) => {
+      const match = !needle || entry.name.toLowerCase().includes(needle);
+      buttons[index].hidden = !match;
+      if (match) shown += 1;
+    });
+    countOutput.textContent = needle ? `${shown} / ${entries.length}` : String(entries.length);
+  });
 
   fluxInput.addEventListener('input', () => {
     flux.value = Number(fluxInput.value);
@@ -204,7 +211,7 @@ const init = async () => {
     cancelAnimationFrame(animationFrame);
     observer.disconnect();
     geometry.dispose();
-    entries.forEach((entry) => entry.material.dispose());
+    entries.forEach((entry) => { if (entry.material) entry.material.dispose(); });
     renderer.dispose();
   }, { once: true });
 };

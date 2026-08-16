@@ -35,6 +35,11 @@ import { blackbody, source as blackbodySource } from './ramp/blackbody.js';
 import { thinFilm, source as thinFilmSource } from './fresnel/thinFilm.js';
 import { truchet, source as truchetSource } from './pattern/truchet.js';
 import { curl, source as curlSource } from './noise/curl.js';
+import { valueNoise2D, source as value2dSource } from './noise/valueNoise2D.js';
+import { interference, source as interferenceSource } from './pattern/interference.js';
+import { weave, source as weaveSource } from './pattern/weave.js';
+import { polarFold, source as polarFoldSource } from './pattern/polarFold.js';
+import { anisoSheen, surfaceTangent, source as anisoSource } from './fresnel/anisoSheen.js';
 
 export const GALLERY = [
   { id: 'noise/fbm', name: 'FBM', family: 'NOISE',
@@ -223,6 +228,48 @@ export const GALLERY = [
       const mired = t.mul(555).add(33.3); // 30,000 K … 1,800 K, mired-linear
       mat.colorNode = blackbody(TSL, TSL.float(1e6).div(mired));
     } },
+  { id: 'noise/valueNoise2D', name: 'VALUE 2D', family: 'NOISE',
+    apply(TSL, mat, { clock } = {}) {
+      const { brand } = palette(TSL);
+      const n = valueNoise2D(TSL, TSL.positionLocal.xy.mul(9).add(TSL.vec2(clock.mul(0.1), 0)))
+        .mul(0.5).add(0.5);
+      mat.colorNode = brand.ice.mul(n).add(brand.blue.mul(n.pow(3)));
+    } },
+  { id: 'pattern/interference', name: 'INTERFERENCE', family: 'PATTERN',
+    apply(TSL, mat, { clock } = {}) {
+      const { brand, terra } = palette(TSL);
+      const { field, envelope } = interference(TSL, TSL.positionLocal.xy, {
+        sources: [[-0.55, -0.2], [0.55, -0.2]], freq: 26, decay: 0.8, clock,
+      });
+      mat.colorNode = terra.atmo.mul(field.mul(0.5).add(0.5))
+        .mul(TSL.smoothstep(0.02, 0.34, envelope)) // the nodal lines, no time in them
+        .add(brand.blue.mul(0.12));
+    } },
+  { id: 'pattern/weave', name: 'WEAVE', family: 'PATTERN',
+    apply(TSL, mat) {
+      const { brand } = palette(TSL);
+      const { height, mask, warpVisible } = weave(TSL, TSL.positionLocal.xy, { cells: 9 });
+      const lift = height.mul(0.75).add(0.25);
+      mat.colorNode = brand.slate.mul(mask.mul(0.5))
+        .add(brand.cyan.mul(warpVisible.mul(mask).mul(lift).mul(0.7)))
+        .add(brand.gold.mul(warpVisible.oneMinus().mul(mask).mul(lift).mul(0.6)));
+    } },
+  { id: 'pattern/polarFold', name: 'POLAR FOLD', family: 'PATTERN',
+    apply(TSL, mat, { clock } = {}) {
+      const { brand } = palette(TSL);
+      const { p: q, radius } = polarFold(TSL, TSL.positionLocal.xy, {
+        sectors: 8, spin: clock.mul(0.06),
+      });
+      mat.colorNode = brand.cyan.mul(truchet(TSL, q, { cells: 3 }).mul(0.9))
+        .add(brand.gold.mul(TSL.smoothstep(1.3, 0.1, radius).mul(0.25)));
+    } },
+  { id: 'fresnel/anisoSheen', name: 'ANISO SHEEN', family: 'FRESNEL',
+    apply(TSL, mat) {
+      const { brand } = palette(TSL);
+      const { u } = surfaceTangent(TSL);
+      mat.colorNode = brand.void.mul(0.8)
+        .add(brand.gold.mul(anisoSheen(TSL, u, { power: 24 }).mul(1.2)));
+    } },
 ];
 
 // build-time only — stripped from the inline bundle (tools/build-lab.mjs)
@@ -243,4 +290,7 @@ export const GALLERY_SOURCES = {
   'noise/curl': curlSource(), 'fresnel/thinFilm': thinFilmSource(),
   'pattern/truchet': truchetSource(), 'pattern/bandedFlow': bandedSource(),
   'ramp/blackbody': blackbodySource(),
+  'noise/valueNoise2D': value2dSource(), 'pattern/interference': interferenceSource(),
+  'pattern/weave': weaveSource(), 'pattern/polarFold': polarFoldSource(),
+  'fresnel/anisoSheen': anisoSource(),
 };
