@@ -4,7 +4,7 @@
 
 **Code shaping the world — one line at a time.**
 
-The official landing site for Aurelius Dynamic LLC — a single, self-contained web experience with zero runtime dependencies.
+The official landing site for Aurelius Dynamic — a single, self-contained web experience with zero runtime dependencies.
 
 [aureliusdynamic.com](https://aureliusdynamic.com) · [Contact](mailto:build@aureliusdynamic.com)
 
@@ -71,7 +71,7 @@ Actively maintained. Certain content — including team profiles and console/dem
 
 Released under the [MIT License](LICENSE).
 
-Copyright © 2026 Aurelius Dynamic LLC. The **Aurelius** name, wordmark, and hexagon mark are used for identification and demonstration; no trademark rights are granted.
+Copyright © 2026 Zach Auerbach, dba Aurelius Dynamic. The **Aurelius** name, wordmark, and hexagon mark are used for identification and demonstration; no trademark rights are granted.
 
 ---
 
