@@ -39,7 +39,11 @@
   <div class="callout">
     <div class="t">Reading this honestly</div>
     <p>This page uses the same taxonomy as <a href="/capabilities/">capabilities</a>, seen from the other side. <strong>Near-term</strong> items have running precursors today — they extend the <em>Proven Today</em> tier. <strong>Mid-term</strong> items have known techniques and unbuilt implementations — candidates for the <em>Active R&amp;D</em> tier. <strong>Long-term</strong> items are the <em>Future Programs</em>, stated plainly so you can hold us to them.</p>
-  </div>
+<!-- PARKED FOR REVIEW - znatodos section 0.2 - NOT LIVE. Delete this line and the PARKED-ROADMAP-NOTE-END marker to publish.
+    <p>Most entries below are techniques. Two — PulseMask and labOptimal — are named programs with their own repositories, placed on the horizon that matches how far along they actually are rather than how interesting they are. Each carries its own scope statement, because both sit next to fields where an overstated claim would do real damage.</p>
+
+  PARKED-ROADMAP-NOTE-END -->
+    </div>
 
   <span class="num">HORIZON 01</span>
   <h2>Near-term — deepening the foundation</h2>
@@ -50,7 +54,12 @@
   <p>Today the hero's compute pass drives one particle field; the pattern generalizes. Next: effects whose state lives entirely on the GPU — trail systems, flow-field advection, reaction-diffusion surfaces — exposed as reusable passes rather than one-off scenes. The measure of success is that a new compute-driven scene costs an afternoon, not a sprint.</p>
   <h3>More lab demos</h3>
   <p>The Lab shelf already holds Helix, IKOS, and <a href="/galaxy/">echoGalaxy</a> — plus the live <a href="/shader-lab/">Shader Lab</a>. Near-term growth is a GPU particle sandbox (the hero's simulation, handed to the visitor with parameters exposed) and a fuller shader playground descended from the current Lab widget. Every addition follows the house rule — live, measured, one link.</p>
+<!-- PARKED FOR REVIEW - znatodos section 0.2 - NOT LIVE. Delete this line and the PARKED-PULSEMASK-END marker to publish.
+  <h3>Geometry that leaves the screen — PulseMask</h3>
+  <p><a href="https://zachbach.github.io/pulsemask/">PulseMask</a> takes the studio's rendering work into fabrication: a browser generator that turns one portrait photograph and a single interpupillary measurement into thirty named, watertight parts, exported as STL, OBJ or GLB. The geometry engine has no browser dependencies, so the same code runs headless in Node to batch-generate from a set of measurements — and rendering is WebGPU with TSL node materials, the same stack as this site's hero. It is published as a <strong>wearable-art design study: not a respirator, not protective equipment, and not a medical device</strong>, untested to NIOSH 42 CFR 84, EN 136/143 and ISO 16900. Its germicidal figures are modelled, never measured — the reported UV-C dose comes in at 0.22 mJ/cm², about 7% of the 3 mJ/cm² a two-log inactivation would need, and is published unrounded, because a number rounded in your own favour is a number you have hidden. Near-term work is the fit: a single image cannot recover metric depth, and that is the limit to attack before anything else about the design matters.</p>
 
+  PARKED-PULSEMASK-END -->
+  
   <span class="num">HORIZON 02</span>
   <h2>Mid-term — earning new physics</h2>
   <p class="sub">known techniques, unbuilt implementations</p>
@@ -60,7 +69,12 @@
   <p>Raymarched participating media — clouds, plasma glow, medical-style volume data — built on WebGPU compute. Volumetrics matter beyond the spectacle: scientific and medical datasets are volumes, and a browser-native volume renderer is the piece of infrastructure that makes them shareable.</p>
   <h3>Fluid simulation</h3>
   <p>Real-time Navier-Stokes on the GPU — grid-based first, particle methods after — surfaced as a Lab instrument you can stir with a pointer. Fluids are the honest benchmark of a compute framework: if the abstraction survives a pressure solve, it will survive most things we ask of it.</p>
+<!-- PARKED FOR REVIEW - znatodos section 0.2 - NOT LIVE. Delete this line and the PARKED-LABOPTIMAL-END marker to publish.
+  <h3>Auditable inference chains — labOptimal</h3>
+  <p><strong>labOptimal</strong> is a prototype that reads a photographed lab panel and works forward from it: OCR to text, text to analytes with values, units and reference ranges, those to canonical units, and canonical values to flagged deficiencies against cited ranges with interaction-aware rules — every finding carrying a confidence score and the reasons that produced it. Three services back it (a Python analytical core, a Node API, a React Native client) with a test suite and contract documents between them. There is <strong>no public deployment, so there is nothing to link yet</strong> — which is exactly why it sits on this horizon and not the one above. What we are investigating is the part that generalizes past nutrition: making a chain of inference auditable end to end, where every range is cited, every recommendation traces to a dossier, and the same input reproduces the same output. It is <strong>not a medical device and gives no medical advice</strong>; that is a constraint the design starts from, not a disclaimer added at the end.</p>
 
+  PARKED-LABOPTIMAL-END -->
+  
   <span class="num">HORIZON 03</span>
   <h2>Long-term — the platform horizon</h2>
   <p class="sub">direction, stated plainly</p>
