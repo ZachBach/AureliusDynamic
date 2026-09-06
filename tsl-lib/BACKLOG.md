@@ -151,10 +151,44 @@ Promote, don't rewrite. **COMPLETE 2026-07-27 — deliverable: [docs/INVENTORY.m
   - New nodes: `fresnel/thinFilm` ② 0.80 (fresnel→cosinePalette iridescence), `pattern/truchet` ② 0.51, `noise/curl` ⑤ 27.92 (12-fbm central-difference curl — honestly the library's most expensive node).
   - Remaining stretch: none. The backlog's build-out is done; future items are new ideas, not debts.
 
+## 7b · Registry debt — 18 unregistered materials (opened 2026-09-05)
+
+The one place the library is currently out of contract with itself. These have
+a module in `src/materials/` but **no `REGISTRY.json` entry and no entry in
+`bench/nodes.mjs`**, so they fail the Definition of Done at gates 1, 3 and 5 and
+are invisible to `NODES.md`, the Lab badges and the gallery:
+
+`amber` · `basaltColumn` · `bioluminescence` · `butterflyWing` ·
+`diffractionGrating` · `geode` · `honeycomb` · `iris` · `labradorite` ·
+`leafVein` · `lichen` · `lightningArc` · `moonstone` · `mycelium` · `obsidian` ·
+`photoelastic` · `pyrite` · `strata`
+
+- [ ] Author a `bench/nodes.mjs` entry per material, then `verify-all` each one,
+      then `gen-docs.mjs`. The five-step pipeline in `tools/README.md`, 18 times.
+      **A cost number is never written by hand** — if it did not come off the
+      bench it does not go in the registry.
+- [ ] Decide first whether all 18 ship. Eighteen at once is a large batch against
+      a Lab that currently shows 54; culling before benching is cheaper than
+      benching before culling.
+- [ ] Baseline note: the registry baseline was measured on the Intel UHD 630
+      (2026-08-16). New hardware means re-measuring everything, so batch this
+      work either well before or well after that switch, never across it.
+
+> Nomenclature trap for whoever picks this up: registry keys are **logical node
+> ids, not file paths**. `src/noise/worley.js` registers as `noise/worleyF1` and
+> `noise/worleyF1F2`; `src/pattern/grid.js` as `pattern/grid` and
+> `pattern/hexGrid`; `src/materials/dissolveMat.js` as `materials/dissolve`.
+> Diffing filenames against keys reports drift that isn't there — it is how this
+> item was first mis-scoped at "25 modules and 4 stale ids".
+
 ## 8 · Later / stretch
 
 - [ ] Hero adopts library nodes (sun granulation, storms, nebula) — high regression risk; only after the parity harness has earned trust.
 - [ ] Standalone repo / npm publish decision.
+- [ ] Self-host the three font families for the dossier sub-pages. All six still
+      link `fonts.googleapis.com`, including `/privacy/`; the landing page's
+      preconnects were removed 2026-09-05 and its faces are inlined. The woff2
+      payloads are recoverable from the bundle's asset map.
 - [ ] three.js upgrade pass (re-verify everything).
 - [ ] Public docs page on the site — editorial rules apply; one page at a time.
 - [ ] Upstream any confirmed mx_ backend divergences to three.js.

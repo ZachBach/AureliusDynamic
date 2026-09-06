@@ -15,7 +15,7 @@ are separate plain `index.html` files sharing `pages.css`.
 
 ## Repository boundaries — read this before editing anything
 
-The working directory contains **three separate git repositories**. This is the
+The working directory contains **four separate git repositories**. This is the
 single most important structural fact here.
 
 | Path | Repo | Tracked by root? |
@@ -23,12 +23,18 @@ single most important structural fact here.
 | `.` (site, `tsl-lib/`) | `ZachBach/AureliusDynamic` | yes |
 | `echoGalaxy/` | `ZachBach/echoGalaxy` | **no** — gitignored |
 | `Zookahs-Casino/` | separate repo | **no** — gitignored |
+| `helixPulse/` | `ZachBach/pulsemask` | **no** — gitignored |
 
 - `tsl-lib/` **is** part of the root repo, despite echoGalaxy's CLAUDE.md
   describing it as "a sibling repo, not part of this checkout". Both statements
   are true from their own vantage point: echoGalaxy sees it as `../tsl-lib`.
-- Commits in `echoGalaxy/` and `Zookahs-Casino/` go to their own remotes. Never
-  `git add` from the root expecting to capture them.
+- Commits in the three nested repos go to their own remotes. Never `git add`
+  from the root expecting to capture them.
+- **`helixPulse/` is PulseMask.** The folder name and the repo name differ on
+  purpose — the repo, the GitHub Pages path and the product are all
+  `pulsemask`, while the local folder stays `helixPulse` because tooling is
+  keyed to that path. Do not "fix" either name. It was missing from
+  `.gitignore` until 2026-09-05, so older clones may still see it as untracked.
 - `echoGalaxy/CLAUDE.md` governs work inside that directory and takes precedence
   there.
 
@@ -63,9 +69,28 @@ automates `echoGalaxy/dist` → `galaxy/`.
 
 ## tsl-lib — the shared node library
 
-61 modules under `tsl-lib/src/<family>/` (`noise`, `pattern`, `fresnel`, `ramp`,
-`materials`, `util`). Consumed two ways: inlined into the landing bundle's Lab
-section, and vendored one-way into `echoGalaxy/src/tsl-lib/`.
+118 modules under `tsl-lib/src/<family>/` — `materials` 72, `pattern` 16,
+`noise` 11, `fresnel` 7, `ramp` 6, `util` 6, plus `noise/adapters/`. Consumed
+two ways: inlined into the landing bundle's Lab section, and vendored one-way
+into `echoGalaxy/src/tsl-lib/`.
+
+⚠ **18 materials are unregistered.** As of 2026-09-05 these have a module in
+`src/materials/` but no `REGISTRY.json` entry and no entry in
+`bench/nodes.mjs`: `amber`, `basaltColumn`, `bioluminescence`, `butterflyWing`,
+`diffractionGrating`, `geode`, `honeycomb`, `iris`, `labradorite`, `leafVein`,
+`lichen`, `lightningArc`, `moonstone`, `mycelium`, `obsidian`, `photoelastic`,
+`pyrite`, `strata`. Because `NODES.md`, the Lab badges and the gallery are all
+generated from the registry, they are invisible to every generated surface.
+Closing this is the five-step pipeline in `tools/README.md` per material —
+bench entry, then `verify-all`, then regenerate — **not** a text edit. Never
+hand-write a cost number.
+
+Registry keys are **logical node ids, not file paths**, and the two do not
+always line up: `noise/worley.js` registers as `noise/worleyF1` *and*
+`noise/worleyF1F2`, `src/pattern/grid.js` registers as both `pattern/grid` and
+`pattern/hexGrid`, and `materials/dissolveMat.js` registers as
+`materials/dissolve`. Comparing filenames against registry keys therefore
+produces false drift — compare exports.
 
 The contract that makes this portable — full rules in
 [`tsl-lib/docs/CONVENTIONS.md`](tsl-lib/docs/CONVENTIONS.md):
@@ -120,11 +145,16 @@ python -m http.server 8000
 
 ## Deployment
 
-⚠ **Confirm the target before relying on either answer.** `README.md` documents
-GitHub Pages from the repository root, and `CNAME` + `.nojekyll` are consistent
-with that. Recent working sessions have treated the live site as Vercel-hosted
-with those two files as leftovers. There is no `vercel.json` or `.vercel/` in the
-repo, which does not disambiguate — Vercel git-integration deploys need neither.
+**Vercel. Settled 2026-09-05 against the Vercel API — do not re-open this.**
+Project `aurelius-dynamic-solutons` (`prj_5cKtt97dREXJsEWXCKM8W0BOagXs`, team
+`team_geqm9s2t1yFYmrb2gwi1i4qI`) is git-linked to `ZachBach/AureliusDynamic` and
+holds both `aureliusdynamic.com` and `www.aureliusdynamic.com`. Pushing to
+`master` deploys. There is no `vercel.json` or `.vercel/` because
+git-integration deploys need neither.
+
+`CNAME` and `.nojekyll` are **inert leftovers** from the original GitHub Pages
+setup. They are harmless under Vercel and are kept only so a Pages fallback
+stays one setting away; do not treat them as evidence of the deploy target.
 
 `.well-known/assetlinks.json` holds the Digital Asset Links stub for the
 echoGalaxy Android TWA (`com.aureliusdynamic.echogalaxy`); the SHA-256
@@ -137,6 +167,22 @@ exception: the hero Earth fetches live weather from Open-Meteo client-side (no
 key, no account, no personal data) and falls back silently to a procedural storm
 pattern. The contact form opens a pre-addressed `mailto:` draft. Preserve this —
 no analytics, no cookies, no backend.
+
+Two notes on how that guarantee is actually held:
+
+- The landing page carried `<link rel="preconnect">` tags to
+  `fonts.googleapis.com` and `fonts.gstatic.com` until 2026-09-05. Every face is
+  inlined, so they fetched nothing and only opened a DNS/TCP/TLS handshake with
+  a third party. **Removed — do not re-add.**
+- ⚠ **The guarantee does not currently extend to the sub-pages.** All six
+  (`philosophy/`, `capabilities/`, `cases/`, `roadmap/`, `privacy/`,
+  `shader-lab/`) still link a `fonts.googleapis.com` stylesheet, which hands
+  Google the visitor's IP — including on `/privacy/` itself, which does not
+  disclose it. Open item: either self-host the three families next to
+  `pages.css` (the fonts already ship inside the bundle, so the woff2 payloads
+  are recoverable from it) or disclose the third party on `/privacy/`.
+  Self-hosting is the studio's precedent — PulseMask vendored its fonts for
+  exactly this reason.
 
 ## `.claude/commands/`
 

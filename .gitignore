@@ -22,6 +22,19 @@ deploy/
 # not part of the Aurelius site deploy
 echoGalaxy/
 Zookahs-Casino/
+# PulseMask. The folder is helixPulse but the repo, the Pages path and the
+# product are all "pulsemask" (github.com/ZachBach/pulsemask); the folder name
+# stays put because tooling is keyed to it. Without this line `git add -A`
+# from the root would embed the whole repo as a gitlink.
+helixPulse/
+# labOptimal does NOT belong in here — it lives at C:\Users\Auerbach\labOptimal
+# with the other siblings. A second clone appeared here on 2026-09-05 and was
+# removed the same day. This line is a guard so a repeat accident cannot be
+# committed, not permission for the directory to exist.
+labOptimal/
+
+# Local working docs — checklists and notes, not part of the published site.
+znatodos.md
 
 # Git worktrees checked out from the nested echoGalaxy repo. Same reasoning
 # as the line above — that repo's branches are its own business, and a
