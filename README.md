@@ -42,7 +42,7 @@ The five dossier pages are plain `index.html` files sharing [`pages.css`](pages.
 
 ## The Lab
 
-Working instruments, featured from the landing page's **Lab** section. The first four are deployed on this domain; PulseMask is hosted from its own repository and linked out to.
+Working instruments, featured from the landing page's **Lab** section. The first five are deployed on this domain; PulseMask is hosted from its own repository and linked out to.
 
 | App | Path | What it is |
 | --- | --- | --- |
@@ -50,10 +50,11 @@ Working instruments, featured from the landing page's **Lab** section. The first
 | **Electromagnetic Helix Reactor** | [`/helix/`](helix/) | Browser-native plasma simulation built around charged-particle dynamics and interactive diagnostics — ~18k macro-electrons under a Boris integrator, Monte-Carlo collisions, live 3D diagnostics, and a dusty-plasma module. Fully self-hosted (React, Babel, and Three.js are vendored in [`helix/vendor/`](helix/vendor/)). |
 | **IKOS — Iterative Knowledge OS** | [`/ikos/`](ikos/) | A knowledge-graph runtime rendered four ways — Book, Graph, Terminal, and Orbit — from one living state. Ships as a self-contained bundle with an offline-first service worker; the optional 3D Orbit view loads Three.js modules from a CDN at runtime. |
 | **echoGalaxy** | [`/galaxy/`](galaxy/) | Free educational universe explorer — planet → star system → galaxy → Local Group — installable PWA, offline after first visit, built on the studio's verified TSL node library. Android TWA package: `com.aureliusdynamic.echogalaxy` (Digital Asset Links stub in [`.well-known/assetlinks.json`](.well-known/assetlinks.json)). |
+| **Aurelius Learn** | [`/learn/`](learn/) | Assembly training runtime — a procedure stepped one operation at a time beside a live exploded view of the part being described, with knowledge checks against the same geometry. Every component is a turned profile built through `geo-lib`, shaded with `tsl-lib` nodes. Runs on a **sample dataset: the figures are illustrative, not measured results**, and the authoring pipeline it shows is a storyboard. Source: [`ZachBach/aureliusLearn`](https://github.com/ZachBach/aureliusLearn). |
 
 | **PulseMask** | [zachbach.github.io/pulsemask](https://zachbach.github.io/pulsemask/) | Photo-fitted parametric geometry: one portrait and one interpupillary measurement become thirty named, watertight parts, exported as STL, OBJ or GLB. The geometry engine has no browser dependencies, so the same code runs headless in Node. Published as a wearable-art design study — **not a respirator, not protective equipment, not a medical device**; its germicidal figures are modelled, never measured. Source: [`ZachBach/pulsemask`](https://github.com/ZachBach/pulsemask). |
 
-Helix, IKOS, and echoGalaxy are **deployed build output copied in**, not source — edit the upstream project, rebuild, copy the result. The copy step is manual. echoGalaxy's upstream sets `base: './'` precisely so one build serves both standalone and from a subdirectory. PulseMask is the exception to the pattern: it is not copied in at all, it is linked, because it is a separate product on its own GitHub Pages deployment.
+Helix, IKOS, echoGalaxy and Learn are **deployed build output copied in**, not source — edit the upstream project, rebuild, copy the result. The copy step is manual, though Learn's upstream carries a `tools/deploy.mjs` that does it. echoGalaxy's upstream sets `base: './'` precisely so one build serves both standalone and from a subdirectory. PulseMask is the exception to the pattern: it is not copied in at all, it is linked, because it is a separate product on its own GitHub Pages deployment.
 
 ## tsl-lib — the shared node library
 
@@ -134,7 +135,7 @@ Stated here rather than left for you to find:
 
 ## Related repositories
 
-Separate products with their own remotes, not deployed from here: [echoGalaxy](https://github.com/ZachBach/echoGalaxy), [PulseMask](https://github.com/ZachBach/pulsemask), [Electromagnetic Helix Reactor](https://github.com/ZachBach/ElectromagneticHelixReactor), [IKOS](https://github.com/ZachBach/IKOS).
+Separate products with their own remotes, not deployed from here: [echoGalaxy](https://github.com/ZachBach/echoGalaxy), [PulseMask](https://github.com/ZachBach/pulsemask), [Electromagnetic Helix Reactor](https://github.com/ZachBach/ElectromagneticHelixReactor), [IKOS](https://github.com/ZachBach/IKOS), [Aurelius Learn](https://github.com/ZachBach/aureliusLearn).
 
 ## Project status
 

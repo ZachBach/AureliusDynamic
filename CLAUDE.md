@@ -15,15 +15,17 @@ are separate plain `index.html` files sharing `pages.css`.
 
 ## Repository boundaries — read this before editing anything
 
-The working directory contains **four separate git repositories**. This is the
+The working directory contains **six separate git repositories**. This is the
 single most important structural fact here.
 
 | Path | Repo | Tracked by root? |
 | --- | --- | --- |
-| `.` (site, `tsl-lib/`) | `ZachBach/AureliusDynamic` | yes |
+| `.` (site, `tsl-lib/`, `geo-lib/`) | `ZachBach/AureliusDynamic` | yes |
 | `echoGalaxy/` | `ZachBach/echoGalaxy` | **no** — gitignored |
 | `Zookahs-Casino/` | separate repo | **no** — gitignored |
 | `helixPulse/` | `ZachBach/pulsemask` | **no** — gitignored |
+| `Fallen-Heroes/` | `ZachBach/Fallen-Heroes` | **no** — gitignored |
+| `aureliusLearn/` | `ZachBach/aureliusLearn` | **no** — gitignored |
 
 - `tsl-lib/` **is** part of the root repo, despite echoGalaxy's CLAUDE.md
   describing it as "a sibling repo, not part of this checkout". Both statements
@@ -52,6 +54,22 @@ python tsl-lib/tools/pack.py --dry         # preview the splice
 python tsl-lib/tools/pack.py               # write index.html
 ```
 
+Two tools write to the **manifest** rather than the template — the base64/gzip
+asset map the template references by uuid:
+
+```bash
+python tsl-lib/tools/add-asset.py shot.webp --mime image/webp   # -> prints a uuid
+python tsl-lib/tools/add-asset.py shot.webp --mime image/webp --uuid <existing>
+python tsl-lib/tools/extract-fonts.py --dest <dir> --family "Space Grotesk"
+```
+
+`add-asset.py` is what "adding a Lab card image is a pack-tool change" used to
+mean; `--uuid` replaces an asset in place so refreshing a screenshot needs no
+template edit. `extract-fonts.py` pulls the woff2 faces and a `fonts.css` back
+out, which is the machinery the sub-page Google Fonts item needs. Both verify
+their JSON round-trips before writing, and neither touches the template — so
+`extract.py --check` still passes after either.
+
 Encoding contract shared by both scripts:
 `json.dumps(template, ensure_ascii=False).replace("<", "\\u003C")`.
 Run `--check` after any three.js or bundler change before trusting an edit
@@ -59,13 +77,18 @@ session. `tsl-lib/build/` and `tsl-lib/bench/vendor/` are generated and
 gitignored — **the bundle is the source of truth**, including for the embedded
 three.js r178 builds.
 
-## The Lab apps under `/helix/`, `/ikos/`, `/galaxy/`, `/shader-lab/`
+## The Lab apps under `/helix/`, `/ikos/`, `/galaxy/`, `/learn/`, `/shader-lab/`
 
 These are **deployed build output copied in**, not source. Edit the upstream
 project, rebuild, copy the result. For `galaxy/` that upstream is `echoGalaxy/`:
 its `vite.config.js` sets `base: './'` precisely so the same build serves both
 standalone and from a subdirectory. The copy step is manual — no script
 automates `echoGalaxy/dist` → `galaxy/`.
+
+`learn/` is the exception: its upstream is `aureliusLearn/`, which has no build
+step at all (plain ES modules), so `node tools/deploy.mjs` over there *is* the
+build — it replaces `learn/` wholesale. Never edit `learn/` directly; the next
+deploy silently reverts you.
 
 ## tsl-lib — the shared node library
 
