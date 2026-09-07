@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>geo-lib bench</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #14161a; color: #cfd3d8;
+    font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  #view { position: fixed; inset: 0; }
+  #hud { position: fixed; left: 12px; top: 10px; z-index: 2; white-space: pre;
+    text-shadow: 0 1px 3px #000; pointer-events: none; }
+  #picker { position: fixed; right: 12px; top: 10px; z-index: 2; }
+</style>
+</head>
+<body>
+<div id="view"></div>
+<div id="hud">booting…</div>
+<select id="picker" title="bench case"></select>
+
+<script type="importmap">
+{ "imports": {
+  "three": "./vendor/three.webgpu.js",
+  "three/webgpu": "./vendor/three.webgpu.js"
+} }
+</script>
+
+<script type="module">
+/* The bench for a geometry library has to RENDER, not assert.
+ *
+ * Every real bug found while building this was a bug about how something
+ * looked: a wing edge-on to the camera, a brow ridge reading as sunglasses, a
+ * flange silently deleted, a down-facing rim drawing a black outline. Not one
+ * of them would have failed a unit test, because each produced a geometry that
+ * was perfectly valid and completely wrong. So the bench draws each builder
+ * from fixed angles and saves the pictures.
+ *
+ * It also asserts the two things a picture cannot show reliably: that the
+ * geometry has finite bounds — one NaN and a mesh silently disappears — and
+ * that it has triangles at all.
+ */
+import * as THREE from 'three';
+import { buildCases } from './cases.mjs';
+
+const hud = document.getElementById('hud');
+const picker = document.getElementById('picker');
+const mount = document.getElementById('view');
+
+const renderer = new THREE.WebGPURenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+mount.appendChild(renderer.domElement);
+await renderer.init();
+
+const backend = renderer.backend?.isWebGPUBackend ? 'WebGPU' : 'WebGL2';
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x14161a);
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.1, 200);
+
+/* Three lights, deliberately plain. A geometry bench that ships a beautiful
+ * lighting rig is lying to you about the geometry — the whole job here is that
+ * a bad form looks bad. Key from the front-right, fill from the left, and a
+ * rim from behind so silhouettes read against the background. */
+scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+const key = new THREE.DirectionalLight(0xfff2e2, 2.6); key.position.set(4, 6, 5);
+const fill = new THREE.DirectionalLight(0x9fb6d0, 1.0); fill.position.set(-5, 2, 3);
+const rim = new THREE.DirectionalLight(0xffffff, 1.6); rim.position.set(-1, 3, -6);
+scene.add(key, fill, rim);
+
+const material = new THREE.MeshStandardMaterial({
+  color: 0xb9b3a6, roughness: 0.62, metalness: 0.0, side: THREE.DoubleSide,
+});
+
+const cases = buildCases(THREE);
+const names = Object.keys(cases);
+for (const n of names) {
+  const o = document.createElement('option');
+  o.value = n; o.textContent = n;
+  picker.appendChild(o);
+}
+
+let current = null;
+const report = { backend, cases: {} };
+
+function show(name) {
+  if (current) {
+    scene.remove(current.root);
+    current.root.traverse((o) => { if (o.geometry) o.geometry.dispose(); });
+  }
+  const built = cases[name]();
+  const root = new THREE.Group();
+  let tris = 0, finite = true, verts = 0;
+
+  if (built.geometry) {
+    const g = built.geometry;
+    g.computeBoundingSphere();
+    finite = !!g.boundingSphere && Number.isFinite(g.boundingSphere.radius);
+    verts = g.attributes.position.count;
+    tris = (g.index ? g.index.count : verts) / 3;
+    root.add(new THREE.Mesh(g, material));
+  } else {
+    built.object.traverse((o) => {
+      if (!o.isMesh) return;
+      o.material = material;
+      o.geometry.computeBoundingSphere();
+      if (!o.geometry.boundingSphere || !Number.isFinite(o.geometry.boundingSphere.radius)) finite = false;
+      const c = o.geometry.attributes.position.count;
+      verts += c;
+      tris += (o.geometry.index ? o.geometry.index.count : c) / 3;
+    });
+    root.add(built.object);
+  }
+
+  scene.add(root);
+  current = { root, ...built };
+  picker.value = name;
+  // A case may carry an exact check for the things a render cannot settle by
+  // eye — a fitted height, a base sitting on zero. Most cases have none; the
+  // picture is the check.
+  const failed = built.check ? built.check() : null;
+  report.cases[name] = { verts, tris, finite, failed, drawCalls: built.geometry ? 1 : null };
+  hud.textContent = `${backend}  ${name}\n${verts} verts  ${tris | 0} tris  finite:${finite}`;
+  return report.cases[name];
+}
+
+function look(azimuth, elevation) {
+  const d = current.dist || 5;
+  const at = new THREE.Vector3(...(current.at || [0, 0, 0]));
+  camera.position.set(
+    at.x + Math.sin(azimuth) * Math.cos(elevation) * d,
+    at.y + Math.sin(elevation) * d,
+    at.z + Math.cos(azimuth) * Math.cos(elevation) * d,
+  );
+  camera.lookAt(at);
+}
+
+function draw() { renderer.render(scene, camera); }
+
+addEventListener('resize', () => {
+  renderer.setSize(innerWidth, innerHeight);
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  draw();
+});
+picker.addEventListener('change', () => { show(picker.value); look(0.6, 0.22); draw(); });
+
+show(names[0]);
+look(0.6, 0.22);
+draw();
+
+// Everything the headless driver needs, and nothing it has to guess at.
+window.__bench = { names, backend, show, look, draw, report };
+window.__benchReady = true;
+</script>
+</body>
+</html>
