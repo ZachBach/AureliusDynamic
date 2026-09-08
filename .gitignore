@@ -45,6 +45,8 @@ aureliusLearn/
 
 # Local working docs — checklists and notes, not part of the published site.
 znatodos.md
+handoff.md
+zookahs-personal-guide-from-the-homie.md
 
 # Git worktrees checked out from the nested echoGalaxy repo. Same reasoning
 # as the line above — that repo's branches are its own business, and a
