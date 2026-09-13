@@ -42,6 +42,14 @@ Fallen-Heroes/
 # from the root swallow the repo as a gitlink. The DEPLOYED copy at /learn/ is
 # tracked here; this source tree is not.
 aureliusLearn/
+# Vantage — Relic Field Terminal (github.com/ZachBach/-Vantage---Relic-Field-Terminal),
+# cloned here 2026-09-08. Its own repo and its own remote, and it defaults to
+# `main` while this repo is on `master`; without these lines `git add -A` from
+# the root would embed it as a gitlink. Both spellings are ignored: a clone gets
+# the dashed name, which shells read as an option, so the local folder is
+# renamed to drop the leading dash.
+-Vantage---Relic-Field-Terminal/
+Vantage-Relic-Field-Terminal/
 
 # Local working docs — checklists and notes, not part of the published site.
 znatodos.md
