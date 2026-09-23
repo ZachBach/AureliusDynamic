@@ -27,6 +27,10 @@ Zookahs-Casino/
 # stays put because tooling is keyed to it. Without this line `git add -A`
 # from the root would embed the whole repo as a gitlink.
 helixPulse/
+# Brain SPECT research program (github.com/ZachBach/spect-program). Cloned here
+# 2026-09-22. It will hold DICOM and NIfTI paths and PPMI tables under a data
+# use agreement, so it must never be embedded as a gitlink in the site deploy.
+spect-program/
 # labOptimal does NOT belong in here — it lives at C:\Users\Auerbach\labOptimal
 # with the other siblings. A second clone appeared here on 2026-09-05 and was
 # removed the same day. This line is a guard so a repeat accident cannot be
