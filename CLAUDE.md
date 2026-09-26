@@ -169,11 +169,17 @@ python -m http.server 8000
 ## Deployment
 
 **Vercel. Settled 2026-09-05 against the Vercel API — do not re-open this.**
-Project `aurelius-dynamic-solutons` (`prj_5cKtt97dREXJsEWXCKM8W0BOagXs`, team
-`team_geqm9s2t1yFYmrb2gwi1i4qI`) is git-linked to `ZachBach/AureliusDynamic` and
-holds both `aureliusdynamic.com` and `www.aureliusdynamic.com`. Pushing to
-`master` deploys. There is no `vercel.json` or `.vercel/` because
-git-integration deploys need neither.
+Project `aureliusdynamic` (renamed 2026-09-26 from the typo'd
+`aurelius-dynamic-solutons` — same project, `prj_5cKtt97dREXJsEWXCKM8W0BOagXs`,
+same team `team_geqm9s2t1yFYmrb2gwi1i4qI`) is git-linked to
+`ZachBach/AureliusDynamic` and holds both `aureliusdynamic.com` and
+`www.aureliusdynamic.com`. Pushing to `master` deploys. There is no
+`vercel.json` or `.vercel/` because git-integration deploys need neither.
+
+The project's auto-generated preview domains (`aurelius-dynamic-solutons.vercel.app`
+and its `-git-master-`/deployment-hash variants) still carry the pre-rename
+slug — Vercel doesn't retroactively rename those. Harmless holdovers, same as
+`CNAME` below; ignore them rather than treating them as the project's name.
 
 `CNAME` and `.nojekyll` are **inert leftovers** from the original GitHub Pages
 setup. They are harmless under Vercel and are kept only so a Pages fallback

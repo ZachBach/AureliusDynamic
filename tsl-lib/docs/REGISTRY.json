@@ -1123,10 +1123,10 @@
   },
   "_baseline": {
     "gpu": "intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)",
-    "browser": "Chrome/151.0.0.0",
+    "browser": "Chrome/152.0.0.0",
     "os": "Windows 10",
     "three": "r178",
-    "date": "2026-08-16"
+    "date": "2026-09-22"
   },
   "materials/hologram": {
     "status": "verified",
@@ -3239,5 +3239,104 @@
     "mobileOverBudget": false,
     "three": "r178",
     "verified": "2026-08-16"
+  },
+  "noise/simplex3D": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 0.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 1.117,
+      "gpuP95": 1.176,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 2
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 3.3
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 3,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-09-22"
+  },
+  "noise/curlSimplex": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0,
+      "tolerance": {
+        "maxDiffPct": 1,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 8.699,
+      "gpuP95": 9.214,
+      "wallMs": {
+        "webgpu": 0.4,
+        "webgl2": 0.4
+      },
+      "wallP95": {
+        "webgpu": 0.8,
+        "webgl2": 1.7
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 5,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-09-22"
+  },
+  "materials/volumeFire": {
+    "status": "verified",
+    "impl": {
+      "webgpu": "native",
+      "webgl2": "native"
+    },
+    "parity": {
+      "pass": true,
+      "diffPct": 0.008,
+      "tolerance": {
+        "maxDiffPct": 1.5,
+        "pixelThreshold": 0.1
+      }
+    },
+    "cost": {
+      "gpuMs": 20.691,
+      "gpuP95": 24.32,
+      "wallMs": {
+        "webgpu": 0.3,
+        "webgl2": 0.3
+      },
+      "wallP95": {
+        "webgpu": 0.6,
+        "webgl2": 0.8
+      },
+      "mobileWallMs": 16.7,
+      "costClass": 5,
+      "basis": "gpu"
+    },
+    "mobileOverBudget": false,
+    "three": "r178",
+    "verified": "2026-09-22"
   }
 }

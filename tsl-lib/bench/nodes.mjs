@@ -103,6 +103,10 @@ import * as matRainGlass from '../src/materials/rainGlass.js';
 import * as matSpiralGalaxy from '../src/materials/spiralGalaxy.js';
 import * as matTigersEye from '../src/materials/tigersEye.js';
 import * as matSnowflake from '../src/materials/snowflake.js';
+// Wave 5 — ported from three.js PR #33848 (volumetric fire)
+import { simplex3D, source as simplexSource } from '../src/noise/simplex3D.js';
+import { curlSimplex, source as curlSimplexSource } from '../src/noise/curlSimplex.js';
+import * as matVolumeFire from '../src/materials/volumeFire.js';
 
 // material modules share the bench entry contract directly
 const materialEntry = (id, mod, tolerance = 1.5) => ({
@@ -775,6 +779,33 @@ export const nodes = {
   'mat-spiralgalaxy': materialEntry('materials/spiralGalaxy', matSpiralGalaxy),
   'mat-tigerseye': materialEntry('materials/tigersEye', matTigersEye),
   'mat-snowflake': materialEntry('materials/snowflake', matSnowflake),
+  'mat-volumefire': materialEntry('materials/volumeFire', matVolumeFire),
+
+  // ---- Wave 5 nodes — three.js PR #33848 ----
+
+  'noise-simplex3d': {
+    id: 'noise/simplex3D',
+    sweep: [{ freq: 2 }, { freq: 3.5 }],
+    apply(TSL, mat, { clock, freq = 3 } = {}) {
+      const { brand } = palette(TSL);
+      const n = simplex3D(TSL, TSL.positionLocal.mul(freq).add(TSL.vec3(0, 0, clock.mul(0.1))));
+      mat.colorNode = brand.cyan.mul(n.mul(0.5).add(0.5)).add(brand.blue.mul(n.abs()));
+      return { impl: 'native' };
+    },
+    source: simplexSource,
+  },
+
+  'noise-curlsimplex': {
+    id: 'noise/curlSimplex',
+    parityTolerance: { maxDiffPct: 1.0 },
+    sweep: [{ eps: 0.1 }, { eps: 0.2 }],
+    apply(TSL, mat, { clock, eps = 0.1 } = {}) {
+      const flow = curlSimplex(TSL, TSL.positionLocal.mul(1.5).add(TSL.vec3(0, 0, clock.mul(0.05))), { eps });
+      mat.colorNode = flow.mul(0.5).add(0.5);
+      return { impl: 'native' };
+    },
+    source: curlSimplexSource,
+  },
 
   'util-latlon': {
     id: 'util/latlonUv',

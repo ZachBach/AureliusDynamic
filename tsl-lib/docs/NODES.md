@@ -3,7 +3,7 @@
 > **GENERATED** by `tools/gen-docs.mjs` from `docs/REGISTRY.json` — do not edit.
 > Regenerate after any `verify-all` run. Methodology: [COST-METHOD.md](COST-METHOD.md).
 
-Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)** · Chrome/151.0.0.0 · Windows 10 · three r178 · measured 2026-08-16
+Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) Direct3D11 vs_5_0 ps_5_0, D3D11)** · Chrome/152.0.0.0 · Windows 10 · three r178 · measured 2026-09-22
 
 ## fresnel
 
@@ -82,6 +82,7 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | `materials/toonCel` | ③ | 1.41 (1.76) | 1.4/3.1 | native/native | ✓ 0.008% | 16.7 ms | 2026-07-29 |
 | `materials/topoMap` | ④ | 7.68 (8.07) | 0.5/0.7 | native/native | ✓ 0.018% | 16.7 ms | 2026-08-11 |
 | `materials/velvet` | ④ | 3.63 (3.87) | 0.6/1.2 | native/native | ✓ 0.021% | 16.7 ms | 2026-08-11 |
+| `materials/volumeFire` | ⑤ | 20.69 (24.32) | 0.3/0.3 | native/native | ✓ 0.008% | 16.7 ms | 2026-09-22 |
 | `materials/vortexFlow` | ⑤ | 37.46 (38.78) | 0.7/0.4 | native/native | ✓ 0.016% | 34.6 ms ⚠ | 2026-08-03 |
 
 - `materials/auroraSilk` — AURORA SILK — the hero's aurora curtain draped over geometry via uv space: *(src/materials/auroraSilk.js)*
@@ -136,6 +137,7 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 - `materials/toonCel` — TOON CEL — posterized lambert bands from a fixed key light, gold-on-slate, *(src/materials/toonCel.js)*
 - `materials/topoMap` — TOPO MAP — a cartographer's reading of an fbm height field: posterized *(src/materials/topoMap.js)*
 - `materials/velvet` — the sheen lobe, not a diffuse lobe. Velvet's signature is that *(src/materials/velvet.js)*
+- `materials/volumeFire` — VOLUME FIRE — the shading half of three.js PR #33848's volumetric fire, *(src/materials/volumeFire.js)*
 - `materials/vortexFlow` — VORTEX FLOW — curl-noise directions folded into moving color bands: *(src/materials/vortexFlow.js)*
 
 ## noise
@@ -143,11 +145,13 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | Node | Class | gpuMs (p95) | wall wgpu/wgl2 | Impl wgsl/glsl | Parity | Mobile | Verified |
 |---|---|---|---|---|---|---|---|
 | `noise/curl` | ⑤ | 27.92 (28.93) | 0.3/0.3 | native/native | ✓ 0% | 36.5 ms ⚠ | 2026-07-29 |
+| `noise/curlSimplex` | ⑤ | 8.70 (9.21) | 0.4/0.4 | native/native | ✓ 0% | 16.7 ms | 2026-09-22 |
 | `noise/fbm` | ④ | 3.43 (3.57) | 0.4/0.5 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `noise/fbm@fallback` | ③ | 1.83 (1.91) | 0.3/0.9 | fallback/fallback | ✓ 0% | 16.6 ms | 2026-07-29 |
 | `noise/gradientNoise` | ③ | 1.12 (1.17) | 0.4/1.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `noise/gradientNoise@fallback` | ③ | 1.34 (1.40) | 0.3/1.6 | fallback/fallback | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `noise/ridgedFbm` | ④ | 3.46 (3.59) | 0.3/0.5 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
+| `noise/simplex3D` | ③ | 1.12 (1.18) | 0.4/2.0 | native/native | ✓ 0% | 16.7 ms | 2026-09-22 |
 | `noise/trigLattice` | ② | 0.47 (0.52) | 0.9/1.3 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `noise/turbulence` | ④ | 3.40 (3.57) | 0.4/0.5 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
 | `noise/valueNoise` | ② | 0.72 (0.76) | 0.4/1.4 | native/native | ✓ 0% | 16.7 ms | 2026-07-29 |
@@ -158,9 +162,11 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 | `noise/worleyF1F2@fallback` | ④ | 3.58 (3.63) | 0.3/0.5 | fallback/fallback | ✓ 0% | 16.7 ms | 2026-07-29 |
 
 - `noise/curl` — divergence-free curl noise via central differences over three *(src/noise/curl.js)*
+- `noise/curlSimplex` — divergence-free flow from a simplex vector potential, the *(src/noise/curlSimplex.js)*
 - `noise/fbm` — fractal Brownian motion over a base noise. Native path is the mx *(src/noise/fbm.js)*
 - `noise/gradientNoise` — 3D perlin-style noise. Native path is the mx adapter *(src/noise/gradientNoise.js)*
 - `noise/ridgedFbm` — fbm with per-octave ridge transform (1−|n|)²: sharp crests *(src/noise/ridgedFbm.js)*
+- `noise/simplex3D` — 3D simplex noise. Ported from the `snoise` shipped with *(src/noise/simplex3D.js)*
 - `noise/trigLattice` — trigLattice / trigFlow — the site's cheap deterministic noise: summed *(src/noise/trigLattice.js)*
 - `noise/turbulence` — fbm over |noise|: all-positive billows with sharp creases. *(src/noise/turbulence.js)*
 - `noise/valueNoise` — pure-TSL 3D value noise: hashed lattice corners, smoothstep *(src/noise/valueNoise.js)*
@@ -238,7 +244,25 @@ Baseline: **intel gen-9 · ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00003E9B) 
 Doc'd in source; no registry entry (JS helpers, adapters, or pending bench wiring):
 
 - `src/gallery.js` — gallery — the Lab's node-gallery drawer: curated live visualizers for the
+- `src/materials/amber.js` — AMBER — fossil resin, which is a FLOW before it is a stone. Resin ran down
+- `src/materials/basaltColumn.js` — BASALT COLUMN — the Giant's Causeway. Cooling lava contracts, and a
+- `src/materials/bioluminescence.js` — BIOLUMINESCENCE — a dinoflagellate bloom. Each cell carries its own
+- `src/materials/butterflyWing.js` — BUTTERFLY WING — Morpho blue, which contains no blue pigment at all. The
+- `src/materials/diffractionGrating.js` — DIFFRACTION GRATING — the rainbow off a CD, which is not pigment. A surface
 - `src/materials/dissolveMat.js` — DISSOLVE — noise-threshold cutout with a glowing ember edge. Library
+- `src/materials/geode.js` — GEODE — a cavity lined inward with crystal. The structure has a strict
+- `src/materials/honeycomb.js` — HONEYCOMB — the optimal partition, and the reason the shape is not a
+- `src/materials/iris.js` — IRIS — the human eye, which is a muscle with a pattern nobody chose. The
+- `src/materials/labradorite.js` — LABRADORITE — schiller, the flash that only exists at one angle. The
+- `src/materials/leafVein.js` — LEAF VEIN — a hierarchical transport network. A leaf solves the same
+- `src/materials/lichen.js` — LICHEN — not a plant but a partnership: a fungus farming an alga. Crustose
+- `src/materials/lightningArc.js` — LIGHTNING ARC — dielectric breakdown. The channel is not drawn as a line:
+- `src/materials/moonstone.js` — MOONSTONE — adularescence, and the reason the glow looks like it is BELOW
+- `src/materials/mycelium.js` — MYCELIUM — the fungal network under the forest floor, and the largest
+- `src/materials/obsidian.js` — OBSIDIAN — volcanic glass, and the fracture that made it the best cutting
+- `src/materials/photoelastic.js` — PHOTOELASTIC — stress made visible. A transparent solid under load turns
+- `src/materials/pyrite.js` — PYRITE — fool's gold, and a lesson in crystal habit. FeS₂ is cubic, so it
+- `src/materials/strata.js` — STRATA — sedimentary layering, plus the one feature that makes a cliff face
 - `src/materialsGallery.js` — materialsGallery — the material roster as iterable data, the counterpart to
 - `src/noise/adapters/mx.js` — MaterialX adapters — the ONLY file allowed to touch mx_* symbols
 - `src/noise/hashChannels.js` — hashChannels — n independent deterministic hash channels from one seed.

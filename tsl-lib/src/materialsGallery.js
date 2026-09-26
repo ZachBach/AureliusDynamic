@@ -70,6 +70,7 @@ import * as rainGlass from './materials/rainGlass.js';
 import * as spiralGalaxy from './materials/spiralGalaxy.js';
 import * as tigersEye from './materials/tigersEye.js';
 import * as snowflake from './materials/snowflake.js';
+import * as volumeFire from './materials/volumeFire.js';
 
 // [registry id, module]. Order follows tools/build-lab.mjs MATERIALS so the
 // Lab's chip order and any consumer's walk order agree.
@@ -128,6 +129,7 @@ const MODULES = [
   ['materials/spiralGalaxy', spiralGalaxy],
   ['materials/tigersEye', tigersEye],
   ['materials/snowflake', snowflake],
+  ['materials/volumeFire', volumeFire],
 ];
 
 export const MATERIALS_GALLERY = MODULES.map(([id, mod]) => ({

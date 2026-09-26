@@ -40,6 +40,8 @@ import { interference, source as interferenceSource } from './pattern/interferen
 import { weave, source as weaveSource } from './pattern/weave.js';
 import { polarFold, source as polarFoldSource } from './pattern/polarFold.js';
 import { anisoSheen, surfaceTangent, source as anisoSource } from './fresnel/anisoSheen.js';
+import { simplex3D, source as simplexSource } from './noise/simplex3D.js';
+import { curlSimplex, source as curlSimplexSource } from './noise/curlSimplex.js';
 
 export const GALLERY = [
   { id: 'noise/fbm', name: 'FBM', family: 'NOISE',
@@ -270,6 +272,17 @@ export const GALLERY = [
       mat.colorNode = brand.void.mul(0.8)
         .add(brand.gold.mul(anisoSheen(TSL, u, { power: 24 }).mul(1.2)));
     } },
+  { id: 'noise/simplex3D', name: 'SIMPLEX 3D', family: 'NOISE',
+    apply(TSL, mat, { clock } = {}) {
+      const { brand } = palette(TSL);
+      const n = simplex3D(TSL, TSL.positionLocal.mul(3).add(TSL.vec3(0, 0, clock.mul(0.1))));
+      mat.colorNode = brand.cyan.mul(n.mul(0.5).add(0.5)).add(brand.blue.mul(n.abs()));
+    } },
+  { id: 'noise/curlSimplex', name: 'CURL SIMPLEX', family: 'NOISE',
+    apply(TSL, mat, { clock } = {}) {
+      const flow = curlSimplex(TSL, TSL.positionLocal.mul(1.5).add(TSL.vec3(0, 0, clock.mul(0.05))));
+      mat.colorNode = flow.mul(0.5).add(0.5);
+    } },
 ];
 
 // build-time only — stripped from the inline bundle (tools/build-lab.mjs)
@@ -293,4 +306,5 @@ export const GALLERY_SOURCES = {
   'noise/valueNoise2D': value2dSource(), 'pattern/interference': interferenceSource(),
   'pattern/weave': weaveSource(), 'pattern/polarFold': polarFoldSource(),
   'fresnel/anisoSheen': anisoSource(),
+  'noise/simplex3D': simplexSource(), 'noise/curlSimplex': curlSimplexSource(),
 };
