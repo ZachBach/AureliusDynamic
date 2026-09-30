@@ -7,5 +7,8 @@ bench/node_modules/
 bench/shots/
 bench/chrome-profile-*/
 
+# The reel renderer's Chrome profile (tools/reel.mjs)
+tools/chrome-profile-*/
+
 # junction so tools/ resolves bench's puppeteer
 /node_modules/
