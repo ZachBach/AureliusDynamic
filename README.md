@@ -46,7 +46,7 @@ Working instruments, featured from the landing page's **Lab** section. The first
 
 | App | Path | What it is |
 | --- | --- | --- |
-| **Shader Lab** | [`/shader-lab/`](shader-lab/) | Live TSL material browser — every material compiled in the page, measured frame cost and verification record attached. Built from `tsl-lib` by [`tsl-lib/tools/build-lab.mjs`](tsl-lib/tools/build-lab.mjs). |
+| **Shader Lab** | [`/shader-lab/`](shader-lab/) | Live TSL material browser — every material compiled in the page, source visible, frame cost attached. Built from `tsl-lib` by [`tsl-lib/tools/build-lab.mjs`](tsl-lib/tools/build-lab.mjs). |
 | **Electromagnetic Helix Reactor** | [`/helix/`](helix/) | Browser-native plasma simulation built around charged-particle dynamics and interactive diagnostics — ~18k macro-electrons under a Boris integrator, Monte-Carlo collisions, live 3D diagnostics, and a dusty-plasma module. Fully self-hosted (React, Babel, and Three.js are vendored in [`helix/vendor/`](helix/vendor/)). |
 | **IKOS — Iterative Knowledge OS** | [`/ikos/`](ikos/) | A knowledge-graph runtime rendered four ways — Book, Graph, Terminal, and Orbit — from one living state. Ships as a self-contained bundle with an offline-first service worker; the optional 3D Orbit view loads Three.js modules from a CDN at runtime. |
 | **echoGalaxy** | [`/galaxy/`](galaxy/) | Free educational universe explorer — planet → star system → galaxy → Local Group — installable PWA, offline after first visit, built on the studio's verified TSL node library. Android TWA package: `com.aureliusdynamic.echogalaxy` (Digital Asset Links stub in [`.well-known/assetlinks.json`](.well-known/assetlinks.json)). |
@@ -65,7 +65,7 @@ The contract that makes them portable — full rules in [`tsl-lib/docs/CONVENTIO
 - **Nodes import nothing.** Every factory takes the TSL namespace as its first argument: `fresnel(TSL, opts)`.
 - **Domain input is positional, tunables are an options object.** Every tunable has a default.
 - **Nodes never own uniforms and never bake `time`.** Callers pass both in.
-- **Each module exports `source()`**, a readable snippet of what it does — it lives in the same file and changes in the same commit. The public Lab no longer displays it; the badges it shows come from the registry.
+- **Each module exports `source()`**, returning the readable snippet the Lab displays — it lives in the same file and changes in the same commit.
 - **Brand colors come only from `src/util/palette.js`**, never hex literals.
 - **three.js is pinned to r178**, the build embedded in the bundle.
 

@@ -6,12 +6,6 @@ import { MATERIALS_GALLERY, MATERIALS_SOURCES } from '../tsl-lib/src/materialsGa
 // and twenty-five of them were not. materialsGallery.js derives name and
 // display source from each module, so a material that ships is a material that
 // appears, with no second list to rot.
-//
-// The display source is no longer shown here (2026-09-30): the pane was
-// removed while the readable snippets are held back for a paid offering. The
-// roster still carries them and createEntries still requires one per material,
-// because that is the library's contract; this page simply does not print it.
-// What stays on screen is the verification record — the receipt.
 
 const getElement = (selector) => {
   const element = document.querySelector(selector);
@@ -26,6 +20,7 @@ const backend = getElement('[data-lab-backend]');
 const metrics = getElement('[data-lab-metrics]');
 const status = getElement('[data-lab-status]');
 const badge = getElement('[data-lab-badge]');
+const source = getElement('[data-lab-source]');
 const fluxInput = getElement('[data-lab-flux]');
 const fluxOutput = getElement('[data-lab-flux-output]');
 const filterInput = getElement('[data-lab-filter]');
@@ -67,6 +62,7 @@ const createEntries = (registry) => MATERIALS_GALLERY.map((entry) => {
     id: entry.id,
     name: entry.name,
     apply: entry.apply,
+    source: code,
     badge: formatBadge(registry[entry.id], registry._baseline),
     material: null,
   };
@@ -136,6 +132,7 @@ const init = async () => {
     const index = entries.findIndex((entry) => entry.id === id);
     const entry = entries[index];
     knot.material = materialOf(entry);
+    source.textContent = entry.source;
     badge.textContent = entry.badge;
     buttons.forEach((button, buttonIndex) => {
       button.setAttribute('aria-pressed', String(buttonIndex === index));

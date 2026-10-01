@@ -126,17 +126,15 @@ The contract that makes this portable — full rules in
   Every tunable has a default.
 - **Nodes never own uniforms and never bake `time`.** Callers pass both in;
   `make<Thing>` helpers return uniforms for the caller to hold.
-- **Each module exports `source()`**, the readable snippet of what it does. It
-  lives in the same file and changes in the same commit — registry validation
-  rejects display text that does not come from the module. ⚠ **Since 2026-09-30
-  the public Lab does not display it**: `SHOW_SOURCE = false` in
-  `tools/build-lab.mjs` keeps the snippets out of the landing bundle and
-  collapses the pane, and `/shader-lab/` has no source pane. The snippets are
-  held back for a paid offering; the badges (the "receipts") still show. Do not
-  re-enable the display, or write site copy that promises visible source,
-  without being asked. The modules still ship to the browser to run, and
-  `tsl-lib/src/` is still public under MIT — this hides the display copy, it
-  does not make the code private.
+- **Each module exports `source()`** returning the readable snippet the Lab
+  displays. It lives in the same file and changes in the same commit — registry
+  validation rejects display text that does not come from the module.
+  `SHOW_SOURCE` in `tools/build-lab.mjs` can withhold that display from the
+  landing bundle; it is `true`. It was switched off for a day on 2026-09-30 and
+  restored — visible source beside a measured cost is the Lab's argument, and
+  hiding the pane never made the code private (it ships to the browser to run,
+  and `tsl-lib/src/` is public under MIT). Work meant to be sold belongs
+  outside this repo, not behind that switch.
 - **Brand colors come only from `src/util/palette.js`**, never hex literals.
 - **three.js is pinned to r178**, the build embedded in the bundle. A node may
   only import symbols present in `docs/tsl-exports.json`. Upgrading is a

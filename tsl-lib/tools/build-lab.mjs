@@ -20,15 +20,16 @@ const LIB = dirname(TOOLS);
 const TEMPLATE = join(LIB, 'build', 'template.html');
 const registry = JSON.parse(readFileSync(join(LIB, 'docs', 'REGISTRY.json'), 'utf8'));
 
-// Display source is withheld from the public Lab since 2026-09-30: the panes
-// showed each material's readable snippet, and that is being held back for a
-// paid offering. Nothing about the modules changes — every one still exports
-// source(), and it is still checked below, because the contract and the
-// registry validation depend on it. Flip this to true and rebuild to restore
-// the panes exactly as they were. The badges — the receipts — are unaffected.
-// (This hides the display copy. The material code itself still ships: a
-// shader has to reach the browser to run.)
-const SHOW_SOURCE = false;
+// Whether the Lab displays each material's readable source beside its badge.
+// It does. false embeds no display code and collapses the pane — tried for a
+// day on 2026-09-30 and reversed, because the visible source beside a measured
+// cost is the Lab's whole argument. The switch stays so that withholding is
+// one line and a rebuild rather than surgery. Either way every module must
+// export a non-empty source(): the contract and the registry validation
+// depend on it, and it is checked below. (false would hide the display copy
+// only. The material code itself always ships: a shader has to reach the
+// browser to run.)
+const SHOW_SOURCE = true;
 
 // dependency-ordered inline set — everything the four materials reach
 const LIB_FILES = [
