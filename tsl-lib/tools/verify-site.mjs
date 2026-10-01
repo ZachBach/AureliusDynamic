@@ -95,7 +95,10 @@ try {
         const pre = root.querySelector('pre');
         const badge = [...root.querySelectorAll('div')].map((d) => d.textContent)
           .find((t) => t && /VERIFIED|·.*MS/.test(t)) || '';
-        return { firstLine: pre ? pre.textContent.split('\n')[0] : '', badge };
+        // The source pane is a build option (build-lab's SHOW_SOURCE). Hidden
+        // is a valid state; a visible pane with nothing in it is not.
+        const shown = !!pre && getComputedStyle(pre).display !== 'none';
+        return { firstLine: pre ? pre.textContent.split('\n')[0] : '', badge, shown };
       });
       // clip needs absolute page coords; boundingBox is viewport-relative
       const box = await page.evaluate(() => {
@@ -108,7 +111,12 @@ try {
         await page.screenshot({ path: join(SHOTS, `site-${label}-mat${i}-${backend}.png`),
           clip: { x: box.x, y: box.y, width: Math.min(box.width, 900), height: Math.min(box.height, 500) } });
       }
-      console.log(`[${backend}] mat${i}: "${info.firstLine.slice(0, 46)}"  ${info.badge.slice(0, 60)}`);
+      const src = info.shown ? `"${info.firstLine.slice(0, 46)}"` : 'source hidden';
+      console.log(`[${backend}] mat${i}: ${src}  ${info.badge.slice(0, 60)}`);
+      // The badge is the receipt and it is not optional; neither is a pane
+      // that claims to show source and shows nothing.
+      if (!/VERIFIED/.test(info.badge)) { console.log(`[${backend}] mat${i}: NO BADGE  ✗`); failed++; }
+      if (info.shown && !info.firstLine.trim()) { console.log(`[${backend}] mat${i}: EMPTY SOURCE PANE  ✗`); failed++; }
     }
 
     // node-gallery drawer (if this bundle has it)
@@ -124,9 +132,12 @@ try {
           const root = document.querySelector('[data-shaderlab]');
           const pre = root.querySelector('pre');
           return { badge: pre.previousElementSibling.textContent,
-                   firstLine: pre.textContent.split('\n')[0] };
+                   firstLine: pre.textContent.split('\n')[0],
+                   shown: getComputedStyle(pre).display !== 'none' };
         });
-        console.log(`[${backend}] gallery[${idx}]: "${info.firstLine.slice(0, 40)}"  ${info.badge.slice(0, 64)}`);
+        const src = info.shown ? `"${info.firstLine.slice(0, 40)}"` : 'source hidden';
+        console.log(`[${backend}] gallery[${idx}]: ${src}  ${info.badge.slice(0, 64)}`);
+        if (!/VERIFIED/.test(info.badge)) { console.log(`[${backend}] gallery[${idx}]: NO BADGE  ✗`); failed++; }
       }
       console.log(`[${backend}] drawer: ${galCount} node chips`);
       if (galCount < 20) failed++;

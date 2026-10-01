@@ -20,6 +20,16 @@ const LIB = dirname(TOOLS);
 const TEMPLATE = join(LIB, 'build', 'template.html');
 const registry = JSON.parse(readFileSync(join(LIB, 'docs', 'REGISTRY.json'), 'utf8'));
 
+// Display source is withheld from the public Lab since 2026-09-30: the panes
+// showed each material's readable snippet, and that is being held back for a
+// paid offering. Nothing about the modules changes — every one still exports
+// source(), and it is still checked below, because the contract and the
+// registry validation depend on it. Flip this to true and rebuild to restore
+// the panes exactly as they were. The badges — the receipts — are unaffected.
+// (This hides the display copy. The material code itself still ships: a
+// shader has to reach the browser to run.)
+const SHOW_SOURCE = false;
+
 // dependency-ordered inline set — everything the four materials reach
 const LIB_FILES = [
   'noise/adapters/mx.js', 'noise/valueNoise.js', 'noise/fbm.js', 'noise/worley.js',
@@ -39,6 +49,10 @@ const LIB_FILES = [
   // Wave 4
   'noise/valueNoise2D.js', 'pattern/interference.js', 'pattern/weave.js',
   'pattern/polarFold.js', 'fresnel/anisoSheen.js',
+  // b938eae put these two in the gallery and the registry (verified
+  // 2026-09-22) without listing them here, so the Lab could not be rebuilt
+  // at all until they were. simplex3D first: curlSimplex imports it.
+  'noise/simplex3D.js', 'noise/curlSimplex.js',
   'gallery.js', // last — its visualizers reference everything above
 ];
 const MATERIALS = [
@@ -191,7 +205,9 @@ const metaFor = (id) => {
 const defs = [];
 for (const m of MATERIALS) {
   const mod = await import('file://' + join(LIB, 'src', m.file).replace(/\\/g, '/'));
-  defs.push({ name: mod.name, fn: m.fn, code: mod.source(), meta: metaFor(m.id) });
+  const code = mod.source();
+  if (!code) throw new Error(`build-lab: ${m.file} exports an empty source()`);
+  defs.push({ name: mod.name, fn: m.fn, code: SHOW_SOURCE ? code : '', meta: metaFor(m.id) });
 }
 
 const inlined = [...LIB_FILES.map((f) => strip(f)),
@@ -201,7 +217,7 @@ const inlined = [...LIB_FILES.map((f) => strip(f)),
 const gal = await import('file://' + join(LIB, 'src', 'gallery.js').replace(/\\/g, '/'));
 const galCodes = {}, galMeta = {};
 for (const g of gal.GALLERY) {
-  galCodes[g.id] = gal.GALLERY_SOURCES[g.id] || '';
+  if (SHOW_SOURCE) galCodes[g.id] = gal.GALLERY_SOURCES[g.id] || '';
   galMeta[g.id] = metaFor(g.id);
 }
 const galMaps = `      const GAL_CODES = ${JSON.stringify(galCodes)};\n` +
@@ -265,6 +281,8 @@ const drawer =
       };
       const showEntry = (m, code, meta) => {
         knot.material = m;
+        // a build with no display source collapses the pane rather than leaving it empty
+        pre.style.display = code ? '' : 'none';
         pre.textContent = code;
         badge.textContent = meta || '';
       };

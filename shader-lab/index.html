@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shader Lab &mdash; Aurelius Dynamic</title>
-<meta name="description" content="A live browser-native TSL material workbench. Inspect 54 verified WebGPU and WebGL2 shaders, their derived source, performance class, and rendering behavior.">
+<meta name="description" content="A live browser-native TSL material workbench. Inspect 55 verified WebGPU and WebGL2 shaders, their performance class, and rendering behavior.">
 <link rel="canonical" href="https://aureliusdynamic.com/shader-lab/">
 <meta name="theme-color" content="#06080C">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Aurelius Dynamic">
 <meta property="og:title" content="Shader Lab &mdash; Aurelius Dynamic">
-<meta property="og:description" content="A live TSL material workbench: 54 verified shaders, source visible, WebGPU and WebGL2 tested.">
+<meta property="og:description" content="A live TSL material workbench: 55 verified shaders, cost measured, WebGPU and WebGL2 tested.">
 <meta property="og:url" content="https://aureliusdynamic.com/shader-lab/">
 <meta property="og:image" content="https://aureliusdynamic.com/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -34,11 +34,11 @@
 <main class="wide">
   <div class="kicker"><span class="dot"></span><span class="t">Proven Today &middot; Shader Lab</span><span class="rule"></span></div>
   <h1>Live TSL materials, with the receipts attached.</h1>
-  <p class="lede">Shader Lab is Aurelius' public rendering workbench. Pick a material, drag the geometry, adjust the clock, and inspect the source that built the result. Every material here is a reusable module verified on both WebGPU and WebGL2 before it appears.</p>
+  <p class="lede">Shader Lab is Aurelius' public rendering workbench. Pick a material, drag the geometry, adjust the clock, and read the verification record beside the result. Every material here is a reusable module verified on both WebGPU and WebGL2 before it appears.</p>
   <div class="stats">
-    <span><b>54</b> verified material programs</span>
+    <span><b>55</b> verified material programs</span>
     <span><b>WebGPU + WebGL2</b> parity-gated</span>
-    <span><b>Source derived</b> from implementation modules</span>
+    <span><b>Cost measured</b> on a documented baseline</span>
   </div>
 
   <section class="lab-shell" aria-labelledby="workbench-title">
@@ -61,7 +61,7 @@
       <p class="lab-status" data-lab-status role="status">Loading the pinned renderer and verified material modules.</p>
     </div>
 
-    <aside class="lab-console" aria-label="Shader Lab controls and source">
+    <aside class="lab-console" aria-label="Shader Lab controls">
       <div>
         <p class="lab-eyebrow">Verified materials &middot; <span data-lab-count>--</span></p>
         <label class="lab-filter" for="lab-filter">
@@ -75,13 +75,12 @@
         <input id="lab-flux" data-lab-flux type="range" min="0" max="1" step="0.01" value="0.50">
       </div>
       <p class="lab-badge" data-lab-badge>Loading verification record...</p>
-      <pre class="lab-source" aria-label="Derived material source"><code data-lab-source>Loading source...</code></pre>
     </aside>
   </section>
 
   <div class="callout">
     <div class="t">What this proves</div>
-    <p>These are not screenshots or separate shader forks. The material selected above is the same ES module used by the benchmark, the landing-page preview, and this dedicated workbench. The source pane is exported by that module, so it cannot silently diverge from the implementation. The chip list is not written here either &mdash; the page walks the library's own material roster, so a material that ships is a material that appears.</p>
+    <p>These are not screenshots or separate shader forks. The material selected above is the same ES module used by the benchmark, the landing-page preview, and this dedicated workbench. The verification record beside it is read from the same registry the benchmark writes, so it cannot silently diverge from what was measured. The chip list is not written here either &mdash; the page walks the library's own material roster, so a material that ships is a material that appears.</p>
   </div>
 
   <h2>From material idea to public artifact</h2>
@@ -89,7 +88,7 @@
     <div class="cell">
       <div class="k">01 &middot; Author</div>
       <h3>One module, one source of truth</h3>
-      <p>Every material exports its name, its TSL <code>apply()</code> function, and the readable source fragment displayed in the Lab.</p>
+      <p>Every material exports its name, its TSL <code>apply()</code> function, and a readable source fragment kept beside the implementation.</p>
     </div>
     <div class="cell">
       <div class="k">02 &middot; Verify</div>
@@ -159,7 +158,7 @@
     </div>
     <div class="cell">
       <div class="k">Interaction discipline</div>
-      <h3>Explore the implementation</h3>
+      <h3>Explore the behavior</h3>
       <p>Drag the knot, change the clock, and switch materials. Direct interaction is a useful test of behavior that static imagery cannot provide.</p>
     </div>
   </div>
