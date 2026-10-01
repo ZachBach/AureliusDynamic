@@ -44,7 +44,7 @@
   <h2>What we collect</h2>
   <p class="sub">nothing personal</p>
   <p>Aurelius Dynamic does not operate user accounts on this site. The landing page and Lab apps do not request device permissions for identity, location, or contacts. The one device permission any of them asks for is the microphone, and only when you choose dictation in IKOS. They do not store personal profiles on our servers, because there is no personal-data backend for these surfaces.</p>
-  <p>The only deliberate network call on the main landing experience is optional live weather for the hero Earth's storm layer, fetched client-side from the public <a href="https://open-meteo.com/">Open-Meteo</a> feed with no key, account, or personal payload. If that feed is unavailable, the scene falls back to a procedural pattern and continues.</p>
+  <p>The main landing experience makes two kinds of network call. It loads two open-source library files (React) from the public <a href="https://unpkg.com/">unpkg.com</a> CDN, which sees your IP address as any web server does; we are moving those files onto this site. And it optionally fetches live weather for the hero Earth's storm layer, client-side from the public <a href="https://open-meteo.com/">Open-Meteo</a> feed with no key, account, or personal payload. If that feed is unavailable, the scene falls back to a procedural pattern and continues.</p>
 
   <span class="num">02</span>
   <h2>echoGalaxy</h2>
