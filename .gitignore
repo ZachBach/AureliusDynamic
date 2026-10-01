@@ -61,6 +61,9 @@ handoff.md
 zookahs-personal-guide-from-the-homie.md
 # Draft article about the studio, for publishing elsewhere. Not site content.
 aurelius-dynamic-article.md
+# Release, Zenodo and ORCID checklist. It names employers and personal accounts,
+# so the same rule as znatodos.md applies.
+humantasks.md
 
 # Git worktrees checked out from the nested echoGalaxy repo. Same reasoning
 # as the line above — that repo's branches are its own business, and a
