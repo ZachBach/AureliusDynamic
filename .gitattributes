@@ -1,0 +1,4 @@
+# IKOS's vendored builds are byte-for-byte copies whose SHA-384 hashes are published
+# in ikos/vendor/README.md. Line-ending conversion on a Windows checkout would
+# change those bytes, so never convert them.
+ikos/vendor/** -text

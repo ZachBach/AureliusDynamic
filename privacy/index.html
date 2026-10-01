@@ -43,7 +43,7 @@
   <span class="num">01</span>
   <h2>What we collect</h2>
   <p class="sub">nothing personal</p>
-  <p>Aurelius Dynamic does not operate user accounts on this site. The landing page and Lab apps do not request device permissions for identity, location, contacts, or media. They do not store personal profiles on our servers, because there is no personal-data backend for these surfaces.</p>
+  <p>Aurelius Dynamic does not operate user accounts on this site. The landing page and Lab apps do not request device permissions for identity, location, or contacts. The one device permission any of them asks for is the microphone, and only when you choose dictation in IKOS. They do not store personal profiles on our servers, because there is no personal-data backend for these surfaces.</p>
   <p>The only deliberate network call on the main landing experience is optional live weather for the hero Earth's storm layer, fetched client-side from the public <a href="https://open-meteo.com/">Open-Meteo</a> feed with no key, account, or personal payload. If that feed is unavailable, the scene falls back to a procedural pattern and continues.</p>
 
   <span class="num">02</span>
@@ -52,21 +52,28 @@
   <p>Everything in echoGalaxy — planets, nebulae, galaxies — is generated on your device. After the first visit the app can run offline via its service worker. Network requests are made only to load the app itself from our website (and to pick up a newer deploy when you are online). Installable PWA packaging does not change the data story: still no accounts, analytics, ads, or personal telemetry.</p>
 
   <span class="num">03</span>
+  <h2>IKOS</h2>
+  <p class="sub">knowledge-graph runtime · <a href="/ikos/">/ikos/</a></p>
+  <p>Your graph, notes, and attached videos are kept in your own browser's local storage and are never sent to us. Opening IKOS loads files from this website only; its libraries are served from here, not from a third-party CDN.</p>
+  <p>Two optional features contact other services, and only after you ask. Clicking <strong>Load video</strong> on a concept connects your browser to that video's host: for YouTube, that is YouTube and other Google servers, through YouTube's privacy-enhanced player; Vimeo loads with its do-not-track setting. <strong>Auto-find</strong> sends the concept's name as a search to public Piped and Invidious servers. Each button says where it connects before you press it, and the permission lasts only for that visit.</p>
+  <p>Dictation and read-aloud use your browser's own speech features, which this site does not control. In some browsers, including Chrome, dictation audio is processed on the browser maker's servers, and some voices do the same with the text they read aloud.</p>
+
+  <span class="num">04</span>
   <h2>Contact</h2>
   <p class="sub">email you choose to send</p>
   <p>If you email us, we receive only what you put in that message. The engagement form on the landing page opens a pre-addressed draft to <a href="mailto:build@aureliusdynamic.com">build@aureliusdynamic.com</a>; the site itself does not transmit the form contents to a server we control.</p>
 
-  <span class="num">04</span>
+  <span class="num">05</span>
   <h2>Children</h2>
   <p class="sub">safe by non-collection</p>
   <p>echoGalaxy is designed to be appropriate for learners of all ages. Because no personal data is collected from any visitor, no personal data is collected from children.</p>
 
-  <span class="num">05</span>
+  <span class="num">06</span>
   <h2>Changes</h2>
   <p class="sub">this page is the source of truth</p>
   <p>If this policy ever changes, the change will appear here with an updated date. Questions: <a href="mailto:build@aureliusdynamic.com">build@aureliusdynamic.com</a>.</p>
 
-  <p class="sub" style="margin-top:36px">Last updated · 3 August 2026</p>
+  <p class="sub" style="margin-top:36px">Last updated · 30 September 2026</p>
 
   <div class="next">
     <a href="/galaxy/">Open echoGalaxy →</a>
